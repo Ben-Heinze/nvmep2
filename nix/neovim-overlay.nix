@@ -190,6 +190,7 @@ let
       # orgmode
       # jupytext-nvim
 
+      nvim-coverage
       neotest # https://github.com/nvim-neotest/neotest
       neotest-testthat
       neotest-jest
