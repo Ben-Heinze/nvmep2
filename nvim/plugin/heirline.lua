@@ -2672,7 +2672,7 @@ local TabLine = {
   { Separator },
   { TabPages },
   { Separator },
-  { BufferLine },
+  -- { BufferLine },
 
   { Align },
   { LSPActive },
