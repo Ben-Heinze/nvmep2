@@ -385,13 +385,15 @@ mymap('n', '<A-9>', ':tabn9<CR>')
 -- mymap('n', '8', ':tabn8<CR>')
 -- mymap('n', '9', ':tabn9<CR>')
 -- mymap('n', '<Space>qq', '<CMD>wa<CR><CMD>qa!<CR>')
-mymap('n', '<Space>rr', '<CMD>luafile $MYVIMRC<CR><CMD>ReloadFTPlugins<CR><CMD>echo "Reloaded config"<CR>')
+-- mymap('n', '<Space>rr', '<CMD>luafile $MYVIMRC<CR><CMD>ReloadFTPlugins<CR><CMD>echo "Reloaded config"<CR>')
 mymap('n', '<Space>tgc', '<CMD>Telescope git_commits<CR>')
 -- These only work in gvim.... :(
 mymap('n', '<C-tab>', '<CMD>tabnext<CR>')
 mymap('n', '<C-S-tab>', '<CMD>tabprevious<CR>')
 
 mymap('n', '<Space>uo', '<CMD>lua vim.ui.open(vim.fn.expand("%"))<CR>')
+mymap('v', 'J', ":m '>+1<CR>gv=gv")
+mymap('v', 'K', ":m '<-2<CR>gv=gv")
 
 -- }}} Base Key mappings
 
@@ -470,6 +472,21 @@ mymap('v', '<A-return>', '<CMD>lua wrapped_slime()<CR><CR>')
 mymap('n', '<Space>oo', '<CMD>Other<CR>')
 -- }}} Other.nvim
 
+-- {{{ DAP
+
+mymap('n', '<Space>du', '<CMD>lua require"dapui".toggle()<CR>')
+mymap('n', '<Space>db', '<CMD>DapToggleBreakpoint<CR>')
+mymap('n', '<Space>dd', '<CMD>DapContinue<CR>')
+mymap('n', '<Space>dc', '<CMD>DapContinue<CR>')
+mymap('n', '<Space>dO', '<CMD>DapStepOut<CR>')
+mymap('n', '<Space>di', '<CMD>DapStepInto<CR>')
+mymap('n', '<Space>do', '<CMD>DapStepOver<CR>')
+mymap('n', '<Space>dC', '<CMD>DapClearBreakpoints<CR>')
+mymap('n', '<Space>dR', '<CMD>DapRestartFrame<CR>')
+mymap('n', '<Space>dP', '<CMD>DapPause<CR>')
+
+-- }}} DAP
+
 -- }}} Plugin mappings
 
 -- {{{ Statusline active/not_active behavior
@@ -522,6 +539,8 @@ vim.cmd('highlight EndOfBuffer guifg=#881188') -- Customize color as needed
 -- {{{ inbox
 
 mymap('n', '<Space><Space>', ':JustSelect<CR>')
+mymap('n', '<Space>z', ':ZenMode<CR>')
+
 vim.api.nvim_create_user_command('RunJust', function()
   local file = vim.fn.expand('%:p')
   local filename = vim.fn.fnamemodify(file, ':t')
@@ -541,6 +560,18 @@ vim.api.nvim_create_user_command('RunJust', function()
     vim.cmd('autocmd! BufLeave quickfix lua vim.fn.win_gotoid(' .. current_window .. ')')
   end
 end, {})
+
+function JustRunF()
+  vim.cmd('AsyncRun ' .. 'just run')
+end
+
+-- Create a Neovim command called `RunLastCommand`
+vim.api.nvim_create_user_command('JustRun', function()
+  JustRunF()
+end, {})
+
+mymap('n', '<Space><Space>', ':JustRun<CR>')
+mymap('n', '<Space>j', ':JustSelect<CR>')
 
 -- Associate .Rmd files with markdown filetype
 vim.api.nvim_create_autocmd({ 'BufRead', 'BufNewFile' }, {

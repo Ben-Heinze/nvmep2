@@ -187,9 +187,10 @@ let
       # nvim-tree-preview
       # nvim-luadev
       # telescope-ultisnips-nvim
-      # orgmode
+      orgmode
       # jupytext-nvim
 
+      lualine-nvim # https://github.com/nvim-lualine/lualine.nvim
       nvim-coverage
       neotest # https://github.com/nvim-neotest/neotest
       neotest-testthat
@@ -204,6 +205,8 @@ let
       friendly-snippets # https://github.com/rafamadriz/friendly-snippets
       asyncrun-vim # https://github.com/skywind3000/asyncrun.vim
       blink-cmp # https://github.com/Saghen/blink.cmp
+      nvim-dap-vscode-js
+
       # refactoring-nvim # https://github.com/ThePrimeagen/refactoring.nvim
       nvim-treesitter-refactor # https://github.com/nvim-treesitter/nvim-treesitter-refactor
       flash-nvim # https://github.com/folke/flash.nvim
@@ -212,8 +215,9 @@ let
       markdown-preview-nvim # https://github.com/iamcco/markdown-preview.nvim
       melange-nvim # https://github.com/savq/melange-nvim
       nerdtree # https://github.com/preservim/nerdtree
-      nvim-bqf # https://github.com/kevinhwang91/nvim-bqf
+      # nvim-bqf # https://github.com/kevinhwang91/nvim-bqf
       nvim-dap # https://github.com/mfussenegger/nvim-dap
+      nvim-dap-python # https://github.com/mfussenegger/nvim-dap-python
       nvim-dap-ui # https://github.com/rcarriga/nvim-dap-ui
       nvim-highlight-colors # https://github.com/brenoprata10/nvim-highlight-colors
       oil-nvim # https://github.com/stevearc/oil.nvim
@@ -252,10 +256,13 @@ let
       neogit # https://github.com/TimUntersberger/neogit/
       nvim-cmp # https://github.com/hrsh7th/nvim-cmp
       nvim-jdtls # https://github.com/mfussenegger/nvim-jdtls
+      nvim-dap-view # https://github.com/igorlfs/nvim-dap-view/
       nvim-navic # https://github.com/SmiteshP/nvim-navic
+      nvim-colorizer-lua # https://github.com/norcalli/nvim-colorizer.lua
       nvim-surround # https://github.com/kylechui/nvim-surround/
       nvim-tree-lua # https://github.com/nvim-tree/nvim-tree.lua
       nvim-tree-lua # https://github.com/nvim-tree/nvim-tree.lua
+      nvim-dap-virtual-text # https://github.com/theHamsta/nvim-dap-virtual-text/
       nvim-treesitter-context # nvim-treesitter-context
       nvim-treesitter-textobjects # https://github.com/nvim-treesitter/nvim-treesitter-textobjects/
       nvim-treesitter.withAllGrammars
@@ -264,6 +271,7 @@ let
       nvim-unception # nvim-unception
       nvim-web-devicons # https://github.com/nvim-tree/nvim-web-devicons
       plenary-nvim # https://github.com/nvim-lua/plenary.nvim
+      quicker-nvim # https://github.com/stevearc/quicker.nvim/
       smart-splits-nvim # https://github.com/mrjones2014/smart-splits.nvim
       sqlite-lua # https://github.com/kkharji/sqlite.lua
       statuscol-nvim # https://github.com/luukvbaal/statuscol.nvim/

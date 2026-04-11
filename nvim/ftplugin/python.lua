@@ -1,6 +1,6 @@
--- local function mymap(mode, key, value)
---   vim.keymap.set(mode, key, value, { silent = true, remap = true })
--- end
+local function mymap(mode, key, value)
+  vim.keymap.set(mode, key, value, { silent = true, remap = true })
+end
 
 local root_files = {
   '.git',
@@ -61,23 +61,36 @@ vim.defer_fn(function()
   }
 end, 1000)
 
--- local dap = require('dap')
+local dap = require('dap')
+require('dap-python').setup('python3')
+
+mymap('n', '<Space>du', '<CMD>lua require"dapui".toggle()<CR>')
+mymap('n', '<Space>db', '<CMD>DapToggleBreakpoint<CR>')
+mymap('n', '<Space>dd', '<CMD>DapContinue<CR>')
+mymap('n', '<Space>dc', '<CMD>DapContinue<CR>')
+mymap('n', '<Space>dO', '<CMD>DapStepOut<CR>')
+mymap('n', '<Space>di', '<CMD>DapStepInto<CR>')
+mymap('n', '<Space>do', '<CMD>DapStepOver<CR>')
+mymap('n', '<Space>dC', '<CMD>DapClearBreakpoints<CR>')
+mymap('n', '<Space>dR', '<CMD>DapRestartFrame<CR>')
+mymap('n', '<Space>dP', '<CMD>DapPause<CR>')
+
 -- dap.adapters.python = function(cb, config)
 --   if config.request == 'attach' then
 --     ---@diagnostic disable-next-line: undefined-field
 --     local port = (config.connect or config).port
 --     ---@diagnostic disable-next-line: undefined-field
 --     local host = (config.connect or config).host or '127.0.0.1'
---     cb({
+--     cb {
 --       type = 'server',
 --       port = assert(port, '`connect.port` is required for a python `attach` configuration'),
 --       host = host,
 --       options = {
 --         source_filetype = 'python',
 --       },
---     })
+--     }
 --   else
---     cb({
+--     cb {
 --       type = 'executable',
 --       -- command = 'path/to/virtualenvs/debugpy/bin/python',
 --       command = pythonPath(),
@@ -85,10 +98,10 @@ end, 1000)
 --       options = {
 --         source_filetype = 'python',
 --       },
---     })
+--     }
 --   end
 -- end
---
+
 -- dap.configurations.python = {
 --   {
 --     -- The first three options are required by nvim-dap
