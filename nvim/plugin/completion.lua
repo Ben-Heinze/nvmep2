@@ -109,6 +109,10 @@ cmp.setup {
     { name = 'path' },
   },
   enabled = function()
+    local bufname = vim.api.nvim_buf_get_name(0)
+    if bufname:match('org%-roam%-select$') ~= nil then
+      return false
+    end
     return vim.bo[0].buftype ~= 'prompt'
   end,
   experimental = {

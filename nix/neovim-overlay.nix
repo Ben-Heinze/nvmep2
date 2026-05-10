@@ -52,6 +52,28 @@ let
         };
       };
 
+      # https://github.com/hmdfrds/focal.nvim
+
+      # Focal = pkgs.vimUtils.buildVimPlugin {
+      #   name = "nuake";
+      #   src = pkgs.fetchFromGitHub {
+      #     owner = "hmdfrds";
+      #     repo = "focal.nvim";
+      #     rev = "25c946b9ba57c394fbb8644f084a4cd6d0004e54";
+      #     hash = "sha256-tlTN4RTsKnj2TiSEM+OfMs02zS92P/jy7qK0LvmsFfI=";
+      #   };
+      # };
+
+      # OrgRoam = pkgs.vimUtils.buildVimPlugin {
+      #   name = "org-roam";
+      #   src = pkgs.fetchFromGitHub {
+      #     owner = "jordanschupbach";
+      #     repo = "org-roam.nvim";
+      #     rev = "6c21c867b178a80fb4ad243c445545e5583d8232";
+      #     hash = "sha256-K0OnM7PdTT4ypL0IAVWb9R83SDIhgko8j4KBzIkJJNM=";
+      #   };
+      # };
+
       TelescopeLuasnip = pkgs.vimUtils.buildVimPlugin {
         name = "telescope-luasnip-nvim";
         src = pkgs.fetchFromGitHub {
@@ -184,10 +206,14 @@ let
       # JsFunc
       # JustNvim
       EasyGrep
+      # Focal
       # nvim-tree-preview
       # nvim-luadev
       # telescope-ultisnips-nvim
+      # nvim-java
       orgmode
+      org-roam-nvim
+      # OrgRoam
       # jupytext-nvim
 
       lualine-nvim # https://github.com/nvim-lualine/lualine.nvim
@@ -248,6 +274,7 @@ let
       copilot-vim # https://github.com/github/copilot.vim/
       diffview-nvim # https://github.com/sindrets/diffview.nvim/
       eyeliner-nvim # https://github.com/jinh0/eyeliner.nvim
+      fzf-lua # https://github.com/ibhagwan/fzf-lua
       gitsigns-nvim # https://github.com/lewis6991/gitsigns.nvim/
       heirline-nvim # https://github.com/rebelot/heirline.nvim/
       lsp-progress-nvim # https://github.com/linrongbin16/lsp-progress.nvim

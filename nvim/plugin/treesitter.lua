@@ -113,6 +113,18 @@ require('treesitter-context').setup {
 
 require('ts_context_commentstring').setup()
 
+-- local parser_config = require('nvim-treesitter.parsers').get_parser_configs()
+--
+-- -- attempt to obtain the parser config for org filetype, and install if not present
+-- parser_config.org = {
+--   install_info = {
+--     url = 'https://github.com/milisims/tree-sitter-org',
+--     revision = 'main',
+--     files = { 'src/parser.c', 'src/scanner.c' },
+--   },
+--   filetype = 'org',
+-- }
+
 -- Tree-sitter based folding
 -- vim.opt.foldmethod = 'expr'
 -- vim.opt.foldexpr = 'nvim_treesitter#foldexpr()'

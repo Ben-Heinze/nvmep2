@@ -139,6 +139,16 @@ require('nvim-tree').setup {
       return { desc = 'nvim-tree: ' .. desc, buffer = bufnr, noremap = true, silent = true, nowait = true }
     end
 
+    local function open_with_xdg()
+      local node = api.tree.get_node_under_cursor()
+      if node and node.type == 'file' then
+        vim.fn.jobstart({ 'xdg-open', node.absolute_path }, { detach = true })
+      end
+    end
+
+    api.config.mappings.default_on_attach(bufnr)
+    vim.keymap.set('n', '<C-o>', open_with_xdg, { buffer = bufnr, desc = 'Open with xdg-open' })
+
     -- local preview = require('nvim-tree-preview')
 
     -- vim.keymap.set('n', 'P', preview.watch, opts 'Preview (Watch)')
