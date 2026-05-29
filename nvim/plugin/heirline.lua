@@ -571,14 +571,7 @@ local function get_active_buffer_in_tab(tab_number)
   return active_buffer
 end
 
-function get_first_key(table)
-  for key, _ in pairs(table) do
-    return key
-  end
-end
-
 local conditions = require('heirline.conditions')
-local utils = require('heirline.utils')
 
 -- {{{ Colors
 local colors = {

@@ -1,3 +1,1 @@
-
-
 require('lsp-progress').setup()

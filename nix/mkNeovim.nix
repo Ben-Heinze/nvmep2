@@ -8,7 +8,6 @@
   # Set by the overlay to ensure we use a compatible version of `wrapNeovimUnstable`
   wrapNeovimUnstable,
   neovimUtils,
-  src,
 }:
 with lib;
 {
@@ -24,6 +23,7 @@ with lib;
   ignoreConfigRegexes ? [ ],
   extraPackages ? [
     # TODO: figure out the scope of these...
+    git
     ripgrep
     fzf
     luajitPackages.fzf-lua

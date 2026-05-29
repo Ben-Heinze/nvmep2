@@ -13,22 +13,16 @@ let
       version = src.lastModifiedDate;
     };
 
-  neovimVersion = "v0.11.4";
-  neovimSrc = pkgs.fetchFromGithub {
-    owner = "neovim";
-    repo = "neovim";
-    rev = neovimVersion;
-    sha256 = ""; # NOTE: why is this not needed!?
-  };
-
   # Make sure we use the pinned nixpkgs instance for wrapNeovimUnstable,
   # otherwise it could have an incompatible signature when applying this overlay.
   pkgs-locked = inputs.nixpkgs.legacyPackages.${pkgs.system};
 
+  # A separate nixpkgs pin for a small set of bleeding-edge plugins.
+  pkgs-unstable-plugins = inputs.nixpkgs-unstable-plugins.legacyPackages.${pkgs.system};
+
   # This is the helper function that builds the Neovim derivation.
   mkNeovim = pkgs.callPackage ./mkNeovim.nix {
     inherit (pkgs-locked) wrapNeovimUnstable neovimUtils;
-    src = neovimSrc; # NOTE: why does this actually work?
   };
 
   # A plugin can either be a package or an attrset, such as
@@ -189,6 +183,8 @@ let
         };
       };
 
+      # ArtioNvim = pkgs-unstable-plugins.vimPlugins.artio-nvim;
+
     in
     with pkgs.vimPlugins;
     [
@@ -216,6 +212,8 @@ let
       # OrgRoam
       # jupytext-nvim
 
+      snacks-nvim
+      opencode-nvim
       lualine-nvim # https://github.com/nvim-lualine/lualine.nvim
       nvim-coverage
       neotest # https://github.com/nvim-neotest/neotest
@@ -233,8 +231,8 @@ let
       blink-cmp # https://github.com/Saghen/blink.cmp
       nvim-dap-vscode-js
 
-      # refactoring-nvim # https://github.com/ThePrimeagen/refactoring.nvim
-      nvim-treesitter-refactor # https://github.com/nvim-treesitter/nvim-treesitter-refactor
+      refactoring-nvim # https://github.com/ThePrimeagen/refactoring.nvim
+      # nvim-treesitter-refactor # https://github.com/nvim-treesitter/nvim-treesitter-refactor
       flash-nvim # https://github.com/folke/flash.nvim
       focus-nvim # https://github.com/nvim-focus/focus.nvim
       kanagawa-nvim # https://github.com/rebelot/kanagawa.nvim
@@ -259,6 +257,8 @@ let
       zen-mode-nvim # https://github.com/folke/zen-mode.nvim
 
       leetcode-nvim # https://github.com/kawre/leetcode.nvim
+
+      # ArtioNvim # https://github.com/comfysage/artio.nvim/
 
       aerial-nvim # https://github.com/stevearc/aerial.nvim
       cmp-buffer # https://github.com/hrsh7th/cmp-buffer/
@@ -317,6 +317,7 @@ let
   extraPackages = with pkgs; [
     luajit
     direnv
+    git
 
     # # language servers, etc.
     # lua-language-server

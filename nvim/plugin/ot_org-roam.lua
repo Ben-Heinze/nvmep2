@@ -1,8 +1,8 @@
 require('org-roam').setup {
-  directory = '/home/jordan/org-roam',
+  directory = vim.fn.expand('~/org-roam'),
   -- optional
   org_files = {
-    '/home/jordan/org-roam',
+    vim.fn.expand('~/org-roam'),
     -- "~/another_org_dir",
     -- "~/some/folder/*.org",
     -- "~/a/single/org_file.org",

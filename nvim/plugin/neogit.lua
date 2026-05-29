@@ -9,8 +9,6 @@ local function mymap(mode, key, value)
   vim.keymap.set(mode, key, value, { silent = true, remap = true })
 end
 
-
-
 mymap('n', '<Space>gg', '<cmd>Neogit kind=vsplit<cr>')
 
 neogit.setup {

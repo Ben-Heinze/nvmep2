@@ -179,6 +179,22 @@
         "type": "github"
       }
     },
+    "nixpkgs-unstable-plugins": {
+      "locked": {
+        "lastModified": 1779589979,
+        "narHash": "sha256-zEMjwmyR5u4kbLbUAEKdLygGqIaPwOWJle9DxbJ+1hM=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "92d12885efc6fa76e6500b3753749f7df38d0381",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NixOS",
+        "ref": "master",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
     "nixpkgs_2": {
       "locked": {
         "lastModified": 1760524057,
@@ -199,7 +215,8 @@
       "inputs": {
         "flake-utils": "flake-utils",
         "gen-luarc": "gen-luarc",
-        "nixpkgs": "nixpkgs_2"
+        "nixpkgs": "nixpkgs_2",
+        "nixpkgs-unstable-plugins": "nixpkgs-unstable-plugins"
       }
     },
     "systems": {

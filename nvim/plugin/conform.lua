@@ -1,4 +1,3 @@
-
 -- NOTE: conform might be redundant with null-ls.nvim
 require('conform').setup {
   format_on_save = function(bufnr)

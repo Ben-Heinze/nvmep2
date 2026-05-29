@@ -3,6 +3,8 @@
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    # Separate nixpkgs pin for a small set of bleeding-edge plugins.
+    nixpkgs-unstable-plugins.url = "github:NixOS/nixpkgs/master";
     flake-utils.url = "github:numtide/flake-utils";
     gen-luarc.url = "github:mrcjkb/nix-gen-luarc-json";
 
@@ -52,7 +54,6 @@
             nil
             stylua
             luajitPackages.luacheck
-            luajitPackages.luacheck
             nvim-dev
             cmake
             jq
@@ -81,6 +82,7 @@
             # symlink the .luarc.json generated in the overlay
             ln -fs ${pkgs.nvim-luarc-json} .luarc.json
             # allow quick iteration of lua configs
+            mkdir -p ~/.config
             ln -Tfns $PWD/nvim ~/.config/nvim-dev
           '';
         };
@@ -90,9 +92,42 @@
           default = nvim;
           nvim = pkgs.nvim-pkg;
         };
+        checks = {
+          stylua =
+            pkgs.runCommand "stylua-check" { nativeBuildInputs = [ pkgs.stylua ]; src = ./.; }
+              ''
+                cd "$src"
+                stylua --check nvim playground/lua *.lua
+                touch "$out"
+              '';
+
+          luacheck =
+            pkgs.runCommand "luacheck" { nativeBuildInputs = [ pkgs.luajitPackages.luacheck ]; src = ./.; }
+              ''
+                cd "$src"
+                export HOME="$TMPDIR/home"
+                export XDG_CACHE_HOME="$TMPDIR/cache"
+                mkdir -p "$HOME" "$XDG_CACHE_HOME"
+                luacheck --config "$src/.luacheckrc" --no-unused --no-unused-args nvim playground/lua *.lua
+                touch "$out"
+              '';
+
+          nvim-starts =
+            pkgs.runCommand "nvim-starts" { nativeBuildInputs = [ pkgs.nvim-pkg ]; }
+              ''
+                export HOME="$TMPDIR/home"
+                export XDG_CACHE_HOME="$TMPDIR/cache"
+                export XDG_DATA_HOME="$TMPDIR/data"
+                export XDG_STATE_HOME="$TMPDIR/state"
+                mkdir -p "$HOME" "$XDG_CACHE_HOME" "$XDG_DATA_HOME" "$XDG_STATE_HOME"
+                ${pkgs.nvim-pkg}/bin/nvim --headless "+quitall"
+                touch "$out"
+              '';
+        };
         devShells = {
           default = shell;
         };
+        formatter = pkgs.alejandra;
       }
     )
     // {

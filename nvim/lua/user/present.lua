@@ -1,4 +1,3 @@
-
 local present = {}
 
 local function create_floating_window(opts)
@@ -28,29 +27,22 @@ local function create_floating_window(opts)
     style = 'minimal',
     border = 'rounded',
   }
-
-
-
 end
-
-
 
 present.setup = function()
-  print("Hellozzz from present.lua!")
+  print('Hellozzz from present.lua!')
 end
-
 
 ---@class present.Slides
 ---@fields slides string[]
-
 
 --- Takes some lines and parses them
 ---@param lines string[]: The lines in the buffer
 ---@return present.Slides
 local parse_slides = function(lines)
-  local slides = {slides = {}}
+  local slides = { slides = {} }
   local current_slide = {}
-  local separator = "^#"
+  local separator = '^#'
   for _, line in ipairs(lines) do
     if line:find(separator) then
       if #current_slide > 0 then
@@ -64,7 +56,7 @@ local parse_slides = function(lines)
   return slides
 end
 
-present.start_presentation = function ()
+present.start_presentation = function()
   local lines = vim.api.nvim_buf_get_lines(0, 0, -1, false)
   local parsed = parse_slides(lines)
   local float = create_floating_window()
@@ -72,14 +64,12 @@ present.start_presentation = function ()
   vim.api.nvim_buf_set_lines(float.buf, 0, -1, false, parsed.slides[1])
 end
 
-
 vim.print(parse_slides {
-  "# Hello",
-  "this is something else",
-  "# World",
-  "this is another thing",
+  '# Hello',
+  'this is something else',
+  '# World',
+  'this is another thing',
 })
-
 
 -- present.setup()
 

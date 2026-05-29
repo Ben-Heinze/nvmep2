@@ -1,4 +1,3 @@
-
 -- default settings
 local modified_defaults = {
 
@@ -7,41 +6,25 @@ local modified_defaults = {
 
     -- {{{ from include
 
-    { pattern = '/include/(.*)/(.*).hpp',
-      target = '/source/%1/%2.cpp',
-      context = 'source' },
+    { pattern = '/include/(.*)/(.*).hpp', target = '/source/%1/%2.cpp', context = 'source' },
 
-    { pattern = '/include/(.*)/(.*).hpp',
-      target = '/tests/source/%1/%2_tests.cpp',
-      context = 'test' },
+    { pattern = '/include/(.*)/(.*).hpp', target = '/tests/source/%1/%2_tests.cpp', context = 'test' },
 
-    { pattern = '/include/(.*)/(.*).hpp',
-      target = '/examples/source/%1/%2_ex.cpp',
-      context = 'example' },
+    { pattern = '/include/(.*)/(.*).hpp', target = '/examples/source/%1/%2_ex.cpp', context = 'example' },
 
-    { pattern = '/include/(.*)/(.*).hpp',
-      target = '/include/%1/%2_impl.hpp',
-      context = 'impl' },
+    { pattern = '/include/(.*)/(.*).hpp', target = '/include/%1/%2_impl.hpp', context = 'impl' },
 
     -- }}} from include
 
     -- {{{ from source
 
-    { pattern = '/source/(.*)/(.*).cpp',
-      target = '/include/%1/%2.cpp',
-      context = 'include' },
+    { pattern = '/source/(.*)/(.*).cpp', target = '/include/%1/%2.cpp', context = 'include' },
 
-    { pattern = '/source/(.*)/(.*).cpp',
-      target = '/tests/source/%1/%2_tests.cpp',
-      context = 'test' },
+    { pattern = '/source/(.*)/(.*).cpp', target = '/tests/source/%1/%2_tests.cpp', context = 'test' },
 
-    { pattern = '/source/(.*)/(.*).cpp',
-      target = '/examples/source/%1/%2_ex.cpp',
-      context = 'example' },
+    { pattern = '/source/(.*)/(.*).cpp', target = '/examples/source/%1/%2_ex.cpp', context = 'example' },
 
-    { pattern = '/source/(.*)/(.*).cpp',
-      target = '/include/%1/%2_impl.hpp',
-      context = 'impl' },
+    { pattern = '/source/(.*)/(.*).cpp', target = '/include/%1/%2_impl.hpp', context = 'impl' },
 
     -- }}} from source
 
@@ -50,25 +33,25 @@ local modified_defaults = {
     {
       pattern = '/tests/(.*)/(.*)_tests.cpp',
       target = '/include/%1/%2.cpp',
-      context = 'include'
+      context = 'include',
     },
 
     {
       pattern = '/tests/(.*)/(.*)_tests.cpp',
       target = '/source/%1/%2.cpp',
-      context = 'source'
+      context = 'source',
     },
 
     {
       pattern = '/tests/(.*)/(.*)_tests.cpp',
       target = '/examples/source/%1/%2_ex.cpp',
-      context = 'example'
+      context = 'example',
     },
 
     {
       pattern = '/tests/(.*)/(.*)_tests.cpp',
       target = '/include/%1/%2_impl.hpp',
-      context = 'impl'
+      context = 'impl',
     },
 
     -- }}} from tests
@@ -78,29 +61,28 @@ local modified_defaults = {
     {
       pattern = '/include/(.*)/(.*)_impl.hpp',
       target = '/source/%1/%2.cpp',
-      context = 'source'
+      context = 'source',
     },
 
     {
       pattern = '/include/(.*)/(.*)_impl.hpp',
       target = '/tests/source/%1/%2_tests.cpp',
-      context = 'test'
+      context = 'test',
     },
 
     {
       pattern = '/include/(.*)/(.*)_impl.hpp',
       target = '/examples/source/%1/%2_ex.cpp',
-      context = 'example'
+      context = 'example',
     },
 
     {
       pattern = '/include/(.*)/(.*)_impl.hpp',
       target = '/include/%1/%2.hpp',
-      context = 'include'
+      context = 'include',
     },
 
     -- }}} from tests
-
   },
 
   -- -- default transformers
@@ -122,13 +104,13 @@ local modified_defaults = {
   rememberBuffers = true,
 
   keybindings = {
-    ["<cr>"] = "open_file_by_command()",
-    ["<esc>"] = "close_window()",
-    t = "open_file_tabnew()",
-    o = "open_file()",
-    q = "close_window()",
-    v = "open_file_vs()",
-    s = "open_file_sp()",
+    ['<cr>'] = 'open_file_by_command()',
+    ['<esc>'] = 'close_window()',
+    t = 'open_file_tabnew()',
+    o = 'open_file()',
+    q = 'close_window()',
+    v = 'open_file_vs()',
+    s = 'open_file_sp()',
   },
 
   hooks = {
@@ -161,19 +143,18 @@ local modified_defaults = {
     onFindOtherFiles = function(matches)
       return matches
     end,
-
   },
 
   style = {
     -- How the plugin paints its window borders
     -- Allowed values are none, single, double, rounded, solid and shadow
-    border = "solid",
+    border = 'solid',
 
     -- Column seperator for the window
-    seperator = "|",
+    seperator = '|',
 
     -- Indicator showing that the file does not yet exist
-    newFileIndicator = "(* new *)",
+    newFileIndicator = '(* new *)',
 
     -- width of the window in percent. e.g. 0.5 is 50%, 1 is 100%
     width = 0.7,
@@ -182,8 +163,6 @@ local modified_defaults = {
     -- when more columns are needed this value is extended automatically
     minHeight = 2,
   },
-
 }
 
-
-require("other-nvim").setup(modified_defaults)
+require('other-nvim').setup(modified_defaults)
