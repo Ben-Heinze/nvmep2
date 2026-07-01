@@ -14,3 +14,12 @@ jq:
 
 run:
   nix run .
+
+fmt:
+  nix develop . --command stylua nvim
+
+lint:
+  nix develop . --command luacheck nvim
+
+test:
+  nix flake check -L

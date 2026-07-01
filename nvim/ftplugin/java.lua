@@ -1,47 +1,4 @@
-local function get_jdtls_path()
-  local path = os.getenv('JDTLS_PATH')
-  if not path or path == '' then
-    error('JDTLS_PATH is not set')
-  end
-  return path
-end
-
-local function get_java_path()
-  local path = os.getenv('JAVA_HOME')
-  if not path or path == '' then
-    error('JAVA_HOME is not set')
-  end
-  return path
-end
-
-local jdtls_path = get_jdtls_path()
-local java_path = get_java_path()
-
--- local on_attach = function(client, bufnr)
---   require("plugins.configs.lspconfig").on_attach(client, bufnr)
--- end
-
--- local capabilities = require("plugins.configs.lspconfig").capabilities
-local project_name = vim.fn.fnamemodify(vim.fn.getcwd(), ':p:h:t')
-
--- Get the jdtls path and calculate the install path
--- local jdtls_path = get_jdtls_path()
--- local java_path = get_java_path()
-local install_path = vim.fn.fnamemodify(jdtls_path, ':h:h') -- Two directories back
-
--- local jar_path = "/home/jordan/Downloads/plugins/org.eclipse.equinox.launcher_1.7.0.v20250519-0528.jar"
--- local jar_path = jdtls_path .. '/share/java/jdtls/plugins/org.eclipse.equinox.launcher_1.7.0.v20250519-0528.jar'
-
-local plugins_dir = jdtls_path .. '/share/java/jdtls/plugins'
-local prefix = 'org.eclipse.equinox.launcher_'
-local handle = io.popen('find "' .. plugins_dir .. '" -maxdepth 1 -type f -name "' .. prefix .. '*.jar" | head -n 1')
-local jar_path = handle:read('*l')
-handle:close()
-
-local configuration_path = jdtls_path .. '/share/java/jdtls/config_linux/'
-local workspace_dir = vim.fn.stdpath('data') .. '/site/java/workspace-root/' .. project_name
-
--- local workspace_dir = "/home/jordan/.local/share/nvim" .. "/site/java/workspace-root/" .. project_name
+local root_markers = { '.git', 'mvnw', 'gradlew' }
 
 -- Get the debug adapter install path (you can keep using mason for this if preferred)
 -- local debug_install_path = require("mason-registry").get_package("java-debug-adapter"):get_install_path()
@@ -122,11 +79,9 @@ local workspace_dir = vim.fn.stdpath('data') .. '/site/java/workspace-root/' .. 
 
 vim.lsp.start {
   name = 'jdtls',
-  -- filetypes = { 'java' },
   cmd = { 'jdtls' },
-  -- root_dir = vim.fs.root(0, { '.git', 'mvnw', 'gradlew' }),
-  root_dir = '/home/jordan/projects/charm/',
-  root_markers = { '.git', 'mvnw', 'gradlew' },
+  root_dir = vim.fs.root(0, root_markers),
+  root_markers = root_markers,
 }
 
 -- local config = {

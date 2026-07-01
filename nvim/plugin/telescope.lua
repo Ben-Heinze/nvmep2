@@ -11,6 +11,12 @@ local sorters = require('telescope.sorters')
 local actions_state = require('telescope.actions.state')
 
 local builtin = require('telescope.builtin')
+local mac_option = require('user.mac_option')
+
+local function keymap(mode, key, value, opts)
+  vim.keymap.set(mode, key, value, opts)
+  mac_option.set(mode, key, value, opts)
+end
 
 local layout_config = {
   vertical = {
@@ -111,15 +117,15 @@ local function on_project_selected(prompt_bufnr)
   vim.cmd('wincmd k')
 end
 
-vim.keymap.set('n', '<leader>tp', function()
+keymap('n', '<leader>tp', function()
   builtin.find_files()
 end, { desc = '[t]elescope find files - ctrl[p] style' })
-vim.keymap.set('n', '<M-p>', builtin.oldfiles, { desc = '[telescope] old files' })
-vim.keymap.set('n', '<C-g>', builtin.live_grep, { desc = '[telescope] live grep' })
-vim.keymap.set('n', '<leader>tf', fuzzy_grep, { desc = '[t]elescope [f]uzzy grep' })
-vim.keymap.set('n', '<M-f>', fuzzy_grep_current_file_type, { desc = '[telescope] fuzzy grep filetype' })
-vim.keymap.set('n', '<M-g>', live_grep_current_file_type, { desc = '[telescope] live grep filetype' })
-vim.keymap.set(
+keymap('n', '<M-p>', builtin.oldfiles, { desc = '[telescope] old files' })
+keymap('n', '<C-g>', builtin.live_grep, { desc = '[telescope] live grep' })
+keymap('n', '<leader>tf', fuzzy_grep, { desc = '[t]elescope [f]uzzy grep' })
+keymap('n', '<M-f>', fuzzy_grep_current_file_type, { desc = '[telescope] fuzzy grep filetype' })
+keymap('n', '<M-g>', live_grep_current_file_type, { desc = '[telescope] live grep filetype' })
+keymap(
   'n',
   '<leader>t*',
   grep_string_current_file_type,

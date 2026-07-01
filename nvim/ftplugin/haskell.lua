@@ -1,3 +1,8 @@
+local ok, util = pcall(require, 'lspconfig.util')
+if not ok then
+  return
+end
+
 vim.lsp.start {
   name = 'hls',
   cmd = { 'haskell-language-server-wrapper', '--lsp' },

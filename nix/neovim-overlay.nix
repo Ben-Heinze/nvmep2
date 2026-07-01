@@ -288,7 +288,6 @@ let
       nvim-colorizer-lua # https://github.com/norcalli/nvim-colorizer.lua
       nvim-surround # https://github.com/kylechui/nvim-surround/
       nvim-tree-lua # https://github.com/nvim-tree/nvim-tree.lua
-      nvim-tree-lua # https://github.com/nvim-tree/nvim-tree.lua
       nvim-dap-virtual-text # https://github.com/theHamsta/nvim-dap-virtual-text/
       nvim-treesitter-context # nvim-treesitter-context
       nvim-treesitter-textobjects # https://github.com/nvim-treesitter/nvim-treesitter-textobjects/

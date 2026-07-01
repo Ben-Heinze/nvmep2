@@ -1,5 +1,7 @@
 local function mymap(mode, key, value)
-  vim.keymap.set(mode, key, value, { silent = true, remap = true })
+  local opts = { silent = true, remap = true }
+  vim.keymap.set(mode, key, value, opts)
+  require('user.mac_option').set(mode, key, value, opts)
 end
 
 local status_ok, url_open = pcall(require, 'url-open')

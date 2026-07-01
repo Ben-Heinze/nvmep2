@@ -61,7 +61,6 @@ vim.defer_fn(function()
   }
 end, 1000)
 
-local dap = require('dap')
 require('dap-python').setup('python3')
 
 mymap('n', '<Space>du', '<CMD>lua require"dapui".toggle()<CR>')

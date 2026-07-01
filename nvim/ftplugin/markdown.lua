@@ -1,4 +1,3 @@
-local utils = require('user.utils')
 local null_ls = require('null-ls')
 local helpers = require('null-ls.helpers')
 
@@ -47,31 +46,7 @@ local function is_markdownlint_installed()
 end
 
 vim.defer_fn(function()
-  -- print('This runs after a 2-second delay!')
   if is_markdownlint_installed() then
-    -- vim.print('Registering markdownlint with null-ls')
     null_ls.register(markdownlint)
   end
 end, 1000)
-
-local function is_executable(cmd)
-  local handle = io.popen('command -v ' .. cmd .. ' 2>/dev/null')
-  if not handle then
-    return false
-  end
-  local result = handle:read('*a')
-  handle:close()
-  return result ~= ''
-end
-
--- if is_executable('R') then
---   require('otter').activate { 'r' }
--- end
--- if is_executable('python3') or is_executable('python') then
---   require('otter').activate { 'python' }
--- end
--- if is_executable('bash') then
---   require('otter').activate { 'bash' }
--- end
-
--- require('otter').activate { 'r', 'python', 'bash' }

@@ -145,37 +145,20 @@ vim.g.sqlite_clib_path = require('luv').os_getenv('LIBSQLITE')
 
 -- {{{ Plugin Free Key mappings
 
+local mac_option = require('user.mac_option')
+
 local function mymap(mode, key, value)
-  vim.keymap.set(mode, key, value, { silent = true, remap = true })
+  local opts = { silent = true, remap = false }
+  vim.keymap.set(mode, key, value, opts)
+  mac_option.set(mode, key, value, opts)
 end
 
 ---@diagnostic disable-next-line: unused-function, unused-local
-local function toggle_quickfix()
-  if vim.fn.empty(vim.fn.getqflist()) == 1 then
-    print('Quickfix list is empty!')
-    return
-  end
-  local quickfix_open = false
-  local windows = vim.api.nvim_list_wins()
-  for _, win in ipairs(windows) do
-    local wininfo = vim.fn.getwininfo(win)[1]
-    if wininfo.loclist == 0 and wininfo.quickfix == 1 then
-      quickfix_open = true
-      break
-    end
-  end
-  if quickfix_open then
-    vim.cmd('cclose')
-  else
-    vim.cmd('copen')
-  end
-end
-
----@diagnostic disable-next-line: lowercase-global
-show_line_diagnostics = function()
-  local line_diagnostics = vim.diagnostic.get(0, { lnum = vim.api.nvim_win_get_cursor(0)[1] })
-  if line_diagnostics then
-    vim.diagnostic.open_float(0, { severity_limit = 'Error' })
+local function show_line_diagnostics()
+  local cursor_row_1 = vim.api.nvim_win_get_cursor(0)[1]
+  local line_diagnostics = vim.diagnostic.get(0, { lnum = cursor_row_1 - 1 })
+  if #line_diagnostics > 0 then
+    vim.diagnostic.open_float(0, { scope = 'line', severity = vim.diagnostic.severity.ERROR })
   end
 end
 
@@ -193,42 +176,19 @@ mymap('n', '<Space>co', '<CMD>CToggle<CR>')
 mymap('n', '<Space>ht', '<CMD>Tutor<CR>')
 mymap('n', '<Space>mm', '<CMD>silent make<CR>')
 mymap('n', '<Space>oc', '<CMD>OpenConfig<CR>')
-mymap('n', '<Space>tn', '<CMD>lua toggle_number()<CR>')
-mymap('n', '<Space>tt', '<CMD>lua toggle_todo()<CR>')
-mymap('n', 'I', '<CMD>lua show_line_diagnostics()<CR>')
-
-local border = {
-  { '╭', 'FloatBorder' },
-  { '─', 'FloatBorder' },
-  { '╮', 'FloatBorder' },
-  { '│', 'FloatBorder' },
-  { '╯', 'FloatBorder' },
-  { '─', 'FloatBorder' },
-  { '╰', 'FloatBorder' },
-  { '│', 'FloatBorder' },
-}
-local hover_active = false -- State to track if hover is active
-local function toggle_hover()
-  if hover_active then
-    vim.lsp.buf.clear_references() -- This clears the hover window
-    hover_active = false
-  else
-    local opts = {
-      border = border,
-      focusable = true,
-      focus = true,
-      style = 'minimal',
-      height = 30,
-      width = 120,
-      title_pos = 'left',
-      relative = 'cursor',
-      anchor_bias = 'above',
-    }
-    vim.lsp.buf.hover(opts)
-    hover_active = true
-  end
+local function toggle_number()
+  local enabled = vim.wo.number or vim.wo.relativenumber
+  vim.wo.number = not enabled
+  vim.wo.relativenumber = not enabled
 end
--- mymap('n', 'K', toggle_hover)
+
+local function open_todos()
+  pcall(vim.cmd, 'TodoTelescope')
+end
+
+mymap('n', '<Space>tn', toggle_number)
+mymap('n', '<Space>tt', open_todos)
+mymap('n', 'I', show_line_diagnostics)
 
 mymap('n', 'K', vim.lsp.buf.hover)
 
@@ -453,18 +413,10 @@ mymap('n', '<Space>po', '<CMD>Telescope project<CR>')
 -- {{{ Slime
 
 vim.g.slime_target = 'neovim'
+vim.g.slime_bracketed_paste = 1
 
-wrapped_slime = function()
-  vim.cmd('sleep 10m')
-  vim.cmd('normal! gv')
-  vim.cmd('sleep 10m')
-  vim.cmd("'<,'>SlimeSend") -- Send to Slime
-  vim.cmd('sleep 10m')
-end
-
-mymap('n', '<A-return>', '<CMD>SlimeSend<CR><CR>')
--- mymap('v', '<A-return>', "<CMD>'<,'>SlimeSend<CR><CR>")
-mymap('v', '<A-return>', '<CMD>lua wrapped_slime()<CR><CR>')
+vim.keymap.set('n', '<A-return>', '<Plug>SlimeLineSend', { silent = true, remap = true })
+vim.keymap.set('x', '<A-return>', '<Plug>SlimeRegionSend', { silent = true, remap = true })
 
 -- }}} Slime
 
@@ -499,7 +451,7 @@ vim.cmd('highlight WinSeparatorActive guifg=#FF33FF') -- Color for active window
 vim.cmd('highlight WinSeparatorNC guifg=#444444') -- Color for inactive window separators
 
 -- Function to update all status lines and separators
-function UpdateAll()
+local function UpdateAll()
   local current_win = vim.api.nvim_get_current_win()
 
   vim.cmd('highlight StatusLine guifg=#FF33FF guibg=#00FFFFBB') -- Active buffer colors
@@ -538,7 +490,6 @@ vim.cmd('highlight EndOfBuffer guifg=#881188') -- Customize color as needed
 
 -- {{{ inbox
 
-mymap('n', '<Space><Space>', ':JustSelect<CR>')
 mymap('n', '<Space>z', ':ZenMode<CR>')
 
 vim.api.nvim_create_user_command('RunJust', function()
@@ -561,7 +512,7 @@ vim.api.nvim_create_user_command('RunJust', function()
   end
 end, {})
 
-function JustRunF()
+local function JustRunF()
   vim.cmd('AsyncRun ' .. 'just run')
 end
 
@@ -577,7 +528,7 @@ mymap('n', '<Space>j', ':JustSelect<CR>')
 vim.api.nvim_create_autocmd({ 'BufRead', 'BufNewFile' }, {
   pattern = { '*.Rmd', '*.rmd' },
   callback = function()
-    vim.opt.filetype = 'markdown'
+    vim.bo.filetype = 'markdown'
   end,
 })
 

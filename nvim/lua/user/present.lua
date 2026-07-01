@@ -1,24 +1,21 @@
-local present = {}
+local M = {}
 
 local function create_floating_window(opts)
   opts = opts or {}
   local width = opts.width or math.floor(vim.o.columns * 0.8)
   local height = opts.height or math.floor(vim.o.lines * 0.8)
 
-  -- Calculate the position to center the window
   local col = math.floor((vim.o.columns - width) / 2)
-  local row = math.floor((vim.o.columns - height) / 2)
+  local row = math.floor((vim.o.lines - height) / 2)
 
-  -- Create a buffer
-  local buf = nil
-  if vim.api.nvim_buf_is_valid(opts.buf) then
+  local buf
+  if opts.buf and vim.api.nvim_buf_is_valid(opts.buf) then
     buf = opts.buf
   else
-    buf = vim.api.nvim_create_buf(false, true) -- no file, scratch buffer
+    buf = vim.api.nvim_create_buf(false, true)
   end
 
-  -- Define window configuration
-  local win_config = {
+  local win = vim.api.nvim_open_win(buf, true, {
     relative = 'editor',
     width = width,
     height = height,
@@ -26,11 +23,9 @@ local function create_floating_window(opts)
     row = row,
     style = 'minimal',
     border = 'rounded',
-  }
-end
+  })
 
-present.setup = function()
-  print('Hellozzz from present.lua!')
+  return { buf = buf, win = win }
 end
 
 ---@class present.Slides
@@ -39,7 +34,7 @@ end
 --- Takes some lines and parses them
 ---@param lines string[]: The lines in the buffer
 ---@return present.Slides
-local parse_slides = function(lines)
+M.parse_slides = function(lines)
   local slides = { slides = {} }
   local current_slide = {}
   local separator = '^#'
@@ -56,21 +51,12 @@ local parse_slides = function(lines)
   return slides
 end
 
-present.start_presentation = function()
+M.start_presentation = function()
   local lines = vim.api.nvim_buf_get_lines(0, 0, -1, false)
-  local parsed = parse_slides(lines)
+  local parsed = M.parse_slides(lines)
   local float = create_floating_window()
 
   vim.api.nvim_buf_set_lines(float.buf, 0, -1, false, parsed.slides[1])
 end
 
-vim.print(parse_slides {
-  '# Hello',
-  'this is something else',
-  '# World',
-  'this is another thing',
-})
-
--- present.setup()
-
--- return present
+return M

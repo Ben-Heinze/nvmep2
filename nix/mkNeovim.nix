@@ -104,7 +104,7 @@ let
       inherit src;
       name = "nvim-rtp-src";
       filter =
-        path: tyoe:
+        path: type:
         let
           srcPrefix = toString src + "/";
           relPath = lib.removePrefix srcPrefix (toString path);
