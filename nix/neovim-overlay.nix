@@ -250,7 +250,6 @@ let
       render-markdown-nvim # https://github.com/MeanderingProgrammer/render-markdown.nvim
       todo-comments-nvim # https://github.com/folke/todo-comments.nvim
       tokyonight-nvim # https://github.com/folke/tokyonight.nvim
-      ultisnips # https://github.com/SirVer/ultisnips
       url-open # https://github.com/sontungexpt/url-open
       none-ls-nvim # https://github.com/nvimtools/none-ls.nvim
       conform-nvim # https://github.com/stevearc/conform.nvim

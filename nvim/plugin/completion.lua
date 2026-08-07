@@ -7,6 +7,17 @@ local cmp = require('cmp')
 local lspkind = require('lspkind')
 local luasnip = require('luasnip')
 
+-- Copilot maps <Tab> in insert mode by default, which steals the Smart-Tab
+-- (snippet jump / completion) mapping below. Stop it grabbing <Tab> and move
+-- "accept suggestion" to <C-l>. Must be set before copilot maps its keys.
+vim.g.copilot_no_tab_map = true
+vim.keymap.set('i', '<C-l>', 'copilot#Accept("")', {
+  expr = true,
+  replace_keycodes = false,
+  silent = true,
+  desc = 'Copilot: accept suggestion',
+})
+
 vim.opt.completeopt = { 'menu', 'menuone', 'noselect' }
 
 local function has_words_before()
