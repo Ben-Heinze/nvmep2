@@ -267,9 +267,11 @@ let
       cmp-nvim-lsp # https://github.com/hrsh7th/cmp-nvim-lsp/
       cmp-nvim-lsp-signature-help # https://github.com/hrsh7th/cmp-nvim-lsp-signature-help/
       cmp-nvim-lua # https://github.com/hrsh7th/cmp-nvim-lua/
+      cmp-latex-symbols # https://github.com/kdheepak/cmp-latex-symbols
       hover-nvim # https://github.com/lewis6991/hover.nvim
       cmp-path # https://github.com/hrsh7th/cmp-path/
       cmp_luasnip # https://github.com/saadparwaiz1/cmp_luasnip/
+      nvim-autopairs # https://github.com/windwp/nvim-autopairs
       codecompanion-nvim # https://github.com/olimorris/codecompanion.nvim
       copilot-vim # https://github.com/github/copilot.vim/
       diffview-nvim # https://github.com/sindrets/diffview.nvim/

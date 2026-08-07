@@ -9,6 +9,7 @@ local ls = require('luasnip')
 local s = ls.snippet
 local i = ls.insert_node
 local t = ls.text_node
+local f = ls.function_node
 local fmta = require('luasnip.extras.fmt').fmta
 local rep = require('luasnip.extras').rep
 
@@ -191,6 +192,72 @@ local snips = {
       { i(1) }
     )
   ),
+
+  -- Statistics: moments & estimators
+  ms('Ev', fmta('\\mathbb{E}\\left[ <> \\right]', { i(1) })),
+  ms('Var', fmta('\\mathrm{Var}\\left( <> \\right)', { i(1) })),
+  ms('Cov', fmta('\\mathrm{Cov}\\left( <>, <> \\right)', { i(1), i(2) })),
+  ms('Cor', fmta('\\mathrm{Corr}\\left( <>, <> \\right)', { i(1), i(2) })),
+  ms('xbar', t('\\bar{x}')),
+  ms('bhat', t('\\hat{\\beta}')),
+  ms('thhat', t('\\hat{\\theta}')),
+  ms('phat', t('\\hat{p}')),
+
+  -- Statistics: distributions (capitalised triggers avoid clashing with words)
+  ms('norm', fmta('\\mathcal{N}\\left( <>, <> \\right)', { i(1), i(2) })),
+  ms('nrm', fmta('\\left\\lVert <> \\right\\rVert', { i(1) })),
+  ms('Pois', fmta('\\mathrm{Poisson}(<>)', { i(1) })),
+  ms('Bin', fmta('\\mathrm{Binomial}(<>, <>)', { i(1), i(2) })),
+  ms('Unif', fmta('\\mathrm{Uniform}(<>, <>)', { i(1), i(2) })),
+  ms('Bern', fmta('\\mathrm{Bernoulli}(<>)', { i(1) })),
+  ms('Gam', fmta('\\mathrm{Gamma}(<>, <>)', { i(1), i(2) })),
+  ms('Expo', fmta('\\mathrm{Exponential}(<>)', { i(1) })),
+  ms('Beta', fmta('\\mathrm{Beta}(<>, <>)', { i(1), i(2) })),
+  ms('Geom', fmta('\\mathrm{Geometric}(<>)', { i(1) })),
+
+  -- Statistics: probability & relations
+  ms('Pr', fmta('P\\left( <> \\right)', { i(1) })),
+  ms('cond', fmta('P\\left( <> \\mid <> \\right)', { i(1), i(2) })),
+  ms('given', t('\\mid ')),
+  ms('sim', t('\\sim ')),
+  ms('iid', t('\\overset{\\text{iid}}{\\sim} ')),
+  ms('perp', t('\\perp ')),
+  ms('iperp', t('\\perp\\!\\!\\!\\perp ')),
+
+  -- Statistics: sums, optimisation, convergence
+  ms('nsum', t('\\sum_{i=1}^{n} ')),
+  ms('nprod', t('\\prod_{i=1}^{n} ')),
+  ms('argmax', fmta('\\underset{<>}{\\arg\\max}\\; ', { i(1) })),
+  ms('argmin', fmta('\\underset{<>}{\\arg\\min}\\; ', { i(1) })),
+  ms('convp', t('\\xrightarrow{p} ')),
+  ms('convd', t('\\xrightarrow{d} ')),
+  ms('binom', fmta('\\binom{<>}{<>}', { i(1), i(2) })),
+
+  -- Blackboard sets (case-distinct from nn/uu/AA/EE)
+  ms('RR', t('\\mathbb{R}')),
+  ms('ZZ', t('\\mathbb{Z}')),
+  ms('NN', t('\\mathbb{N}')),
+  ms('QQ', t('\\mathbb{Q}')),
+  ms('CC', t('\\mathbb{C}')),
+
+  -- Auto-subscript: `x1` -> `x_{1}`, `b0` -> `b_{0}` (math only).
+  s(
+    {
+      trig = '([%a])(%d)',
+      regTrig = true,
+      wordTrig = false,
+      snippetType = 'autosnippet',
+      condition = in_mathzone,
+      show_condition = in_mathzone,
+    },
+    f(function(_, snip)
+      return snip.captures[1] .. '_{' .. snip.captures[2] .. '}'
+    end)
+  ),
+
+  -- Fast math-entry (NOT gated -- these OPEN a math zone).
+  s({ trig = 'mk', snippetType = 'autosnippet' }, fmta('$<>$', { i(1) })),
+  s({ trig = 'dk', snippetType = 'autosnippet' }, fmta('\\[\n  <>\n\\]', { i(1) })),
 }
 
 -- Greek letters via a `;` prefix (e.g. `;a` -> `\alpha`), which avoids

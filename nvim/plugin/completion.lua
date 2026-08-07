@@ -43,6 +43,7 @@ cmp.setup {
         nvim_lua = '[API]',
         path = '[PATH]',
         luasnip = '[SNIP]',
+        latex_symbols = '[TeX]',
       },
     },
   },
@@ -99,6 +100,36 @@ cmp.setup {
     ['<C-y>'] = cmp.mapping.confirm {
       select = true,
     },
+    -- Smart <Tab>: accept completion / expand-or-jump snippet / trigger completion.
+    ['<Tab>'] = cmp.mapping(function(fallback)
+      if cmp.visible() then
+        cmp.select_next_item()
+      elseif luasnip.expand_or_locally_jumpable() then
+        luasnip.expand_or_jump()
+      elseif has_words_before() then
+        cmp.complete()
+      else
+        fallback()
+      end
+    end, { 'i', 's' }),
+    ['<S-Tab>'] = cmp.mapping(function(fallback)
+      if cmp.visible() then
+        cmp.select_prev_item()
+      elseif luasnip.jumpable(-1) then
+        luasnip.jump(-1)
+      else
+        fallback()
+      end
+    end, { 'i', 's' }),
+    -- Enter confirms an *explicitly selected* entry; otherwise it falls through
+    -- (newline, and lets nvim-autopairs' own <CR> handling run).
+    ['<CR>'] = cmp.mapping(function(fallback)
+      if cmp.visible() and cmp.get_selected_entry() then
+        cmp.confirm { select = false }
+      else
+        fallback()
+      end
+    end, { 'i', 's' }),
   },
   sources = cmp.config.sources {
     -- The insertion order influences the priority of the sources
@@ -125,6 +156,22 @@ cmp.setup.filetype('lua', {
   sources = cmp.config.sources {
     { name = 'nvim_lua' },
     { name = 'nvim_lsp', keyword_length = 3 },
+    { name = 'path' },
+  },
+})
+
+-- Note/math filetypes: add a fuzzy LaTeX-command source (cmp-latex-symbols).
+-- It triggers after a backslash (its keyword pattern is `\...`), so typing
+-- `\al` fuzzy-lists `\alpha`, `\aleph`, ... ; <CR> inserts the pick.
+-- `strategy = 2` (= "latex") inserts the `\command` form, which renders in org/tex.
+-- (The no-backslash fast path for common symbols is the luasnip triggers.)
+cmp.setup.filetype({ 'org', 'tex', 'markdown' }, {
+  sources = cmp.config.sources {
+    { name = 'luasnip', keyword_length = 1 },
+    { name = 'latex_symbols', keyword_length = 2, option = { strategy = 2 } },
+    { name = 'nvim_lsp', keyword_length = 3 },
+    { name = 'nvim_lsp_signature_help', keyword_length = 3 },
+    { name = 'buffer' },
     { name = 'path' },
   },
 })
