@@ -36,8 +36,8 @@ end
 
 ju.start_fortran_scratchpad = function()
   vim.cmd('wincmd o')
-  if ju.isdir('/home/jordan/scratchpads/fortran-scratchpad/') then
-    vim.cmd('e /home/jordan/scratchpads/fortran-scratchpad/scratchpad.f90')
+  if ju.isdir('/home/ben/scratchpads/fortran-scratchpad/') then
+    vim.cmd('e /home/ben/scratchpads/fortran-scratchpad/scratchpad.f90')
   end
   vim.cmd('sp')
   vim.cmd('BuildMe')
@@ -49,8 +49,8 @@ end
 
 ju.start_r_scratchpad = function()
   vim.cmd('wincmd o')
-  if ju.isdir('/home/jordan/scratchpads/r-scratchpad/') then
-    vim.cmd('e /home/jordan/scratchpads/r-scratchpad/scratchpad.r')
+  if ju.isdir('/home/ben/scratchpads/r-scratchpad/') then
+    vim.cmd('e /home/ben/scratchpads/r-scratchpad/scratchpad.r')
   end
   vim.cmd('sp')
   vim.cmd('terminal R')
@@ -59,8 +59,8 @@ end
 
 ju.start_python_scratchpad = function()
   vim.cmd('wincmd o')
-  if ju.isdir('/home/jordan/scratchpads/python-scratchpad/') then
-    vim.cmd('e /home/jordan/scratchpads/python-scratchpad/scratchpad.py')
+  if ju.isdir('/home/ben/scratchpads/python-scratchpad/') then
+    vim.cmd('e /home/ben/scratchpads/python-scratchpad/scratchpad.py')
   end
   vim.cmd('sp')
   vim.cmd('terminal python')
@@ -69,8 +69,8 @@ end
 
 ju.start_haskell_scratchpad = function()
   vim.cmd('wincmd o')
-  if ju.isdir('/home/jordan/scratchpads/haskell-scratchpad/') then
-    vim.cmd('e /home/jordan/scratchpads/haskell-scratchpad/scratchpad.hs')
+  if ju.isdir('/home/ben/scratchpads/haskell-scratchpad/') then
+    vim.cmd('e /home/ben/scratchpads/haskell-scratchpad/scratchpad.hs')
   end
   vim.cmd('sp')
   vim.cmd('terminal ghc --interactive')
@@ -79,8 +79,8 @@ end
 
 ju.start_c_scratchpad = function()
   vim.cmd('wincmd o')
-  if ju.isdir('/home/jordan/scratchpads/c-scratchpad/') then
-    vim.cmd('e /home/jordan/scratchpads/c-scratchpad/examples/scratchpad.c')
+  if ju.isdir('/home/ben/scratchpads/c-scratchpad/') then
+    vim.cmd('e /home/ben/scratchpads/c-scratchpad/examples/scratchpad.c')
   end
   vim.cmd('sp')
   vim.cmd('BuildMe')
@@ -89,8 +89,8 @@ end
 
 ju.start_cpp_scratchpad = function()
   vim.cmd('wincmd o')
-  if ju.isdir('/home/jordan/scratchpads/cpp-scratchpad/') then
-    vim.cmd('e /home/jordan/scratchpads/cpp-scratchpad/examples/scratchpad.cpp')
+  if ju.isdir('/home/ben/scratchpads/cpp-scratchpad/') then
+    vim.cmd('e /home/ben/scratchpads/cpp-scratchpad/examples/scratchpad.cpp')
   end
   vim.cmd('sp')
   vim.cmd('BuildMe')
@@ -99,8 +99,8 @@ end
 
 ju.start_bash_scratchpad = function()
   vim.cmd('wincmd o')
-  if ju.isdir('/home/jordan/scratchpads/bash-scratchpad/') then
-    vim.cmd('e /home/jordan/scratchpads/bash-scratchpad/scratchpad.sh')
+  if ju.isdir('/home/ben/scratchpads/bash-scratchpad/') then
+    vim.cmd('e /home/ben/scratchpads/bash-scratchpad/scratchpad.sh')
   end
   vim.cmd('sp')
   vim.cmd('terminal')
@@ -109,8 +109,8 @@ end
 
 ju.start_java_scratchpad = function()
   vim.cmd('wincmd o')
-  if ju.isdir('/home/jordan/scratchpads/java-scratchpad/') then
-    vim.cmd('e /home/jordan/scratchpads/java-scratchpad/examples/src/main/java/templatejava/examples/ScratchPad.java')
+  if ju.isdir('/home/ben/scratchpads/java-scratchpad/') then
+    vim.cmd('e /home/ben/scratchpads/java-scratchpad/examples/src/main/java/templatejava/examples/ScratchPad.java')
   end
   vim.cmd('sp')
   vim.cmd('BuildMe')
@@ -119,8 +119,8 @@ end
 
 ju.run_java_main = function()
   vim.cmd('wincmd o')
-  if ju.isdir('/home/jordan/scratchpads/java-scratchpad/') then
-    vim.cmd('e /home/jordan/scratchpads/java-scratchpad/examples/src/main/java/templatejava/examples/ScratchPad.java')
+  if ju.isdir('/home/ben/scratchpads/java-scratchpad/') then
+    vim.cmd('e /home/ben/scratchpads/java-scratchpad/examples/src/main/java/templatejava/examples/ScratchPad.java')
   end
   vim.cmd('sp')
   vim.cmd('BuildMe')
@@ -1330,7 +1330,7 @@ local StatusSpace = {
 --   local venv_name = require('venv-selector').get_active_venv()
 --   if venv_name ~= nil then
 --     if string.match(venv_name, 'conda') then
---       return string.gsub(venv_name, '/home/jordan/.conda/envs/', '(conda) ')
+--       return string.gsub(venv_name, '/home/ben/.conda/envs/', '(conda) ')
 --     end
 --     if string.match(venv_name, 'poetry') then
 --       return string.gsub(venv_name, '.*/pypoetry/virtualenvs/', '(poetry) ')

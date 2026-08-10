@@ -188,6 +188,66 @@ end
 
 keymap.set('n', '<leader>S', toggle_spell_check, { noremap = true, silent = true, desc = 'toggle [S]pell' })
 
+local function fix_spelling_in_range()
+  local start_line = fn.getpos("'<")[2]
+  local end_line = fn.getpos("'>")[2]
+
+  for lnum = start_line, end_line do
+    local line = fn.getline(lnum)
+    local col = 1
+
+    while col <= #line do
+      local remaining = line:sub(col)
+      local bad = fn.spellbadword(remaining)
+      local word, badtype = bad[1], bad[2]
+
+      if word == '' then
+        break
+      end
+
+      local s, e = remaining:find(word, 1, true)
+      if not s then
+        break
+      end
+
+      if badtype == 'bad' then
+        local suggestions = fn.spellsuggest(word, 1)
+        if #suggestions > 0 then
+          local suggestion = suggestions[1]
+          line = line:sub(1, col + s - 2) .. suggestion .. line:sub(col + e)
+          col = col + s - 1 + #suggestion
+        else
+          col = col + e
+        end
+      else
+        col = col + e
+      end
+    end
+
+    fn.setline(lnum, line)
+  end
+end
+
+keymap.set(
+  'v',
+  '<leader>sf',
+  fix_spelling_in_range,
+  { noremap = true, silent = true, desc = '[s]pell [f]ix selection' }
+)
+
+local function remove_duplicate_words_in_range()
+  local start_line = fn.getpos("'<")[2]
+  local end_line = fn.getpos("'>")[2]
+  vim.cmd(([[%d,%ds/\v<(\w+)>\s+\1>/\1/gi]]):format(start_line, end_line))
+end
+
+keymap.set(
+  'v',
+  '<leader>sd',
+  remove_duplicate_words_in_range,
+  { noremap = true, silent = true, desc = '[s]pell remove [d]uplicate words' }
+)
+
 keymap.set('n', '<C-d>', '<C-d>zz', { desc = 'move [d]own half-page and center' })
 keymap.set('n', '<C-u>', '<C-u>zz', { desc = 'move [u]p half-page and center' })
 keymap.set('n', '<C-f>', '<C-f>zz', { desc = 'move DOWN [f]ull-page and center' })
