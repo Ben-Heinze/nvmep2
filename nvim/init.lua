@@ -46,6 +46,8 @@ opt.hlsearch = true
 
 opt.spell = true
 opt.spelllang = 'en'
+opt.spellfile = vim.fn.stdpath 'data' .. '/spell/en.utf-8.add'
+vim.fn.mkdir(vim.fn.stdpath 'data' .. '/spell', 'p')
 
 opt.expandtab = true
 opt.tabstop = 2
