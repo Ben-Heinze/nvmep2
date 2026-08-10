@@ -186,7 +186,13 @@ local function toggle_spell_check()
   vim.opt.spell = not (vim.opt.spell:get())
 end
 
-keymap.set('n', '<leader>S', toggle_spell_check, { noremap = true, silent = true, desc = 'toggle [S]pell' })
+keymap.set('n', '<Space>st', toggle_spell_check, { noremap = true, silent = true, desc = '[s]pell [t]oggle' })
+
+keymap.set('n', '<Space>sg', 'zg', { noremap = true, silent = true, desc = '[s]pell add [g]ood word to dict' })
+keymap.set('n', '<Space>sw', 'zw', { noremap = true, silent = true, desc = '[s]pell mark [w]ord as wrong' })
+keymap.set('n', '<Space>ss', 'z=', { noremap = true, silent = true, desc = '[s]pell [s]uggest replacements' })
+keymap.set('n', '<Space>su', 'zug', { noremap = true, silent = true, desc = '[s]pell [u]ndo add-good-word' })
+keymap.set('n', '<Space>sU', 'zuw', { noremap = true, silent = true, desc = '[s]pell [U]ndo mark-wrong-word' })
 
 local function fix_spelling_in_range()
   local start_line = fn.getpos("'<")[2]
@@ -230,7 +236,7 @@ end
 
 keymap.set(
   'v',
-  '<leader>sf',
+  '<Space>sf',
   fix_spelling_in_range,
   { noremap = true, silent = true, desc = '[s]pell [f]ix selection' }
 )
@@ -243,7 +249,7 @@ end
 
 keymap.set(
   'v',
-  '<leader>sd',
+  '<Space>sd',
   remove_duplicate_words_in_range,
   { noremap = true, silent = true, desc = '[s]pell remove [d]uplicate words' }
 )

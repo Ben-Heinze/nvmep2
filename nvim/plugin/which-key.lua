@@ -23,6 +23,7 @@ wk.add {
   { '<Space>o', group = 'Open', icon = { icon = '', color = 'azure' } },
   { '<Space>p', group = 'Project', icon = { icon = '', color = 'purple' } },
   { '<Space>r', group = 'Run', icon = { icon = '', color = 'red' } },
+  { '<Space>s', group = 'Spell', icon = { icon = '', color = 'green' } },
   { '<Space>t', group = 'Tab', icon = { icon = '', color = 'cyan' } },
   { '<Space>u', group = 'Ui', icon = { icon = '', color = 'cyan' } },
   { '<Space>w', group = 'Window/Workspace', icon = { icon = '', color = 'orange' } },

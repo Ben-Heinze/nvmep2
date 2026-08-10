@@ -532,6 +532,4 @@ vim.api.nvim_create_autocmd({ 'BufRead', 'BufNewFile' }, {
   end,
 })
 
-mymap('n', '<Space>sp', '<CMD>split<CR>')
-
 -- }}} inbox
