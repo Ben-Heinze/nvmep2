@@ -194,6 +194,21 @@ keymap.set('n', '<Space>ss', 'z=', { noremap = true, silent = true, desc = '[s]p
 keymap.set('n', '<Space>su', 'zug', { noremap = true, silent = true, desc = '[s]pell [u]ndo add-good-word' })
 keymap.set('n', '<Space>sU', 'zuw', { noremap = true, silent = true, desc = '[s]pell [U]ndo mark-wrong-word' })
 
+-- Escape Lua pattern-magic characters so a spellbadword() result can be
+-- used literally inside a pattern.
+local function escape_lua_pattern(s)
+  return (s:gsub('[%(%)%.%%%+%-%*%?%[%]%^%$]', '%%%1'))
+end
+
+-- spellbadword() finds words respecting Vim's own word boundaries, but a
+-- plain string.find() does not: if the flagged word's text also occurs
+-- inside an earlier, unrelated word (e.g. "is" inside "history"), a plain
+-- search finds that instead. Anchor to word boundaries so only the actual
+-- flagged occurrence matches.
+local function find_word_boundary(remaining, word)
+  return remaining:find('%f[%a]' .. escape_lua_pattern(word) .. '%f[%A]')
+end
+
 local function fix_spelling_in_range()
   local start_line = fn.getpos("'<")[2]
   local end_line = fn.getpos("'>")[2]
@@ -211,20 +226,25 @@ local function fix_spelling_in_range()
         break
       end
 
-      local s, e = remaining:find(word, 1, true)
+      local s, e = find_word_boundary(remaining, word)
       if not s then
         break
       end
 
       if badtype == 'bad' then
-        local suggestions = fn.spellsuggest(word, 1)
-        if #suggestions > 0 then
-          local suggestion = suggestions[1]
-          line = line:sub(1, col + s - 2) .. suggestion .. line:sub(col + e)
-          col = col + s - 1 + #suggestion
-        else
-          col = col + e
-        end
+        -- spellbadword() reports a doubled word (e.g. "the the") as one
+        -- match containing a space; spellsuggest()'s top pick for that is
+        -- not a clean dedupe (e.g. "thee the"), so collapse to the first
+        -- occurrence instead of trusting the suggestion.
+        local replacement = word:match('%s')
+          and word:match('^(%S+)')
+          or (fn.spellsuggest(word, 1)[1] or word)
+        line = line:sub(1, col + s - 2) .. replacement .. line:sub(col + e)
+        col = col + s - 1 + #replacement
+      elseif badtype == 'caps' then
+        local capitalized = word:sub(1, 1):upper() .. word:sub(2)
+        line = line:sub(1, col + s - 2) .. capitalized .. line:sub(col + e)
+        col = col + s - 1 + #capitalized
       else
         col = col + e
       end
