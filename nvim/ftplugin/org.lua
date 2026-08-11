@@ -17,3 +17,13 @@ vim.opt_local.expandtab = true
 vim.keymap.set('n', '<Space>oe', function()
   require('user.org_pdf').export_and_view()
 end, { buffer = true, silent = true, desc = 'Export org → PDF & view (zathura)' })
+
+-- While a zathura preview is open for this buffer, refresh it on every save.
+-- No-op until the user opens the preview (via <Space>oe / the winbar button).
+vim.api.nvim_create_autocmd('BufWritePost', {
+  buffer = 0,
+  desc = 'Refresh open org PDF preview in zathura',
+  callback = function()
+    require('user.org_pdf').on_save()
+  end,
+})
