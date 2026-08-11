@@ -107,6 +107,90 @@ local function ensure_marks()
   end
 end
 
+-- Split a raw string into a list of visible characters, each tagged with its
+-- current colour and its 1-indexed byte span in the buffer line. `is_inner`
+-- means the raw text came from inside a macro, where `\,` is an escaped comma
+-- (one visible char spanning two bytes).
+local function push_chars(list, raw, base, color, is_inner)
+  local i = 1
+  while i <= #raw do
+    local b = raw:byte(i)
+    if is_inner and b == 92 and raw:byte(i + 1) == 44 then -- `\` then `,`
+      list[#list + 1] = { ch = ',', bs = base + i - 1, be = base + i, color = color }
+      i = i + 2
+    else
+      local len = 1
+      if b >= 0xF0 then
+        len = 4
+      elseif b >= 0xE0 then
+        len = 3
+      elseif b >= 0xC0 then
+        len = 2
+      end
+      list[#list + 1] =
+        { ch = raw:sub(i, i + len - 1), bs = base + i - 1, be = base + i + len - 2, color = color }
+      i = i + len
+    end
+  end
+end
+
+-- Parse a line into per-character colour info (see push_chars).
+local function parse_line(line)
+  local list = {}
+  local i = 1
+  while i <= #line do
+    local s, e, name, text = line:find('{{{hl%((%w+),(.-)%)}}}', i)
+    if s and colors[name] then
+      if s > i then
+        push_chars(list, line:sub(i, s - 1), i, nil, false)
+      end
+      local inner_base = s + #('{{{hl(' .. name .. ',')
+      push_chars(list, text, inner_base, name, true)
+      i = e + 1
+    else
+      if i <= #line then
+        push_chars(list, line:sub(i), i, nil, false)
+      end
+      break
+    end
+  end
+  return list
+end
+
+-- Rebuild a line from per-character colour info, merging adjacent same-colour
+-- runs into one macro (or plain text). Never nests.
+local function serialize(list)
+  local out = {}
+  local i, n = 1, #list
+  while i <= n do
+    local col = list[i].color
+    local buf = {}
+    while i <= n and list[i].color == col do
+      buf[#buf + 1] = list[i].ch
+      i = i + 1
+    end
+    local str = table.concat(buf)
+    if col == nil then
+      out[#out + 1] = str
+    else
+      out[#out + 1] = '{{{hl(' .. col .. ',' .. str:gsub(',', '\\,') .. ')}}}'
+    end
+  end
+  return table.concat(out)
+end
+
+-- Apply `newcolor` to the byte range [scol .. end_excl) (0-indexed) of one line,
+-- re-splitting any existing highlight the selection overlaps rather than nesting.
+local function recolor_line(line, scol, end_excl, newcolor)
+  local list = parse_line(line)
+  for _, item in ipairs(list) do
+    if item.bs >= scol + 1 and item.be <= end_excl then
+      item.color = newcolor
+    end
+  end
+  return serialize(list)
+end
+
 local function wrap_selection(name)
   local bufnr = api.nvim_get_current_buf()
   ensure_marks()
@@ -129,11 +213,19 @@ local function wrap_selection(name)
     end_excl = (ecol - 1) + #last_char
   end
 
-  local text = table.concat(api.nvim_buf_get_text(bufnr, srow, scol, erow, end_excl, {}), '\n')
-  -- Org macro args split on commas -> escape any in the selection.
-  local escaped = text:gsub(',', '\\,')
-  local wrapped = '{{{hl(' .. name .. ',' .. escaped .. ')}}}'
-  api.nvim_buf_set_text(bufnr, srow, scol, erow, end_excl, vim.split(wrapped, '\n'))
+  if srow == erow then
+    -- Single line: parse/recolor/reserialize so a highlight inside an existing
+    -- one splits it instead of producing (broken) nested macros.
+    local line = api.nvim_buf_get_lines(bufnr, srow, srow + 1, true)[1]
+    api.nvim_buf_set_lines(bufnr, srow, srow + 1, true, { recolor_line(line, scol, end_excl, name) })
+  else
+    -- Multiline selection: plain wrap (inline highlights are single-line; this
+    -- path is rare and not re-split).
+    local text = table.concat(api.nvim_buf_get_text(bufnr, srow, scol, erow, end_excl, {}), '\n')
+    local escaped = text:gsub(',', '\\,')
+    local wrapped = '{{{hl(' .. name .. ',' .. escaped .. ')}}}'
+    api.nvim_buf_set_text(bufnr, srow, scol, erow, end_excl, vim.split(wrapped, '\n'))
+  end
   render(bufnr)
 end
 
