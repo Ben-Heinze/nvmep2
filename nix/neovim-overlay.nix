@@ -319,6 +319,14 @@ let
     direnv
     git
 
+    # org -> PDF export + viewer (see nvim/lua/user/org_pdf.lua)
+    zathura
+    emacs-nox # batch org -> latex export; -nox is enough (no GUI)
+    # LaTeX engine + packages org's default preamble needs. scheme-medium alone
+    # lacks wrapfig/capt-of/rotating (all in org-latex-default-packages-alist),
+    # so pull collection-latexextra too. Much smaller than texliveFull.
+    (texlive.combine { inherit (texlive) scheme-medium collection-latexextra; })
+
     # # language servers, etc.
     # lua-language-server
     # nil # nix LSP

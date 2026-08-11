@@ -1254,6 +1254,18 @@ local RSeparator = {
   end,
 }
 
+local OrgSeparator = {
+  condition = function()
+    return vim.bo.filetype == 'org'
+  end,
+  provider = function()
+    return '❘'
+  end,
+  hl = function()
+    return { fg = mycolors.donJuan }
+  end,
+}
+
 -- }}} Separator |
 
 -- {{{ Space
@@ -1530,7 +1542,31 @@ local AerialToggleButton = {
 
 -- }}} aerial button
 
--- {{{ TelescopeButton 
+-- {{{ OrgPdfButton
+
+-- org-only: export the buffer to PDF (Emacs ox-latex) and view it in zathura.
+-- Mirrors the <Space>oe keymap in nvim/ftplugin/org.lua.
+local OrgPdfButton = {
+  condition = function()
+    return vim.bo.filetype == 'org'
+  end,
+  on_click = {
+    callback = function()
+      require('user.org_pdf').export_and_view()
+    end,
+    name = 'OrgPdfButton',
+  },
+  provider = function()
+    return '󰈦' -- 󰈦
+  end,
+  hl = function()
+    return { fg = mycolors.appleIiLime, underline = false }
+  end,
+}
+
+-- }}} OrgPdfButton
+
+-- {{{ TelescopeButton
 
 local TelescopeButton = {
   on_click = {
@@ -2813,6 +2849,8 @@ local WinBar = {
   { Separator }, -- conditions?
   -- { StatusSpace },
   { AerialToggleButton },
+  { OrgSeparator },
+  { OrgPdfButton },
   { Separator },
   { TelescopeButton },
   { StatusSpace },

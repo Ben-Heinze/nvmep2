@@ -72,7 +72,7 @@ ls.add_snippets('org', {
 #+TITLE: {}
 #+AUTHOR: {}
 #+DATE: {}
-#+MACRO: hl @@html:<span class="hl-$1">$2</span>@@
+#+MACRO: hl @@html:<span class="hl-$1">$2</span>@@@@latex:\hl{$1}{$2}@@
 
 {}]],
       {
