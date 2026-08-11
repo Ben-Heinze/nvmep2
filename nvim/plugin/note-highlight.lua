@@ -53,7 +53,11 @@ end
 define_highlights()
 
 -- Repaint every `{{{hl(...)}}}` in the buffer: colour the inner text, conceal
--- the surrounding macro boilerplate.
+-- the surrounding macro boilerplate. A macro may span multiple lines: `gq`/
+-- reflow can put a newline inside the highlighted phrase (never in the opener
+-- `{{{hl(name,` or closer `)}}}`, which contain no spaces), and org export
+-- collapses that newline to a space, so it stays valid. The extmark colouring
+-- the inner text spans lines too.
 local function render(bufnr)
   bufnr = bufnr or api.nvim_get_current_buf()
   if not api.nvim_buf_is_valid(bufnr) then
@@ -62,38 +66,61 @@ local function render(bufnr)
   api.nvim_buf_clear_namespace(bufnr, ns, 0, -1)
 
   local lines = api.nvim_buf_get_lines(bufnr, 0, -1, false)
-  for lnum, line in ipairs(lines) do
-    local row = lnum - 1
-    local from = 1
-    while true do
-      -- `{ } ( )` in Lua patterns: `(` `)` are captures, so escape the literal
-      -- parens with `%`; the braces are literal.
-      local s, e, name, text = line:find('{{{hl%((%w+),(.-)%)}}}', from)
-      if not s then
-        break
-      end
-      from = e + 1
-      local spec = colors[name]
-      if spec then
-        local prefix = '{{{hl(' .. name .. ','
-        local text_start = (s - 1) + #prefix -- 0-indexed byte col of inner text
-        local text_end = text_start + #text -- exclusive; also start of `)}}}`
-        api.nvim_buf_set_extmark(bufnr, ns, row, text_start, {
-          end_row = row,
-          end_col = text_end,
-          hl_group = spec.hl,
-          priority = 200, -- above treesitter's default 100
-        })
-        api.nvim_buf_set_extmark(bufnr, ns, row, s - 1, {
-          end_row = row,
-          end_col = text_start,
-          conceal = '',
-        })
-        api.nvim_buf_set_extmark(bufnr, ns, row, text_end, {
-          end_row = row,
-          end_col = e,
-          conceal = '',
-        })
+  local n = #lines
+  local row, col = 0, 1 -- col is a 1-indexed search offset into lines[row + 1]
+  while row < n do
+    local line = lines[row + 1]
+    if col > #line then
+      row, col = row + 1, 1
+    else
+      -- `(` `)` are Lua-pattern captures, so escape the literal `(`; braces are
+      -- literal. Captures the colour name; `os_`..`oe` is the opener span.
+      local os_, oe, name = line:find('{{{hl%((%w+),', col)
+      if not os_ then
+        row, col = row + 1, 1
+      elseif not colors[name] then
+        col = oe + 1
+      else
+        -- Find the closer `)}}}`, searching this line then following ones.
+        local crow, cstart, cend
+        local sr, sc = row, oe + 1
+        while sr < n do
+          local hit = lines[sr + 1]:find(')}}}', sc, true)
+          if hit then
+            crow, cstart, cend = sr, hit, hit + 3
+            break
+          end
+          sr, sc = sr + 1, 1
+        end
+        if not crow then
+          row = n -- unterminated macro; stop
+        else
+          -- crow/cstart/cend are set together; cast so the checker treats them
+          -- as non-nil integers.
+          local er = crow --[[@as integer]]
+          local cs = cstart --[[@as integer]]
+          local ce = cend --[[@as integer]]
+          -- Inner text: from just after the opener to just before the closer
+          -- (may cross lines). `oe` (1-indexed last opener byte) == 0-indexed
+          -- start of the inner text.
+          api.nvim_buf_set_extmark(bufnr, ns, row, oe, {
+            end_row = er,
+            end_col = cs - 1,
+            hl_group = colors[name].hl,
+            priority = 200, -- above treesitter's default 100
+          })
+          api.nvim_buf_set_extmark(bufnr, ns, row, os_ - 1, {
+            end_row = row,
+            end_col = oe,
+            conceal = '',
+          })
+          api.nvim_buf_set_extmark(bufnr, ns, er, cs - 1, {
+            end_row = er,
+            end_col = ce,
+            conceal = '',
+          })
+          row, col = er, ce + 1
+        end
       end
     end
   end
