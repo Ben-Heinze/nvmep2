@@ -22,13 +22,13 @@ local fn = vim.fn
 -- Palette. `fg` mirrors the `.hl-<name>` classes in yappopotamus/static/style.css
 -- so the editor is WYSIWYG with the exported site -- keep the two in sync.
 local colors = {
-  red = { hl = 'NoteHiRed', fg = '#f7768e' },
-  orange = { hl = 'NoteHiOrange', fg = '#ff9e64' },
-  yellow = { hl = 'NoteHiYellow', fg = '#e0af68' },
-  green = { hl = 'NoteHiGreen', fg = '#9ece6a' },
-  cyan = { hl = 'NoteHiCyan', fg = '#7dcfff' },
-  blue = { hl = 'NoteHiBlue', fg = '#7aa2f7' },
-  purple = { hl = 'NoteHiPurple', fg = '#bb9af7' },
+  red = { hl = 'NoteHiRed', fg = '#FF0000' },
+  orange = { hl = 'NoteHiOrange', fg = '#FF7F00' },
+  yellow = { hl = 'NoteHiYellow', fg = '#FFFF00' },
+  green = { hl = 'NoteHiGreen', fg = '#00FF00' },
+  cyan = { hl = 'NoteHiCyan', fg = '#00FFFF' },
+  blue = { hl = 'NoteHiBlue', fg = '#0000FF' },
+  purple = { hl = 'NoteHiPurple', fg = '#8B00FF' },
 }
 
 -- Which <Space>n<key> inserts which colour.
