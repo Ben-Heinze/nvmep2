@@ -123,6 +123,20 @@ local snips = {
   ms('vec', fmta('\\vec{<>}', { i(1) })),
   ms('tt', fmta('\\text{<>}', { i(1) })),
 
+  -- Font wrappers (type the letter inside)
+  ms('cal', fmta('\\mathcal{<>}', { i(1) })), -- \mathcal{L} loss, \mathcal{O} big-O, \mathcal{D} data, \mathcal{H} hypothesis
+  ms('bf', fmta('\\mathbf{<>}', { i(1) })), -- bold vectors / matrices
+  ms('rm', fmta('\\mathrm{<>}', { i(1) })), -- upright multi-letter operators
+  ms('bb', fmta('\\mathbb{<>}', { i(1) })), -- e.g. \mathbb{P}, indicator \mathbb{1}
+
+  -- Vector calculus (bare \partial; `part` stays the fraction form)
+  ms('pd', t('\\partial ')),
+  ms('grad', t('\\nabla ')),
+  ms('vnorm', fmta('\\lVert <> \\rVert', { i(1) })), -- `norm` is the Normal distribution
+  ms('abs', fmta('\\lvert <> \\rvert', { i(1) })),
+  ms('floor', fmta('\\lfloor <> \\rfloor', { i(1) })),
+  ms('ceil', fmta('\\lceil <> \\rceil', { i(1) })),
+
   -- Relations / symbols
   ms('->', t('\\to '), false),
   ms('!=', t('\\neq '), false),
@@ -131,11 +145,31 @@ local snips = {
   ms('~=', t('\\approx '), false),
   ms('+-', t('\\pm '), false),
   ms('=>', t('\\implies '), false),
+  ms(':=', t('\\coloneqq '), false),
+  ms('iff', t('\\iff ')),
+  ms('prop', t('\\propto ')),
+  ms('deq', t('\\triangleq ')),
+  ms('comp', t('\\circ ')),
   ms('inf', t('\\infty')),
   ms('cdot', t('\\cdot ')),
   ms('xx', t('\\times '), false),
+
+  -- Sets / logic (uu = \cup, nn = \cap already; here the rest)
   ms('nn', t('\\cap ')),
   ms('uu', t('\\cup ')),
+  ms('bigcup', fmta('\\bigcup_{<>}^{<>} ', { i(1), i(2) })),
+  ms('bigcap', fmta('\\bigcap_{<>}^{<>} ', { i(1), i(2) })),
+  ms('smin', t('\\setminus ')),
+  ms('subs', t('\\subseteq ')),
+  ms('sups', t('\\supseteq ')),
+  ms('empty', t('\\emptyset ')),
+  ms('set', fmta('\\{ <> \\}', { i(1) })),
+  ms('oplus', t('\\oplus ')),
+  ms('otimes', t('\\otimes ')),
+  ms('odot', t('\\odot ')),
+  ms('land', t('\\land ')),
+  ms('lor', t('\\lor ')),
+  ms('neg', t('\\neg ')),
   ms('in', t('\\in ')),
   ms('notin', t('\\notin ')),
   ms('AA', t('\\forall '), false),
@@ -190,6 +224,18 @@ local snips = {
   <>
 \end{pmatrix}]],
       { i(1) }
+    )
+  ),
+  -- Column vector: \\-separated tabstops (add more rows as needed).
+  ms(
+    'cvec',
+    fmta(
+      [[
+\begin{bmatrix}
+  <> \\
+  <>
+\end{bmatrix}]],
+      { i(1), i(2) }
     )
   ),
 
