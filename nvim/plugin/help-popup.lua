@@ -154,36 +154,137 @@ local tabs = {
           { 'date', '(today)', 'insert today’s date' },
         },
       },
-      {
-        title = 'Cheatsheets (org)',
-        kind = 'snip',
-        rows = {
-          { 'cheat', 'help table', 'paste getting-started table' },
-          { 'symbols', 'symbol table', 'paste CS/stats symbol table' },
-        },
-      },
     },
   },
   {
-    name = 'Glyphs',
+    name = 'Letters',
     sections = {
       {
-        title = 'Font wrappers (type letter inside)',
+        title = 'Greek — lowercase (prefix ;)',
         rows = {
-          { 'cal', '\\mathcal{}', 'calligraphic: loss L, big-O O, data D, hyp H' },
-          { 'bf', '\\mathbf{}', 'bold vectors / matrices' },
-          { 'rm', '\\mathrm{}', 'upright operator' },
-          { 'bb', '\\mathbb{}', 'blackboard: \\mathbb{P}, indicator \\mathbb{1}' },
+          { ';a', '\\alpha', 'α  alpha' },
+          { ';b', '\\beta', 'β  beta' },
+          { ';g', '\\gamma', 'γ  gamma' },
+          { ';d', '\\delta', 'δ  delta' },
+          { ';e', '\\epsilon', 'ε  epsilon' },
+          { ';z', '\\zeta', 'ζ  zeta' },
+          { ';h', '\\eta', 'η  eta' },
+          { ';th', '\\theta', 'θ  theta' },
+          { ';k', '\\kappa', 'κ  kappa' },
+          { ';l', '\\lambda', 'λ  lambda' },
+          { ';m', '\\mu', 'μ  mu' },
+          { ';n', '\\nu', 'ν  nu' },
+          { ';x', '\\xi', 'ξ  xi' },
+          { ';p', '\\pi', 'π  pi' },
+          { ';r', '\\rho', 'ρ  rho' },
+          { ';s', '\\sigma', 'σ  sigma' },
+          { ';ta', '\\tau', 'τ  tau' },
+          { ';ph', '\\phi', 'φ  phi' },
+          { ';ch', '\\chi', 'χ  chi' },
+          { ';ps', '\\psi', 'ψ  psi' },
+          { ';o', '\\omega', 'ω  omega' },
+          { '--', '\\iota', 'ι  iota' },
+          { '--', '\\upsilon', 'υ  upsilon' },
+        },
+      },
+      {
+        title = 'Greek — uppercase (prefix ;)',
+        rows = {
+          { ';G', '\\Gamma', 'Γ  Gamma' },
+          { ';D', '\\Delta', 'Δ  Delta' },
+          { ';Th', '\\Theta', 'Θ  Theta' },
+          { ';L', '\\Lambda', 'Λ  Lambda' },
+          { ';X', '\\Xi', 'Ξ  Xi' },
+          { ';P', '\\Pi', 'Π  Pi' },
+          { ';S', '\\Sigma', 'Σ  Sigma' },
+          { ';Ph', '\\Phi', 'Φ  Phi' },
+          { ';Ps', '\\Psi', 'Ψ  Psi' },
+          { ';O', '\\Omega', 'Ω  Omega' },
+          { '--', '\\Upsilon', 'Υ  Upsilon' },
+        },
+      },
+      {
+        title = 'Greek — variant forms',
+        rows = {
+          { '--', '\\varepsilon', 'ε  var epsilon' },
+          { '--', '\\vartheta', 'ϑ  var theta' },
+          { '--', '\\varphi', 'ϕ  var phi' },
+          { '--', '\\varrho', 'ϱ  var rho' },
+          { '--', '\\varsigma', 'ς  final sigma' },
+          { '--', '\\varpi', 'ϖ  var pi' },
+          { '--', '\\varkappa', 'ϰ  var kappa' },
+        },
+      },
+      {
+        title = 'Letter styles (type letter inside {})',
+        rows = {
+          { 'cal', '\\mathcal{}', '𝓛  calligraphic (loss, big-O, data, hyp)' },
+          { 'bb', '\\mathbb{}', '𝔼  blackboard (P, indicator 1)' },
+          { 'bf', '\\mathbf{}', '𝐱  bold (vectors / matrices)' },
+          { 'rm', '\\mathrm{}', 'Var  upright operator' },
+          { '--', '\\mathfrak{}', '𝔄  fraktur (sigma-algebras)' },
+          { '--', '\\boldsymbol{}', '𝛃  bold greek / symbols' },
+          { '--', '\\hat{}', 'x̂  hat / estimator' },
+          { '--', '\\tilde{}', 'x̃  tilde' },
+          { '--', '\\bar{}', 'x̄  bar / mean' },
         },
       },
       {
         title = 'Blackboard sets',
         rows = {
-          { 'RR', '\\mathbb{R}', 'reals' },
-          { 'ZZ', '\\mathbb{Z}', 'integers' },
-          { 'NN', '\\mathbb{N}', 'naturals' },
-          { 'QQ', '\\mathbb{Q}', 'rationals' },
-          { 'CC', '\\mathbb{C}', 'complex' },
+          { 'RR', '\\mathbb{R}', 'ℝ  reals' },
+          { 'ZZ', '\\mathbb{Z}', 'ℤ  integers' },
+          { 'NN', '\\mathbb{N}', 'ℕ  naturals' },
+          { 'QQ', '\\mathbb{Q}', 'ℚ  rationals' },
+          { 'CC', '\\mathbb{C}', 'ℂ  complex' },
+        },
+      },
+      {
+        title = 'Symbols & named constants',
+        rows = {
+          { 'pd', '\\partial', '∂  partial derivative' },
+          { 'grad', '\\nabla', '∇  nabla / gradient' },
+          { 'inf', '\\infty', '∞  infinity' },
+          { '--', '\\ell', 'ℓ  script ell (length)' },
+          { '--', '\\hbar', 'ℏ  reduced Planck' },
+          { '--', '\\Re', 'ℜ  real part' },
+          { '--', '\\Im', 'ℑ  imaginary part' },
+          { '--', '\\aleph', 'ℵ  aleph (cardinality)' },
+          { '--', '\\wp', '℘  Weierstrass p' },
+          { 'empty', '\\emptyset', '∅  empty set' },
+          { '--', '\\angle', '∠  angle' },
+          { '--', '\\top', '⊤  top / true' },
+          { '--', '\\bot', '⊥  bottom / false' },
+          { '--', '\\prime', '′  prime' },
+          { '--', '\\star', '⋆  star' },
+          { '--', '\\dagger', '†  dagger / adjoint' },
+          { '--', '\\pm', '±  plus-minus' },
+          { '--', '\\mp', '∓  minus-plus' },
+          { 'cdot', '\\cdot', '⋅  dot product' },
+          { 'xx', '\\times', '×  times / cross' },
+          { 'comp', '\\circ', '∘  composition' },
+          { 'prop', '\\propto', '∝  proportional' },
+        },
+      },
+      {
+        title = 'Dots',
+        rows = {
+          { '--', '\\ldots', '…  low dots' },
+          { '--', '\\cdots', '⋯  centered dots' },
+          { '--', '\\vdots', '⋮  vertical dots' },
+          { '--', '\\ddots', '⋱  diagonal dots' },
+        },
+      },
+      {
+        title = 'Arrows',
+        rows = {
+          { '->', '\\to', '→  to / maps' },
+          { '--', '\\gets', '←  gets' },
+          { '--', '\\mapsto', '↦  maps to' },
+          { '=>', '\\implies', '⇒  implies' },
+          { 'iff', '\\iff', '⇔  if and only if' },
+          { '--', '\\uparrow', '↑  up' },
+          { '--', '\\downarrow', '↓  down' },
         },
       },
     },
@@ -422,9 +523,22 @@ local function render()
   end
   lines[2] = string.rep('─', width)
 
-  -- Active tab content.
+  -- Active tab content. Column layout: [indent][trigger][gap][output][gap][· desc].
+  -- Trigger and output columns are padded to the widest entry in THIS tab so
+  -- everything lines up. trig/out are ASCII (byte width == display width); the
+  -- description is last and leads with the glyph, so its multibyte width never
+  -- shifts the aligned columns.
+  local INDENT, GAP = 4, 2
   local tab = tabs[state.tab]
-  local trig_w = 12
+  local trig_w, out_w = 0, 0
+  for _, sec in ipairs(tab.sections) do
+    for _, r in ipairs(sec.rows) do
+      trig_w = math.max(trig_w, #r[1])
+      out_w = math.max(out_w, #r[2])
+    end
+  end
+  out_w = math.min(out_w, 42)
+
   for _, sec in ipairs(tab.sections) do
     lines[#lines + 1] = ''
     local ln = #lines - 1
@@ -433,19 +547,19 @@ local function render()
     hls[#hls + 1] = { ln, 0, #title, 'HelpPopupSection' }
     for _, r in ipairs(sec.rows) do
       local trig, out, desc = r[1], r[2], r[3]
-      local pad = string.rep(' ', math.max(1, trig_w - #trig))
-      local text = string.format('    %s%s%s', trig, pad, out)
-      local outstart = 4 + #trig + #pad
-      -- Keep the description on the same line, spaced out.
-      local gap = string.rep(' ', 2)
-      local full = text .. gap .. '· ' .. desc
+      local start_trig = INDENT
+      local pad1 = string.rep(' ', trig_w - #trig + GAP)
+      local start_out = start_trig + #trig + #pad1
+      local pad2 = string.rep(' ', math.max(GAP, out_w - #out + GAP))
+      local start_desc = start_out + #out + #pad2
+      local full = string.rep(' ', INDENT) .. trig .. pad1 .. out .. pad2 .. '· ' .. desc
       lines[#lines + 1] = full
       local l0 = #lines - 1
-      hls[#hls + 1] = { l0, 4, 4 + #trig, 'HelpPopupTrig' }
+      hls[#hls + 1] = { l0, start_trig, start_trig + #trig, 'HelpPopupTrig' }
       if out ~= '' then
-        hls[#hls + 1] = { l0, outstart, outstart + #out, 'HelpPopupOut' }
+        hls[#hls + 1] = { l0, start_out, start_out + #out, 'HelpPopupOut' }
       end
-      hls[#hls + 1] = { l0, #text + #gap, #full, 'HelpPopupDesc' }
+      hls[#hls + 1] = { l0, start_desc, #full, 'HelpPopupDesc' }
       state.line_row[l0 + 1] = { trig = trig, out = out, desc = desc }
     end
   end
@@ -531,8 +645,8 @@ local function open()
 
   local total_w = api.nvim_get_option_value('columns', {})
   local total_h = api.nvim_get_option_value('lines', {})
-  local width = math.min(92, total_w - 8)
-  local height = math.min(34, total_h - 6)
+  local width = math.min(100, total_w - 6)
+  local height = math.min(40, total_h - 6)
 
   local buf = api.nvim_create_buf(false, true)
   state.buf = buf
