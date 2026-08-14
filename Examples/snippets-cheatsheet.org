@@ -31,116 +31,116 @@
 
 * Math -- fractions, scripts, roots
 
-| Trigger | Expands to      |
-|---------+-----------------|
-| //      | \frac{}{}       |
-| ^^      | ^{}             |
-| __      | _{}             |
-| sq      | \sqrt{}         |
-| nrt     | \sqrt[]{}       |
+| Trigger | Expands to  |
+|---------+-------------|
+| ~//~    | ~\frac{}{}~ |
+| ~^^~    | ~^{}~       |
+| ~__~    | ~_{}~       |
+| ~sq~    | ~\sqrt{}~   |
+| ~nrt~   | ~\sqrt[]{}~ |
 
 * Math -- operators & calculus
 
-| Trigger | Expands to             |
-|---------+------------------------|
-| sum     | \sum_{}^{}             |
-| prod    | \prod_{}^{}            |
-| int     | \int_{}^{} \, d        |
-| lim     | \lim_{ \to }           |
-| dd      | \frac{d}{d}            |
-| part    | \frac{\partial }{\partial } |
-| bar     | \bar{}                 |
-| hat     | \hat{}                 |
-| vec     | \vec{}                 |
-| tt      | \text{}                |
+| Trigger | Expands to                    |
+|---------+-------------------------------|
+| ~sum~   | ~\sum_{}^{}~                   |
+| ~prod~  | ~\prod_{}^{}~                  |
+| ~int~   | ~\int_{}^{} \, d~             |
+| ~lim~   | ~\lim_{ \to }~                |
+| ~dd~    | ~\frac{d}{d}~                 |
+| ~part~  | ~\frac{\partial }{\partial }~ |
+| ~bar~   | ~\bar{}~                      |
+| ~hat~   | ~\hat{}~                      |
+| ~vec~   | ~\vec{}~                      |
+| ~tt~    | ~\text{}~                     |
 
 * Math -- relations & symbols
 
 | Trigger | Expands to |
 |---------+------------|
-| ->      | \to        |
-| !=      | \neq       |
-| >=      | \geq       |
-| <=      | \leq       |
-| ~=      | \approx    |
-| +-      | \pm        |
-| =>      | \implies   |
-| inf     | \infty     |
-| cdot    | \cdot      |
-| xx      | \times     |
-| nn      | \cap       |
-| uu      | \cup       |
-| in      | \in        |
-| notin   | \notin     |
-| AA      | \forall    |
-| EE      | \exists    |
+| ~->~    | ~\to~      |
+| ~!=~    | ~\neq~     |
+| ~>=~    | ~\geq~     |
+| ~<=~    | ~\leq~     |
+| =~==    | ~\approx~  |
+| ~+-~    | ~\pm~      |
+| ~=>~    | ~\implies~ |
+| ~inf~   | ~\infty~   |
+| ~cdot~  | ~\cdot~    |
+| ~xx~    | ~\times~   |
+| ~nn~    | ~\cap~     |
+| ~uu~    | ~\cup~     |
+| ~in~    | ~\in~      |
+| ~notin~ | ~\notin~   |
+| ~AA~    | ~\forall~  |
+| ~EE~    | ~\exists~  |
 
 * Math -- environments
 
-| Trigger | Expands to                          |
-|---------+-------------------------------------|
-| beg     | \begin{}...\end{} (name is mirrored) |
-| ali     | \begin{align*}...\end{align*}       |
-| cases   | \begin{cases}...\end{cases}         |
-| bmat    | \begin{bmatrix}...\end{bmatrix}     |
-| pmat    | \begin{pmatrix}...\end{pmatrix}     |
+| Trigger | Expands to                                  |
+|---------+---------------------------------------------|
+| ~beg~   | ~\begin{}...\end{}~ (name is mirrored)       |
+| ~ali~   | ~\begin{align*}...\end{align*}~             |
+| ~cases~ | ~\begin{cases}...\end{cases}~               |
+| ~bmat~  | ~\begin{bmatrix}...\end{bmatrix}~           |
+| ~pmat~  | ~\begin{pmatrix}...\end{pmatrix}~           |
 
 * Statistics -- expectations & estimators
 
 | Trigger | Expands to                     |
 |---------+--------------------------------|
-| Ev      | \mathbb{E}\left[  \right]       |
-| Var     | \mathrm{Var}\left(  \right)     |
-| Cov     | \mathrm{Cov}\left( ,  \right)   |
-| Cor     | \mathrm{Corr}\left( ,  \right)  |
-| xbar    | \bar{x}                        |
-| bhat    | \hat{\beta}                    |
-| thhat   | \hat{\theta}                   |
-| phat    | \hat{p}                        |
+| ~Ev~    | ~\mathbb{E}\left[  \right]~     |
+| ~Var~   | ~\mathrm{Var}\left(  \right)~   |
+| ~Cov~   | ~\mathrm{Cov}\left( ,  \right)~ |
+| ~Cor~   | ~\mathrm{Corr}\left( ,  \right)~ |
+| ~xbar~  | ~\bar{x}~                      |
+| ~bhat~  | ~\hat{\beta}~                  |
+| ~thhat~ | ~\hat{\theta}~                 |
+| ~phat~  | ~\hat{p}~                      |
 
 * Statistics -- distributions
 
-| Trigger | Expands to                    |
-|---------+-------------------------------|
-| norm    | \mathcal{N}\left( ,  \right)   |
-| nrm     | \left\lVert  \right\rVert      |
-| Pois    | \mathrm{Poisson}()            |
-| Bin     | \mathrm{Binomial}( , )        |
-| Unif    | \mathrm{Uniform}( , )         |
-| Bern    | \mathrm{Bernoulli}()          |
-| Gam     | \mathrm{Gamma}( , )           |
-| Expo    | \mathrm{Exponential}()        |
-| Beta    | \mathrm{Beta}( , )            |
-| Geom    | \mathrm{Geometric}()          |
+| Trigger | Expands to                     |
+|---------+--------------------------------|
+| ~norm~  | ~\mathcal{N}\left( ,  \right)~  |
+| ~nrm~   | ~\left\lVert  \right\rVert~     |
+| ~Pois~  | ~\mathrm{Poisson}()~           |
+| ~Bin~   | ~\mathrm{Binomial}( , )~       |
+| ~Unif~  | ~\mathrm{Uniform}( , )~        |
+| ~Bern~  | ~\mathrm{Bernoulli}()~         |
+| ~Gam~   | ~\mathrm{Gamma}( , )~          |
+| ~Expo~  | ~\mathrm{Exponential}()~       |
+| ~Beta~  | ~\mathrm{Beta}( , )~           |
+| ~Geom~  | ~\mathrm{Geometric}()~         |
 
 * Statistics -- probability, relations, convergence
 
-| Trigger | Expands to                       |
-|---------+----------------------------------|
-| Pr      | P\left(  \right)                  |
-| cond    | P\left(  \mid  \right)            |
-| given   | \mid                             |
-| sim     | \sim                             |
-| iid     | \overset{\text{iid}}{\sim}       |
-| perp    | \perp                            |
-| iperp   | \perp\!\!\!\perp (independence)  |
-| nsum    | \sum_{i=1}^{n}                   |
-| nprod   | \prod_{i=1}^{n}                  |
-| argmax  | \underset{}{\arg\max}\;          |
-| argmin  | \underset{}{\arg\min}\;          |
-| convp   | \xrightarrow{p} (in probability) |
-| convd   | \xrightarrow{d} (in distribution)|
-| binom   | \binom{}{}                       |
+| Trigger | Expands to                          |
+|---------+-------------------------------------|
+| ~Pr~    | ~P\left(  \right)~                  |
+| ~cond~  | ~P\left(  \mid  \right)~            |
+| ~given~ | ~\mid~                             |
+| ~sim~   | ~\sim~                             |
+| ~iid~   | ~\overset{\text{iid}}{\sim}~       |
+| ~perp~  | ~\perp~                            |
+| ~iperp~ | ~\perp\!\!\!\perp~ (independence)  |
+| ~nsum~  | ~\sum_{i=1}^{n}~                   |
+| ~nprod~ | ~\prod_{i=1}^{n}~                  |
+| ~argmax~ | ~\underset{}{\arg\max}\;~          |
+| ~argmin~ | ~\underset{}{\arg\min}\;~          |
+| ~convp~ | ~\xrightarrow{p}~ (in probability) |
+| ~convd~ | ~\xrightarrow{d}~ (in distribution) |
+| ~binom~ | ~\binom{}{}~                       |
 
 * Sets (blackboard bold)
 
-| Trigger | Expands to  |
-|---------+-------------|
-| RR      | \mathbb{R}  |
-| ZZ      | \mathbb{Z}  |
-| NN      | \mathbb{N}  |
-| QQ      | \mathbb{Q}  |
-| CC      | \mathbb{C}  |
+| Trigger | Expands to   |
+|---------+--------------|
+| ~RR~    | ~\mathbb{R}~ |
+| ~ZZ~    | ~\mathbb{Z}~ |
+| ~NN~    | ~\mathbb{N}~ |
+| ~QQ~    | ~\mathbb{Q}~ |
+| ~CC~    | ~\mathbb{C}~ |
 
 * Auto-subscript
 
@@ -149,37 +149,37 @@ a subscript automatically:
 
 | You type | You get |
 |----------+---------|
-| x1       | x_{1}   |
-| b0       | b_{0}   |
-| a9       | a_{9}   |
+| ~x1~     | ~x_{1}~ |
+| ~b0~     | ~b_{0}~ |
+| ~a9~     | ~a_{9}~ |
 
 * Greek letters (=;= prefix)
 
 Lowercase:
 
-| Trigger | Letter   | Trigger | Letter  |
-|---------+----------+---------+---------|
-| ;a      | \alpha   | ;n      | \nu     |
-| ;b      | \beta    | ;x      | \xi     |
-| ;g      | \gamma   | ;p      | \pi     |
-| ;d      | \delta   | ;r      | \rho    |
-| ;e      | \epsilon | ;s      | \sigma  |
-| ;z      | \zeta    | ;ta     | \tau    |
-| ;h      | \eta     | ;ph     | \phi    |
-| ;th     | \theta   | ;ch     | \chi    |
-| ;k      | \kappa   | ;ps     | \psi    |
-| ;l      | \lambda  | ;o      | \omega  |
-| ;m      | \mu      |         |         |
+| Trigger | Letter     | Trigger | Letter    |
+|---------+------------+---------+-----------|
+| ~;a~    | ~\alpha~   | ~;n~    | ~\nu~     |
+| ~;b~    | ~\beta~    | ~;x~    | ~\xi~     |
+| ~;g~    | ~\gamma~   | ~;p~    | ~\pi~     |
+| ~;d~    | ~\delta~   | ~;r~    | ~\rho~    |
+| ~;e~    | ~\epsilon~ | ~;s~    | ~\sigma~  |
+| ~;z~    | ~\zeta~    | ~;ta~   | ~\tau~    |
+| ~;h~    | ~\eta~     | ~;ph~   | ~\phi~    |
+| ~;th~   | ~\theta~   | ~;ch~   | ~\chi~    |
+| ~;k~    | ~\kappa~   | ~;ps~   | ~\psi~    |
+| ~;l~    | ~\lambda~  | ~;o~    | ~\omega~  |
+| ~;m~    | ~\mu~      |         |           |
 
 Uppercase:
 
-| Trigger | Letter  | Trigger | Letter  |
-|---------+---------+---------+---------|
-| ;G      | \Gamma  | ;P      | \Pi     |
-| ;D      | \Delta  | ;S      | \Sigma  |
-| ;Th     | \Theta  | ;Ph     | \Phi    |
-| ;L      | \Lambda | ;Ps     | \Psi    |
-| ;X      | \Xi     | ;O      | \Omega  |
+| Trigger | Letter    | Trigger | Letter    |
+|---------+-----------+---------+-----------|
+| ~;G~    | ~\Gamma~  | ~;P~    | ~\Pi~     |
+| ~;D~    | ~\Delta~  | ~;S~    | ~\Sigma~  |
+| ~;Th~   | ~\Theta~  | ~;Ph~   | ~\Phi~    |
+| ~;L~    | ~\Lambda~ | ~;Ps~   | ~\Psi~    |
+| ~;X~    | ~\Xi~     | ~;O~    | ~\Omega~  |
 
 * Org structure snippets
 
@@ -199,6 +199,53 @@ completion menu).
 | date    | today's date (YYYY-MM-DD)                           |
 | mm      | inline math ~$ $~                                   |
 | dm      | display math ~\[ \]~                                |
+
+* TikZ graphs (nodes, values, weighted edges)
+
+Regular snippets (type the trigger then <Tab> / <C-n>). Nodes stack a *name* and
+a *value* in one box; layout is automatic, so you only describe connections.
+These export to PDF via LuaLaTeX -- <Space>oe renders them like any other note.
+
+| Trigger  | Inserts                                                       |
+|----------+---------------------------------------------------------------|
+| ~graph~  | full ~tikzpicture~ + ~\graph{}~ scaffold (first field: layout) |
+| ~gnode~  | one node, name/value stacked: =id [as={name \\ value}]=       |
+| ~gedge~  | edge =a <dir> b;= (choose -- / -> / <-> with <C-n>)           |
+| ~gwedge~ | weighted edge =a <dir>["w"] b;=                               |
+
+The =graph= layout field is a choice node: <C-n> cycles =spring layout= (organic),
+=layered layout= (top-down / DAGs), =tree layout=. Add ~gnode~ / ~gedge~ / ~gwedge~
+lines inside the =\graph{ ... }= block to grow the graph.
+
+Worked example -- a 3-node weighted graph:
+
+#+begin_src latex
+  \begin{tikzpicture}[
+    >={Stealth[]},
+    every node/.style={draw, rounded corners, align=center, inner sep=4pt},
+  ]
+    \graph[spring layout, node distance=20mm]{
+      a [as={Start \\ 0}] ->["3"] b [as={B \\ 3}];
+      b ->["5"] c [as={Goal \\ 8}];
+      a ->["9"] c;
+    };
+  \end{tikzpicture}
+#+end_src
+
+...which renders (raw =\begin{tikzpicture}= at column 0 exports verbatim to PDF):
+
+\begin{center}
+\begin{tikzpicture}[
+  >={Stealth[]},
+  every node/.style={draw, rounded corners, align=center, inner sep=4pt},
+]
+  \graph[spring layout, node distance=20mm]{
+    a [as={Start \\ 0}] ->["3"] b [as={B \\ 3}];
+    b ->["5"] c [as={Goal \\ 8}];
+    a ->["9"] c;
+  };
+\end{tikzpicture}
+\end{center}
 
 * Fuzzy LaTeX-command finder
 

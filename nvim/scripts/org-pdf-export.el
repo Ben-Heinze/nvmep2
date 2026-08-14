@@ -8,9 +8,12 @@
 
 (require 'ox-latex)
 
+;; LuaLaTeX (not pdflatex) so the pgf `graphdrawing' engine can auto-position
+;; `\graph' nodes -- this is global to every org export here. xcolor and the
+;; `hl' palette below all work identically under LuaLaTeX.
 (setq org-confirm-babel-evaluate nil
       org-export-with-broken-links t
-      org-latex-compiler "pdflatex")
+      org-latex-compiler "lualatex")
 
 ;; Palette mirrors nvim/plugin/note-highlight.lua and
 ;; ~/projects/yappopotamus/static/style.css -- keep the three in sync.
@@ -28,7 +31,12 @@
                "\\definecolor{hlblue}{HTML}{7AA2F7}"
                "\\definecolor{hlpurple}{HTML}{BB9AF7}"
                ;; \hl{colour}{text}: coloured + bold, mirroring the editor extmarks.
-               "\\newcommand{\\hl}[2]{\\textcolor{hl#1}{\\textbf{#2}}}")))
+               "\\newcommand{\\hl}[2]{\\textcolor{hl#1}{\\textbf{#2}}}"
+               ;; TikZ + auto-layout for the graph snippets (snippets_tikz.lua).
+               ;; graphdrawing needs LuaLaTeX (set above); quotes gives edge labels.
+               "\\usepackage{tikz}"
+               "\\usetikzlibrary{graphs, graphdrawing, quotes, arrows.meta, positioning}"
+               "\\usegdlibrary{force, layered, trees, circular}")))
 
 (provide 'org-pdf-export)
 ;;; org-pdf-export.el ends here

@@ -43,6 +43,21 @@ checks the buffer's tex syntax stack at the cursor. Gate any future
 math-only autosnippet the same way; ungated autosnippets fire everywhere,
 which is what caused the original `.` -> `\dots` annoyance.
 
+## tex — TikZ graphs (`snippets_tikz.lua`)
+
+Registered for `tex`, so via `filetype_extend('org', { 'tex' })` they also
+expand in `.org` buffers (org exports the `\begin{tikzpicture}` block verbatim).
+These are **regular** snippets (Tab / `<C-n>`), not `in_mathzone`-gated
+autosnippets. Layout is automatic via the pgf `graphdrawing` engine, which is
+why the org exporter runs LuaLaTeX (see `scripts/org-pdf-export.el`).
+
+| Trigger | Type | Expansion |
+| --- | --- | --- |
+| `graph` | snippet | Full `tikzpicture` + `\graph{…}` scaffold, two stacked `name / value` nodes; first field is a layout choice node (`spring` / `layered` / `tree layout`) |
+| `gnode` | snippet | One node for inside a `\graph{…}`: `id [as={name \\ value}]` |
+| `gedge` | snippet | Edge `a <dir> b;` — direction choice node (`--` / `->` / `<->`) |
+| `gwedge` | snippet | Weighted/labelled edge `a <dir>["w"] b;` (via the `quotes` library) |
+
 ## cpp
 
 | Trigger | Type | Expansion |

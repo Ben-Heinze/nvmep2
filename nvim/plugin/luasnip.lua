@@ -444,6 +444,7 @@ require('luasnip.loaders.from_lua').lazy_load { include = { 'all', 'cpp' } }
 -- LaTeX math autosnippets (registered for `tex`) and Org structure snippets.
 require('user.snippets_math')
 require('user.snippets_org')
+require('user.snippets_tikz')
 -- In an org buffer, also search tex snippets so the full math library is
 -- available inside `$...$` / math environments.
 ls.filetype_extend('org', { 'tex' })

@@ -157,6 +157,21 @@ local tabs = {
     },
   },
   {
+    name = 'Graphs',
+    sections = {
+      {
+        title = 'TikZ graphs (org/tex — type trigger, expand with <C-n>)',
+        kind = 'snip',
+        rows = {
+          { 'graph', '\\begin{tikzpicture} … \\graph{…}', 'auto-laid-out graph scaffold' },
+          { 'gnode', 'id [as={name \\\\ value}]', 'node: name / value stacked in a box' },
+          { 'gedge', 'a -- b;', 'edge (cycle -- / -> / <-> with <C-n>)' },
+          { 'gwedge', 'a --["w"] b;', 'weighted / labelled edge' },
+        },
+      },
+    },
+  },
+  {
     name = 'Letters',
     sections = {
       {
