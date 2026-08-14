@@ -27,9 +27,14 @@ ls.add_snippets('tex', {
   --
   -- Note: the `[as={... \\ ...}]` form is required for the line break -- the
   -- shorter `id/{...}` node-text shorthand can't contain `\\`.
+  --
+  -- The `>>=` is deliberate, NOT a typo: fmta treats `<`/`>` as placeholder
+  -- delimiters, so a literal `>` (here the tikz `>=` arrow-tip option) must be
+  -- doubled to escape it. `>>=` renders as `>=`. A lone `>` aborts the whole
+  -- file (and with it `filetype_extend('org', {'tex'})` in luasnip.lua).
   s('graph', fmta([[
 \begin{tikzpicture}[
-  >={Stealth[]},
+  >>={Stealth[]},
   every node/.style={draw, rounded corners, align=center, inner sep=4pt},
 ]
   \graph[<>, node distance=20mm]{
