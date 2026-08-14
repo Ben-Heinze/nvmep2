@@ -53,6 +53,7 @@
 | ~hat~   | ~\hat{}~                      |
 | ~vec~   | ~\vec{}~                      |
 | ~tt~    | ~\text{}~                     |
+| ~text~  | ~\text{}~                     |
 
 * Math -- relations & symbols
 

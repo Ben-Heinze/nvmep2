@@ -118,6 +118,7 @@ local tabs = {
           { 'hat', '\\hat{}', 'hat accent' },
           { 'vec', '\\vec{}', 'vector arrow' },
           { 'tt', '\\text{}', 'upright text in math' },
+          { 'text', '\\text{}', 'upright text in math (alias of tt)' },
         },
       },
       {

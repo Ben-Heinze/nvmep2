@@ -122,6 +122,7 @@ local snips = {
   ms('hat', fmta('\\hat{<>}', { i(1) })),
   ms('vec', fmta('\\vec{<>}', { i(1) })),
   ms('tt', fmta('\\text{<>}', { i(1) })),
+  ms('text', fmta('\\text{<>}', { i(1) })),
 
   -- Font wrappers (type the letter inside)
   ms('cal', fmta('\\mathcal{<>}', { i(1) })), -- \mathcal{L} loss, \mathcal{O} big-O, \mathcal{D} data, \mathcal{H} hypothesis
