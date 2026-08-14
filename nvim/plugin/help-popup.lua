@@ -84,6 +84,7 @@ local tabs = {
         title = 'Fractions / scripts / roots',
         rows = {
           { '//', '\\frac{}{}', 'fraction' },
+          { 'frac', '\\frac{}{}', 'fraction (word alias of //)' },
           { '^^', '^{}', 'superscript' },
           { '__', '_{}', 'subscript' },
           { 'sq', '\\sqrt{}', 'square root' },

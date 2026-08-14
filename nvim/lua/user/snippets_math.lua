@@ -102,6 +102,7 @@ end
 local snips = {
   -- Fractions, roots, scripts
   ms('//', fmta('\\frac{<>}{<>}', { i(1), i(2) }), false),
+  ms('frac', fmta('\\frac{<>}{<>}', { i(1), i(2) })), -- word-trigger alias of //
   ms('^^', fmta('^{<>}', { i(1) }), false),
   ms('__', fmta('_{<>}', { i(1) }), false),
   ms('sq', fmta('\\sqrt{<>}', { i(1) })),
