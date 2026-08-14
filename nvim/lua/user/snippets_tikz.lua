@@ -21,7 +21,7 @@ local fmta = require('luasnip.extras.fmt').fmta
 
 ls.add_snippets('tex', {
   -- Full auto-laid-out graph. Nodes are `id [as={name \\ value}]` (name and
-  -- value stacked inside one rounded box); `<C-n>` on the first field cycles the
+  -- value stacked inside one circle); `<C-n>` on the first field cycles the
   -- graphdrawing algorithm. Add more lines inside `\graph{ ... }`; use `--` for
   -- undirected and `->` for directed edges.
   --
@@ -35,7 +35,7 @@ ls.add_snippets('tex', {
   s('graph', fmta([[
 \begin{tikzpicture}[
   >>={Stealth[]},
-  every node/.style={draw, rounded corners, align=center, inner sep=4pt},
+  every node/.style={draw, circle, align=center, inner sep=4pt},
 ]
   \graph[<>, node distance=20mm]{
     <> [as={<> \\ <>}] -- <> [as={<> \\ <>}];
@@ -53,7 +53,7 @@ ls.add_snippets('tex', {
   s('gex', t {
     '\\begin{tikzpicture}[',
     '  >={Stealth[]},',
-    '  every node/.style={draw, rounded corners, align=center, inner sep=4pt},',
+    '  every node/.style={draw, circle, align=center, inner sep=4pt},',
     ']',
     '  \\graph[spring layout, node distance=20mm]{',
     '    a [as={Start \\\\ 0}] ->["3"] b [as={B \\\\ 3}];',

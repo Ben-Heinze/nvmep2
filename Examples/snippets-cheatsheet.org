@@ -222,7 +222,7 @@ Worked example -- a 3-node weighted graph:
 #+begin_src latex
   \begin{tikzpicture}[
     >={Stealth[]},
-    every node/.style={draw, rounded corners, align=center, inner sep=4pt},
+    every node/.style={draw, circle, align=center, inner sep=4pt},
   ]
     \graph[spring layout, node distance=20mm]{
       a [as={Start \\ 0}] ->["3"] b [as={B \\ 3}];
@@ -237,7 +237,7 @@ Worked example -- a 3-node weighted graph:
 \begin{center}
 \begin{tikzpicture}[
   >={Stealth[]},
-  every node/.style={draw, rounded corners, align=center, inner sep=4pt},
+  every node/.style={draw, circle, align=center, inner sep=4pt},
 ]
   \graph[spring layout, node distance=20mm]{
     a [as={Start \\ 0}] ->["3"] b [as={B \\ 3}];

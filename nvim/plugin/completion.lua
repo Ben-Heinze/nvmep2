@@ -78,13 +78,11 @@ cmp.setup {
         complete_with_source('path')
       end
     end, { 'i', 'c', 's' }),
+    -- <C-n>/<C-p> navigate the completion menu (down/up). When the menu is
+    -- closed, <C-n> opens it. Snippet jumping lives on <Tab>/<S-Tab>, not here.
     ['<C-n>'] = cmp.mapping(function(fallback)
       if cmp.visible() then
         cmp.select_next_item()
-      -- expand_or_jumpable(): Jump outside the snippet region
-      -- expand_or_locally_jumpable(): Only jump inside the snippet region
-      elseif luasnip.expand_or_locally_jumpable() then
-        luasnip.expand_or_jump()
       elseif has_words_before() then
         cmp.complete()
       else
@@ -94,8 +92,6 @@ cmp.setup {
     ['<C-p>'] = cmp.mapping(function(fallback)
       if cmp.visible() then
         cmp.select_prev_item()
-      elseif luasnip.jumpable(-1) then
-        luasnip.jump(-1)
       else
         fallback()
       end
@@ -111,22 +107,19 @@ cmp.setup {
     ['<C-y>'] = cmp.mapping.confirm {
       select = true,
     },
-    -- Smart <Tab>: accept completion / expand-or-jump snippet / trigger completion.
+    -- <Tab> / <S-Tab> ONLY move between snippet tab-stops (e.g. the two {} in
+    -- \frac{}{}). They deliberately never touch the completion menu: accept a
+    -- completion with <C-y>, navigate the menu with <C-n>/<C-p>. Outside a
+    -- snippet they fall back to a literal <Tab>/<S-Tab>.
     ['<Tab>'] = cmp.mapping(function(fallback)
-      if cmp.visible() then
-        cmp.select_next_item()
-      elseif luasnip.expand_or_locally_jumpable() then
-        luasnip.expand_or_jump()
-      elseif has_words_before() then
-        cmp.complete()
+      if luasnip.locally_jumpable(1) then
+        luasnip.jump(1)
       else
         fallback()
       end
     end, { 'i', 's' }),
     ['<S-Tab>'] = cmp.mapping(function(fallback)
-      if cmp.visible() then
-        cmp.select_prev_item()
-      elseif luasnip.jumpable(-1) then
+      if luasnip.jumpable(-1) then
         luasnip.jump(-1)
       else
         fallback()
@@ -210,7 +203,16 @@ cmp.setup.cmdline(':', {
   },
 })
 
-vim.keymap.set({ 'i', 'c', 's' }, '<C-n>', cmp.complete, { noremap = false, desc = '[cmp] complete' })
+-- <C-n>: navigate the menu down when it's open, otherwise open it. (This
+-- explicit map would otherwise shadow the <C-n> entry in cmp's mapping table,
+-- so it carries the same select-next behaviour.)
+vim.keymap.set({ 'i', 'c', 's' }, '<C-n>', function()
+  if cmp.visible() then
+    cmp.select_next_item()
+  else
+    cmp.complete()
+  end
+end, { noremap = false, desc = '[cmp] menu down / open' })
 vim.keymap.set({ 'i', 'c', 's' }, '<C-f>', function()
   complete_with_source('path')
 end, { noremap = false, desc = '[cmp] path' })

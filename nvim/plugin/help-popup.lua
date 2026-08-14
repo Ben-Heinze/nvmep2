@@ -167,7 +167,7 @@ local tabs = {
         rows = {
           { 'graph', '\\begin{tikzpicture} ⟨nodes & edges⟩ \\end{tikzpicture}', 'blank auto-laid-out graph scaffold' },
           { 'gex', '\\begin{tikzpicture} ⟨3 nodes, weighted arrows⟩ \\end{tikzpicture}', 'ready-made example graph (renders as-is)' },
-          { 'gnode', '⟨id⟩ [as={⟨name⟩ \\\\ ⟨value⟩}]', 'node: name / value stacked in a box' },
+          { 'gnode', '⟨id⟩ [as={⟨name⟩ \\\\ ⟨value⟩}]', 'node: name / value stacked in a circle' },
           { 'gedge', '⟨from⟩ -- ⟨to⟩;', 'edge (cycle -- / -> / <-> with <C-n>)' },
           { 'gwedge', '⟨from⟩ --["⟨weight⟩"] ⟨to⟩;', 'weighted / labelled edge' },
         },
