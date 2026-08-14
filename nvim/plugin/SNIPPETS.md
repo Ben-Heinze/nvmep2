@@ -54,6 +54,7 @@ why the org exporter runs LuaLaTeX (see `scripts/org-pdf-export.el`).
 | Trigger | Type | Expansion |
 | --- | --- | --- |
 | `graph` | snippet | Full `tikzpicture` + `\graph{…}` scaffold, two stacked `name / value` nodes; first field is a layout choice node (`spring` / `layered` / `tree layout`) |
+| `gex` | snippet | Ready-made worked example: a 3-node weighted directed graph, fully filled in so it renders as-is (edit afterwards) |
 | `gnode` | snippet | One node for inside a `\graph{…}`: `id [as={name \\ value}]` |
 | `gedge` | snippet | Edge `a <dir> b;` — direction choice node (`--` / `->` / `<->`) |
 | `gwedge` | snippet | Weighted/labelled edge `a <dir>["w"] b;` (via the `quotes` library) |

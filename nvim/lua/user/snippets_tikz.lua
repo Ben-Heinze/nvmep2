@@ -41,6 +41,23 @@ ls.add_snippets('tex', {
     i(5, 'b'), i(6, 'B'), i(7, '2'),
   })),
 
+  -- A ready-made worked example: a 3-node weighted directed graph. Expands
+  -- fully filled in (no fields), so it renders as-is the moment you export --
+  -- edit the node names/values and edges afterwards. Surfaced from the
+  -- <Space>? popup's Graphs tab as `gex`.
+  s('gex', t {
+    '\\begin{tikzpicture}[',
+    '  >={Stealth[]},',
+    '  every node/.style={draw, rounded corners, align=center, inner sep=4pt},',
+    ']',
+    '  \\graph[spring layout, node distance=20mm]{',
+    '    a [as={Start \\\\ 0}] ->["3"] b [as={B \\\\ 3}];',
+    '    b ->["5"] c [as={Goal \\\\ 8}];',
+    '    a ->["9"] c;',
+    '  };',
+    '\\end{tikzpicture}',
+  }),
+
   -- A single node for use inside a `\graph{ ... }`: name and value stacked.
   s('gnode', fmta('<> [as={<> \\\\ <>}]', { i(1, 'id'), i(2, 'name'), i(3, 'value') })),
 
