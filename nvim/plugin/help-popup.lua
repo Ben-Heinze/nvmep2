@@ -2,8 +2,9 @@
 -- Openable anywhere with <Space>? : a floating window with major tabs (Neovim,
 -- LaTeX, Snippets, Glyphs, Logic/Relations, Matrices/Vectors, Statistics), each
 -- split into subsections. Search with `/` (native, current tab) or Telescope
--- (<C-f>, fuzzy over every symbol). Selecting a row inserts its LaTeX at the
--- cursor of the window you opened from.
+-- (<C-f>, fuzzy over every symbol). <CR> on a symbol row inserts its LaTeX at
+-- the cursor of the window you opened from; <CR> on a snippet row (kind='snip')
+-- fires the real LuaSnip snippet, tab-stops and all.
 --
 -- Self-contained on purpose: nvim-dev bakes a store snapshot of the config that
 -- sits first on the runtimepath, so a lua/user/ module would be shadowed. All the
@@ -19,8 +20,9 @@ local api = vim.api
 -- Every trig/keybind below is verified against snippets_math.lua,
 -- snippets_org.lua, note-highlight.lua, ftplugin/org.lua and keymaps.lua.
 -- A row is { trigger, latex/output, description }. `kind`:
---   'auto' math autosnippet (fires in a math zone), 'snip' org snippet
---   (expand with <C-n>), 'key' a keybinding. Defaults to 'auto'.
+--   'auto' math autosnippet (fires in a math zone), 'snip' a snippet (type the
+--   trigger + <C-n>, or <CR> here to expand it), 'key' a keybinding. Defaults to
+--   'auto'. `kind` drives what <CR> does: 'snip' expands, everything else inserts.
 local tabs = {
   {
     name = 'Neovim',
@@ -501,6 +503,38 @@ local function insert_output(latex)
   api.nvim_feedkeys(api.nvim_replace_termcodes('<Esc>a', true, false, true), 'n', false)
 end
 
+-- For `kind='snip'` rows, fire the *actual* LuaSnip snippet (with its tab-stops)
+-- at the origin window's cursor, instead of pasting the preview text. The trigger
+-- is looked up across the origin buffer's filetypes -- so an org buffer also sees
+-- the shared `tex` snippets (filetype_extend) and any friendly-snippets/snipmate
+-- collections. `snip_expand` inserts the body at the cursor directly (no typed
+-- trigger, so no cursor-clamping games) and jumps into the first field. Returns
+-- true if a matching snippet was expanded.
+local function expand_snippet(trig)
+  local win = state.origin_win
+  if not win or not api.nvim_win_is_valid(win) then
+    return false
+  end
+  local ok, ls = pcall(require, 'luasnip')
+  if not ok then
+    return false
+  end
+  api.nvim_set_current_win(win)
+  -- A row may display several triggers (e.g. 'h1 h2 h3'); use the first.
+  local want = trig:match('^%S+') or trig
+  for _, ft in ipairs(ls.get_snippet_filetypes()) do
+    for _, kind in ipairs { 'snippets', 'autosnippets' } do
+      for _, snip in ipairs(ls.get_snippets(ft, { type = kind })) do
+        if snip.trigger == want then
+          ls.snip_expand(snip)
+          return true
+        end
+      end
+    end
+  end
+  return false
+end
+
 -- ---------------------------------------------------------------------------
 -- Rendering
 -- ---------------------------------------------------------------------------
@@ -576,12 +610,12 @@ local function render()
         hls[#hls + 1] = { l0, start_out, start_out + #out, 'HelpPopupOut' }
       end
       hls[#hls + 1] = { l0, start_desc, #full, 'HelpPopupDesc' }
-      state.line_row[l0 + 1] = { trig = trig, out = out, desc = desc }
+      state.line_row[l0 + 1] = { trig = trig, out = out, desc = desc, kind = sec.kind or 'auto' }
     end
   end
 
   lines[#lines + 1] = ''
-  local hint = '  [1-9]/h l  tabs   ·   /  search   ·   <C-f>  fuzzy   ·   <CR>  insert   ·   q  close'
+  local hint = '  [1-9]/h l  tabs   ·   /  search   ·   <C-f>  fuzzy   ·   <CR>  insert/expand   ·   q  close'
   lines[#lines + 1] = hint
   local hint_ln = #lines - 1
 
@@ -700,9 +734,16 @@ local function open()
     local lnum = api.nvim_win_get_cursor(state.win)[1]
     local row = state.line_row[lnum]
     close()
-    if row then
-      insert_output(row.out)
+    if not row then
+      return
     end
+    -- Snippet rows fire the real snippet (fields and all); symbol rows insert
+    -- their LaTeX literally. If no matching snippet is found, fall back to the
+    -- literal insert so the row still does something.
+    if row.kind == 'snip' and expand_snippet(row.trig) then
+      return
+    end
+    insert_output(row.out)
   end)
 
   set_tab(state.tab)
