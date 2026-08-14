@@ -120,6 +120,7 @@
 |---------+-------------------------------------|
 | ~Pr~    | ~P\left(  \right)~                  |
 | ~cond~  | ~P\left(  \mid  \right)~            |
+| ~Ind~   | ~\mathbb{1}_{} = \begin{cases} 1 & \\ 0 & \text{otherwise} \end{cases}~ |
 | ~given~ | ~\mid~                             |
 | ~sim~   | ~\sim~                             |
 | ~iid~   | ~\overset{\text{iid}}{\sim}~       |

@@ -265,6 +265,10 @@ local snips = {
   -- Statistics: probability & relations
   ms('Pr', fmta('P\\left( <> \\right)', { i(1) })),
   ms('cond', fmta('P\\left( <> \\mid <> \\right)', { i(1), i(2) })),
+  -- Indicator function, defined piecewise: 1 if the event holds, else 0.
+  -- Capitalised trigger (like Pr/Var) so it never fires inside words like
+  -- "independent"/"individual" typed in \text{}.
+  ms('Ind', fmta('\\mathbb{1}_{<>} = \\begin{cases} 1 & <> \\\\ 0 & \\text{otherwise} \\end{cases}', { i(1), i(2) })),
   ms('given', t('\\mid ')),
   ms('sim', t('\\sim ')),
   ms('iid', t('\\overset{\\text{iid}}{\\sim} ')),

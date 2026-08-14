@@ -404,6 +404,7 @@ local tabs = {
         rows = {
           { 'Pr', 'P\\left(  \\right)', 'probability' },
           { 'cond', 'P\\left(  \\mid  \\right)', 'conditional probability' },
+          { 'Ind', '\\mathbb{1}_{} = \\begin{cases} 1 & \\\\ 0 & \\text{otherwise} \\end{cases}', 'indicator (piecewise 1/0)' },
           { 'sim', '\\sim', 'distributed as' },
           { 'iid', '\\overset{iid}{\\sim}', 'iid' },
           { 'perp', '\\perp', 'independent' },
