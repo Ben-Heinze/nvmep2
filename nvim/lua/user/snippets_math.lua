@@ -101,53 +101,60 @@ end
 
 local snips = {
   -- Fractions, roots, scripts
-  ms('//', fmta('\\frac{<>}{<>}', { i(1), i(2) }), false),
-  ms('frac', fmta('\\frac{<>}{<>}', { i(1), i(2) })), -- word-trigger alias of //
-  ms('^^', fmta('^{<>}', { i(1) }), false),
-  ms('__', fmta('_{<>}', { i(1) }), false),
-  ms('sq', fmta('\\sqrt{<>}', { i(1) })),
-  ms('nrt', fmta('\\sqrt[<>]{<>}', { i(1), i(2) })),
+  ms('//', fmta('\\frac{<>}{<>}', { i(1, 'num'), i(2, 'den') }), false),
+  ms('frac', fmta('\\frac{<>}{<>}', { i(1, 'num'), i(2, 'den') })), -- word-trigger alias of //
+  ms('^^', fmta('^{<>}', { i(1, 'exp') }), false),
+  ms('__', fmta('_{<>}', { i(1, 'idx') }), false),
+  ms('sq', fmta('\\sqrt{<>}', { i(1, 'x') })),
+  ms('nrt', fmta('\\sqrt[<>]{<>}', { i(1, 'n'), i(2, 'x') })),
 
   -- Big operators
-  ms('sum', fmta('\\sum_{<>}^{<>} <>', { i(1), i(2), i(3) })),
-  ms('prod', fmta('\\prod_{<>}^{<>} <>', { i(1), i(2), i(3) })),
-  ms('int', fmta('\\int_{<>}^{<>} <> \\, d<>', { i(1), i(2), i(3), i(4) })),
-  ms('lim', fmta('\\lim_{<> \\to <>} <>', { i(1, 'n'), i(2, '\\infty'), i(3) })),
+  ms('sum', fmta('\\sum_{<>}^{<>} <>', { i(1, 'i=1'), i(2, 'n'), i(3, 'a_i') })),
+  ms('prod', fmta('\\prod_{<>}^{<>} <>', { i(1, 'i=1'), i(2, 'n'), i(3, 'a_i') })),
+  ms('int', fmta('\\int_{<>}^{<>} <> \\, d<>', { i(1, 'a'), i(2, 'b'), i(3, 'f(x)'), i(4, 'x') })),
+  ms('lim', fmta('\\lim_{<> \\to <>} <>', { i(1, 'n'), i(2, '\\infty'), i(3, 'a_n') })),
 
   -- Log-like functions (bare operators, so `\log_2`, `\exp(x)` compose freely)
   ms('log', t('\\log')),
   ms('exp', t('\\exp')),
+  ms('min', t('\\min')), -- \min_{x} composes via the `_` autosnippet
+  ms('max', t('\\max')),
 
   -- Derivatives
-  ms('dd', fmta('\\frac{d<>}{d<>}', { i(1), i(2, 'x') })),
-  ms('part', fmta('\\frac{\\partial <>}{\\partial <>}', { i(1), i(2, 'x') })),
+  ms('dd', fmta('\\frac{d<>}{d<>}', { i(1, 'y'), i(2, 'x') })),
+  ms('part', fmta('\\frac{\\partial <>}{\\partial <>}', { i(1, 'f'), i(2, 'x') })),
 
   -- Accents / wrappers
-  ms('bar', fmta('\\bar{<>}', { i(1) })),
-  ms('hat', fmta('\\hat{<>}', { i(1) })),
-  ms('vec', fmta('\\vec{<>}', { i(1) })),
-  ms('tt', fmta('\\text{<>}', { i(1) })),
-  ms('text', fmta('\\text{<>}', { i(1) })),
+  ms('bar', fmta('\\bar{<>}', { i(1, 'x') })),
+  ms('hat', fmta('\\hat{<>}', { i(1, 'x') })),
+  ms('vec', fmta('\\vec{<>}', { i(1, 'v') })),
+  ms('tt', fmta('\\text{<>}', { i(1, 'text') })),
+  ms('text', fmta('\\text{<>}', { i(1, 'text') })),
+  -- Over-/under-set: place text above, below, or both around a base symbol.
+  -- Order is {annotation}{base}, so tabstop 1 is the text, 2 the base.
+  ms('over', fmta('\\overset{<>}{<>}', { i(1, 'above'), i(2, 'x') })),
+  ms('under', fmta('\\underset{<>}{<>}', { i(1, 'below'), i(2, 'x') })),
+  ms('ounder', fmta('\\overset{<>}{\\underset{<>}{<>}}', { i(1, 'above'), i(2, 'below'), i(3, 'x') })), -- text above AND below
 
   -- Font wrappers (type the letter inside)
-  ms('cal', fmta('\\mathcal{<>}', { i(1) })), -- \mathcal{L} loss, \mathcal{O} big-O, \mathcal{D} data, \mathcal{H} hypothesis
-  ms('bf', fmta('\\mathbf{<>}', { i(1) })), -- bold vectors / matrices
-  ms('rm', fmta('\\mathrm{<>}', { i(1) })), -- upright multi-letter operators
-  ms('bb', fmta('\\mathbb{<>}', { i(1) })), -- e.g. \mathbb{P}, indicator \mathbb{1}
+  ms('cal', fmta('\\mathcal{<>}', { i(1, 'L') })), -- \mathcal{L} loss, \mathcal{O} big-O, \mathcal{D} data, \mathcal{H} hypothesis
+  ms('bf', fmta('\\mathbf{<>}', { i(1, 'x') })), -- bold vectors / matrices
+  ms('rm', fmta('\\mathrm{<>}', { i(1, 'op') })), -- upright multi-letter operators
+  ms('bb', fmta('\\mathbb{<>}', { i(1, 'R') })), -- e.g. \mathbb{P}, indicator \mathbb{1}
 
   -- Vector calculus (bare \partial; `part` stays the fraction form)
   ms('pd', t('\\partial')),
   ms('grad', t('\\nabla')),
-  ms('vnorm', fmta('\\lVert <> \\rVert', { i(1) })), -- `norm` is the Normal distribution
-  ms('abs', fmta('\\lvert <> \\rvert', { i(1) })),
-  ms('floor', fmta('\\lfloor <> \\rfloor', { i(1) })),
-  ms('ceil', fmta('\\lceil <> \\rceil', { i(1) })),
+  ms('vnorm', fmta('\\lVert <> \\rVert', { i(1, 'v') })), -- `norm` is the Normal distribution
+  ms('abs', fmta('\\lvert <> \\rvert', { i(1, 'x') })),
+  ms('floor', fmta('\\lfloor <> \\rfloor', { i(1, 'x') })),
+  ms('ceil', fmta('\\lceil <> \\rceil', { i(1, 'x') })),
   -- Auto-sized curly braces (type `lbrace`/`rbrace` to place each side).
   ms('lbrace', t('\\left\\{')),
   ms('rbrace', t('\\right\\}')),
   -- Auto-sized parentheses / brackets: wrap the tabstop in \left( \right).
-  ms('lr(', fmta('\\left( <> \\right)', { i(1) }), false),
-  ms('lr[', fmta('\\left[ <> \\right]', { i(1) }), false),
+  ms('lr(', fmta('\\left( <> \\right)', { i(1, 'x') }), false),
+  ms('lr[', fmta('\\left[ <> \\right]', { i(1, 'x') }), false),
 
   -- Relations / symbols
   ms('->', t('\\to'), false),
@@ -171,13 +178,13 @@ local snips = {
   -- Sets / logic (uu = \cup, nn = \cap already; here the rest)
   ms('nn', t('\\cap')),
   ms('uu', t('\\cup')),
-  ms('bigcup', fmta('\\bigcup_{<>}^{<>}', { i(1), i(2) })),
-  ms('bigcap', fmta('\\bigcap_{<>}^{<>}', { i(1), i(2) })),
+  ms('bigcup', fmta('\\bigcup_{<>}^{<>}', { i(1, 'i=1'), i(2, 'n') })),
+  ms('bigcap', fmta('\\bigcap_{<>}^{<>}', { i(1, 'i=1'), i(2, 'n') })),
   ms('smin', t('\\setminus')),
   ms('subs', t('\\subseteq')),
   ms('sups', t('\\supseteq')),
   ms('empty', t('\\emptyset')),
-  ms('set', fmta('\\{ <> \\}', { i(1) })),
+  ms('set', fmta('\\{ <> \\}', { i(1, 'x') })),
   ms('oplus', t('\\oplus')),
   ms('otimes', t('\\otimes')),
   ms('odot', t('\\odot')),
@@ -197,7 +204,7 @@ local snips = {
 \begin{<>}
   <>
 \end{<>}]],
-      { i(1), i(2), rep(1) }
+      { i(1, 'env'), i(2, 'body'), rep(1) }
     )
   ),
   ms(
@@ -207,7 +214,7 @@ local snips = {
 \begin{align*}
   <>
 \end{align*}]],
-      { i(1) }
+      { i(1, 'a &= b') }
     )
   ),
   -- Multi-line equation aligned on the `=` sign. `&` marks the alignment column
@@ -221,7 +228,7 @@ local snips = {
   <> &= <> \\
   &= <>
 \end{align*}]],
-      { i(1), i(2), i(3) }
+      { i(1, 'a'), i(2, 'b'), i(3, 'c') }
     )
   ),
   ms(
@@ -231,7 +238,7 @@ local snips = {
 \begin{cases}
   <>
 \end{cases}]],
-      { i(1) }
+      { i(1, 'value & condition') }
     )
   ),
   ms(
@@ -241,7 +248,7 @@ local snips = {
 \begin{bmatrix}
   <>
 \end{bmatrix}]],
-      { i(1) }
+      { i(1, 'a & b') }
     )
   ),
   ms(
@@ -251,7 +258,7 @@ local snips = {
 \begin{pmatrix}
   <>
 \end{pmatrix}]],
-      { i(1) }
+      { i(1, 'a & b') }
     )
   ),
   -- Column vector: \\-separated tabstops (add more rows as needed).
@@ -263,40 +270,40 @@ local snips = {
   <> \\
   <>
 \end{bmatrix}]],
-      { i(1), i(2) }
+      { i(1, 'a'), i(2, 'b') }
     )
   ),
 
   -- Statistics: moments & estimators
-  ms('Ev', fmta('\\mathbb{E}\\left[ <> \\right]', { i(1) })),
-  ms('Var', fmta('\\mathrm{Var}\\left( <> \\right)', { i(1) })),
-  ms('Cov', fmta('\\mathrm{Cov}\\left( <>, <> \\right)', { i(1), i(2) })),
-  ms('Cor', fmta('\\mathrm{Corr}\\left( <>, <> \\right)', { i(1), i(2) })),
+  ms('Ev', fmta('\\mathbb{E}\\left[ <> \\right]', { i(1, 'X') })),
+  ms('Var', fmta('\\mathrm{Var}\\left( <> \\right)', { i(1, 'X') })),
+  ms('Cov', fmta('\\mathrm{Cov}\\left( <>, <> \\right)', { i(1, 'X'), i(2, 'Y') })),
+  ms('Cor', fmta('\\mathrm{Corr}\\left( <>, <> \\right)', { i(1, 'X'), i(2, 'Y') })),
   ms('xbar', t('\\bar{x}')),
   ms('bhat', t('\\hat{\\beta}')),
   ms('thhat', t('\\hat{\\theta}')),
   ms('phat', t('\\hat{p}')),
 
   -- Statistics: distributions (capitalised triggers avoid clashing with words)
-  ms('norm', fmta('\\mathcal{N}\\left( <>, <> \\right)', { i(1), i(2) })),
-  ms('nrm', fmta('\\left\\lVert <> \\right\\rVert', { i(1) })),
-  ms('Pois', fmta('\\mathrm{Poisson}(<>)', { i(1) })),
-  ms('Bin', fmta('\\mathrm{Binomial}(<>, <>)', { i(1), i(2) })),
-  ms('Unif', fmta('\\mathrm{Uniform}(<>, <>)', { i(1), i(2) })),
-  ms('Bern', fmta('\\mathrm{Bernoulli}(<>)', { i(1) })),
-  ms('Gam', fmta('\\mathrm{Gamma}(<>, <>)', { i(1), i(2) })),
-  ms('Expo', fmta('\\mathrm{Exponential}(<>)', { i(1) })),
-  ms('Beta', fmta('\\mathrm{Beta}(<>, <>)', { i(1), i(2) })),
-  ms('Geom', fmta('\\mathrm{Geometric}(<>)', { i(1) })),
+  ms('norm', fmta('\\mathcal{N}\\left( <>, <> \\right)', { i(1, '\\mu'), i(2, '\\sigma^2') })),
+  ms('nrm', fmta('\\left\\lVert <> \\right\\rVert', { i(1, 'x') })),
+  ms('Pois', fmta('\\mathrm{Poisson}(<>)', { i(1, '\\lambda') })),
+  ms('Bin', fmta('\\mathrm{Binomial}(<>, <>)', { i(1, 'n'), i(2, 'p') })),
+  ms('Unif', fmta('\\mathrm{Uniform}(<>, <>)', { i(1, 'a'), i(2, 'b') })),
+  ms('Bern', fmta('\\mathrm{Bernoulli}(<>)', { i(1, 'p') })),
+  ms('Gam', fmta('\\mathrm{Gamma}(<>, <>)', { i(1, '\\alpha'), i(2, '\\beta') })),
+  ms('Expo', fmta('\\mathrm{Exponential}(<>)', { i(1, '\\lambda') })),
+  ms('Beta', fmta('\\mathrm{Beta}(<>, <>)', { i(1, '\\alpha'), i(2, '\\beta') })),
+  ms('Geom', fmta('\\mathrm{Geometric}(<>)', { i(1, 'p') })),
 
   -- Statistics: probability & relations
-  ms('Pr', fmta('P\\left( <> \\right)', { i(1) })),
-  ms('cond', fmta('P\\left( <> \\mid <> \\right)', { i(1), i(2) })),
+  ms('Pr', fmta('P\\left( <> \\right)', { i(1, 'A') })),
+  ms('cond', fmta('P\\left( <> \\mid <> \\right)', { i(1, 'A'), i(2, 'B') })),
   -- Indicator piecewise body: 1 if the condition holds, else 0. Deliberately
   -- omits the `\mathbb{1}_{} = ` head so the caller writes their own indicator
   -- symbol/subscript. Capitalised trigger (like Pr/Var) so it never fires
   -- inside words like "independent"/"individual" typed in \text{}.
-  ms('Ind', fmta('\\begin{cases} 1 & <> \\\\ 0 & \\text{otherwise} \\end{cases}', { i(1) })),
+  ms('Ind', fmta('\\begin{cases} 1 & <> \\\\ 0 & \\text{otherwise} \\end{cases}', { i(1, 'condition') })),
   ms('given', t('\\mid')),
   ms('mid', t('\\mid')),
   ms('sim', t('\\sim')),
@@ -307,11 +314,11 @@ local snips = {
   -- Statistics: sums, optimisation, convergence
   ms('nsum', t('\\sum_{i=1}^{n}')),
   ms('nprod', t('\\prod_{i=1}^{n}')),
-  ms('argmax', fmta('\\underset{<>}{\\arg\\max}\\;', { i(1) })),
-  ms('argmin', fmta('\\underset{<>}{\\arg\\min}\\;', { i(1) })),
+  ms('argmax', fmta('\\underset{<>}{\\arg\\max}\\;', { i(1, '\\theta') })),
+  ms('argmin', fmta('\\underset{<>}{\\arg\\min}\\;', { i(1, '\\theta') })),
   ms('convp', t('\\xrightarrow{p}')),
   ms('convd', t('\\xrightarrow{d}')),
-  ms('binom', fmta('\\binom{<>}{<>}', { i(1), i(2) })),
+  ms('binom', fmta('\\binom{<>}{<>}', { i(1, 'n'), i(2, 'k') })),
 
   -- Blackboard sets (case-distinct from nn/uu/AA/EE)
   ms('RR', t('\\mathbb{R}')),
