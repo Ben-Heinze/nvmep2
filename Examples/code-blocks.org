@@ -66,6 +66,13 @@ for i in range(7):
 : line 0
 : line 1
 : line 2
+: line 3
+: line 4
+: line 5
+: line 6
+
+
+
 ** C++
 
 #+begin_src cpp
@@ -116,13 +123,12 @@ print("hello", 2 + 2)
 for i in range(3):
     print("line", i)
 #+end_src
-
 #+RESULTS:
 : hello 4
 : line 0
 : line 1
 : line 2
-#+end_example
+
 
 * Header arguments
 
