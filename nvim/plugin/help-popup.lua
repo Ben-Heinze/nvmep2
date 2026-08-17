@@ -305,7 +305,7 @@ local tabs = {
       {
         title = 'Dots',
         rows = {
-          { '--', '\\ldots', '…  low dots' },
+          { '...', '\\ldots', '…  low dots' },
           { '--', '\\cdots', '⋯  centered dots' },
           { '--', '\\vdots', '⋮  vertical dots' },
           { '--', '\\ddots', '⋱  diagonal dots' },
@@ -341,6 +341,7 @@ local tabs = {
           { 'sim', '\\sim', 'similar / asymptotic (∼)' },
           { 'equiv', '\\equiv', 'equivalent / identical (≡)' },
           { 'mid', '\\mid', 'divides / such that / given (∣)' },
+          { '--', '\\therefore', '∴  therefore' },
           { '!=', '\\neq', 'not equal' },
           { '<=', '\\leq', 'less-or-equal' },
           { '>=', '\\geq', 'greater-or-equal' },
@@ -403,6 +404,8 @@ local tabs = {
           { 'abs', '\\lvert  \\rvert', 'absolute value' },
           { 'floor', '\\lfloor  \\rfloor', 'floor' },
           { 'ceil', '\\lceil  \\rceil', 'ceiling' },
+          { 'lbrace', '\\left\\{', 'big left curly brace' },
+          { 'rbrace', '\\right\\}', 'big right curly brace' },
         },
       },
     },

@@ -142,6 +142,9 @@ local snips = {
   ms('abs', fmta('\\lvert <> \\rvert', { i(1) })),
   ms('floor', fmta('\\lfloor <> \\rfloor', { i(1) })),
   ms('ceil', fmta('\\lceil <> \\rceil', { i(1) })),
+  -- Auto-sized curly braces (type `lbrace`/`rbrace` to place each side).
+  ms('lbrace', t('\\left\\{ ')),
+  ms('rbrace', t('\\right\\} ')),
 
   -- Relations / symbols
   ms('->', t('\\to '), false),
@@ -160,6 +163,7 @@ local snips = {
   ms('inf', t('\\infty')),
   ms('cdot', t('\\cdot ')),
   ms('xx', t('\\times '), false),
+  ms('...', t('\\ldots '), false),
 
   -- Sets / logic (uu = \cup, nn = \cap already; here the rest)
   ms('nn', t('\\cap ')),
