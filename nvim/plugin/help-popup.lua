@@ -50,6 +50,15 @@ local tabs = {
         },
       },
       {
+        title = 'Notes: emphasis / math (visual mode, org)',
+        kind = 'key',
+        rows = {
+          { '<Space>b', '*…*', 'bold selection' },
+          { '<Space>i', '/…/', 'italic selection' },
+          { '<Space>m', '$…$', 'wrap selection in inline math' },
+        },
+      },
+      {
         title = 'Org / export',
         kind = 'key',
         rows = {
@@ -101,6 +110,13 @@ local tabs = {
           { 'lim', '\\lim_{ \\to }', 'limit' },
           { 'nsum', '\\sum_{i=1}^{n}', 'sum i=1..n' },
           { 'nprod', '\\prod_{i=1}^{n}', 'product i=1..n' },
+        },
+      },
+      {
+        title = 'Log-like functions',
+        rows = {
+          { 'log', '\\log', 'logarithm (compose \\log_{2} etc.)' },
+          { 'exp', '\\exp', 'exponential' },
         },
       },
       {
@@ -321,7 +337,10 @@ local tabs = {
           { ':=', '\\coloneqq', 'defined as (:=)' },
           { 'deq', '\\triangleq', 'defined as (triangle)' },
           { 'prop', '\\propto', 'proportional to' },
-          { '~=', '\\approx', 'approximately' },
+          { '~=', '\\approx', 'approximately (≈)' },
+          { 'sim', '\\sim', 'similar / asymptotic (∼)' },
+          { 'equiv', '\\equiv', 'equivalent / identical (≡)' },
+          { 'mid', '\\mid', 'divides / such that / given (∣)' },
           { '!=', '\\neq', 'not equal' },
           { '<=', '\\leq', 'less-or-equal' },
           { '>=', '\\geq', 'greater-or-equal' },

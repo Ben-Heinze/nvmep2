@@ -27,3 +27,30 @@ vim.api.nvim_create_autocmd('BufWritePost', {
     require('user.org_pdf').on_save()
   end,
 })
+
+-- Wrap the visual selection in a marker on both sides: org emphasis (`*bold*`,
+-- `/italic/`) and inline LaTeX math (`$…$`). `c` deletes the selection into the
+-- unnamed register, then we retype it fenced by the marker (`<C-r>"` pastes the
+-- deleted text back). Charwise/inline by design: these don't span lines.
+local surrounds = {
+  { key = 'b', marker = '*', desc = 'bold' },
+  { key = 'i', marker = '/', desc = 'italic' },
+  { key = 'm', marker = '$', desc = 'inline math' },
+}
+for _, sur in ipairs(surrounds) do
+  vim.keymap.set('x', '<Space>' .. sur.key, 'c' .. sur.marker .. '<C-r>"' .. sur.marker .. '<Esc>', {
+    buffer = true,
+    silent = true,
+    nowait = true,
+    desc = 'org ' .. sur.desc .. ' (wrap selection)',
+  })
+end
+
+local ok, wk = pcall(require, 'which-key')
+if ok then
+  wk.add {
+    { '<Space>b', mode = 'x', desc = 'Bold *…*', buffer = 0, icon = { icon = '󰃁', color = 'orange' } },
+    { '<Space>i', mode = 'x', desc = 'Italic /…/', buffer = 0, icon = { icon = '', color = 'orange' } },
+    { '<Space>m', mode = 'x', desc = 'Inline math $…$', buffer = 0, icon = { icon = '󰿈', color = 'green' } },
+  }
+end

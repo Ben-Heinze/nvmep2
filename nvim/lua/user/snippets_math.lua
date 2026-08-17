@@ -114,6 +114,10 @@ local snips = {
   ms('int', fmta('\\int_{<>}^{<>} <> \\, d<>', { i(1), i(2), i(3), i(4) })),
   ms('lim', fmta('\\lim_{<> \\to <>} <>', { i(1, 'n'), i(2, '\\infty'), i(3) })),
 
+  -- Log-like functions (bare operators, so `\log_2`, `\exp(x)` compose freely)
+  ms('log', t('\\log ')),
+  ms('exp', t('\\exp ')),
+
   -- Derivatives
   ms('dd', fmta('\\frac{d<>}{d<>}', { i(1), i(2, 'x') })),
   ms('part', fmta('\\frac{\\partial <>}{\\partial <>}', { i(1), i(2, 'x') })),
@@ -145,6 +149,7 @@ local snips = {
   ms('>=', t('\\geq '), false),
   ms('<=', t('\\leq '), false),
   ms('~=', t('\\approx '), false),
+  ms('equiv', t('\\equiv ')),
   ms('+-', t('\\pm '), false),
   ms('=>', t('\\implies '), false),
   ms(':=', t('\\coloneqq '), false),
@@ -272,6 +277,7 @@ local snips = {
   -- inside words like "independent"/"individual" typed in \text{}.
   ms('Ind', fmta('\\begin{cases} 1 & <> \\\\ 0 & \\text{otherwise} \\end{cases}', { i(1) })),
   ms('given', t('\\mid ')),
+  ms('mid', t('\\mid ')),
   ms('sim', t('\\sim ')),
   ms('iid', t('\\overset{\\text{iid}}{\\sim} ')),
   ms('perp', t('\\perp ')),
