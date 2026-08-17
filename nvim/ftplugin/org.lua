@@ -28,6 +28,18 @@ vim.api.nvim_create_autocmd('BufWritePost', {
   end,
 })
 
+-- org-babel-equivalent: run the `#+begin_src` block under the cursor and write
+-- its output back as a `#+RESULTS:` block. `C-c C-c` mirrors Emacs org; it is
+-- unbound by nvim-orgmode (which uses the `<Space>o` prefix), so claiming it
+-- buffer-locally is safe. Off a src block the executor no-ops with a notice.
+vim.keymap.set('n', '<C-c><C-c>', function()
+  require('user.org_babel').execute_src_block_at_cursor()
+end, { buffer = true, silent = true, desc = 'org-babel: execute src block' })
+
+vim.api.nvim_buf_create_user_command(0, 'OrgBabelExecute', function()
+  require('user.org_babel').execute_src_block_at_cursor()
+end, { desc = 'org-babel: execute src block under cursor' })
+
 -- Wrap the visual selection in a marker on both sides: org emphasis (`*bold*`,
 -- `/italic/`) and inline LaTeX math (`$…$`). `c` deletes the selection into the
 -- unnamed register, then we retype it fenced by the marker (`<C-r>"` pastes the
@@ -52,5 +64,6 @@ if ok then
     { '<Space>b', mode = 'x', desc = 'Bold *…*', buffer = 0, icon = { icon = '󰃁', color = 'orange' } },
     { '<Space>i', mode = 'x', desc = 'Italic /…/', buffer = 0, icon = { icon = '', color = 'orange' } },
     { '<Space>m', mode = 'x', desc = 'Inline math $…$', buffer = 0, icon = { icon = '󰿈', color = 'green' } },
+    { '<C-c><C-c>', desc = 'Run src block → results', buffer = 0, icon = { icon = '', color = 'cyan' } },
   }
 end
