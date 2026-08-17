@@ -6,8 +6,11 @@
 ---`#+RESULTS:` block (Emacs `: `-prefixed fixed-width lines).
 ---
 ---Pure-Lua, async (`vim.system`), no save required. Interpreters/compilers are
----resolved from `$PATH` (provide R/JDK via direnv per project). Languages are
----data-driven in `M.languages`, so adding one is a few lines.
+---resolved through the project's flake direnv (via `direnv exec`, see
+---`make_runner`) rather than Neovim's PATH, falling back to PATH when no
+---`.envrc` is in scope; a runtime the environment doesn't provide yields a clear
+---`#+RESULTS:` note instead of an error. Languages are data-driven in
+---`M.languages`, so adding one is a few lines.
 ---
 ---Entry point: `require('user.org_babel').execute_src_block_at_cursor()`.
 ---@brief ]]
@@ -18,7 +21,8 @@ local M = {}
 -- either:
 --   * `cmd(file) -> argv`                      for interpreted languages, or
 --   * `compile(file, exe) -> argv` + `run(file, exe) -> argv`  for compiled ones.
--- `bin` lists the executables that must be on PATH (first found wins for `cc`).
+-- `bin` lists the executables the runtime needs (first found wins for `cc`);
+-- availability is checked in the resolved environment, not raw PATH.
 -- `filename` forces a specific temp filename when the toolchain cares about it.
 M.languages = {
   python = {
@@ -38,8 +42,8 @@ M.languages = {
   cpp = {
     bin = { 'g++', 'clang++' },
     ext = 'cpp',
-    compile = function(file, exe)
-      local cc = vim.fn.executable('g++') == 1 and 'g++' or 'clang++'
+    compile = function(file, exe, runner)
+      local cc = runner.has('g++') and 'g++' or 'clang++'
       return { cc, '-std=c++20', file, '-o', exe }
     end,
     run = function(_, exe)
@@ -75,6 +79,56 @@ local function resolve_language(lang)
   local key = lang:lower()
   key = M.aliases[lang] or M.aliases[key] or key
   return M.languages[key] and key or nil, M.languages[key]
+end
+
+-- Resolve how to run commands for a buffer, consulting the project's direnv
+-- environment (the flake devShell) rather than Neovim's own PATH. If an
+-- `.envrc` governs the buffer's directory and `direnv` is available, commands
+-- are executed via `direnv exec <root> …`, giving them the flake's full
+-- environment (so a runtime the flake provides is used even though it was
+-- deliberately NOT added to Neovim's PATH). Otherwise commands run on the
+-- ambient PATH. The resolver (the `.envrc` lookup) is cached per directory;
+-- `has()` defers to `direnv`, whose own cache keeps it both fast and fresh.
+local direnv_cache = {}
+
+local function make_runner(buf)
+  local name = vim.api.nvim_buf_get_name(buf)
+  local dir = (name ~= '' and vim.fs.dirname(name)) or vim.fn.getcwd()
+
+  if direnv_cache[dir] ~= nil then
+    return direnv_cache[dir]
+  end
+
+  local runner
+  local envrc = vim.fn.executable('direnv') == 1 and vim.fs.find('.envrc', { path = dir, upward = true })[1]
+  if envrc then
+    local root = vim.fs.dirname(envrc)
+    runner = {
+      source = 'flake direnv (' .. vim.fn.fnamemodify(root, ':~') .. ')',
+      wrap = function(argv)
+        local out = { 'direnv', 'exec', root }
+        vim.list_extend(out, argv)
+        return out
+      end,
+      has = function(bin)
+        local res = vim.system({ 'direnv', 'exec', root, 'sh', '-c', 'command -v ' .. bin }, { text = true }):wait(8000)
+        return res.code == 0 and vim.trim(res.stdout or '') ~= ''
+      end,
+    }
+  else
+    runner = {
+      source = 'PATH',
+      wrap = function(argv)
+        return argv
+      end,
+      has = function(bin)
+        return vim.fn.executable(bin) == 1
+      end,
+    }
+  end
+
+  direnv_cache[dir] = runner
+  return runner
 end
 
 ---Locate the src block under the cursor via treesitter, with a line-scan
@@ -224,7 +278,8 @@ local function set_results(bufnr, end_row, result_lines)
 end
 
 ---Run a resolved spec asynchronously and deliver combined output to `on_done`.
-local function run_spec(spec, block, on_done)
+---`runner` wraps each command so it executes in the project's environment.
+local function run_spec(spec, block, runner, on_done)
   local dir = vim.fn.tempname()
   vim.fn.mkdir(dir, 'p')
   local file = dir .. '/' .. (spec.filename or ('code.' .. spec.ext))
@@ -260,19 +315,19 @@ local function run_spec(spec, block, on_done)
   end
 
   if spec.compile then
-    vim.system(spec.compile(file, exe), { text = true }, function(cres)
+    vim.system(runner.wrap(spec.compile(file, exe, runner)), { text = true }, function(cres)
       if cres.code ~= 0 then
         on_done(combine(cres))
         cleanup()
         return
       end
-      vim.system(spec.run(file, exe), { text = true }, function(rres)
+      vim.system(runner.wrap(spec.run(file, exe, runner)), { text = true }, function(rres)
         on_done(combine(rres))
         cleanup()
       end)
     end)
   else
-    vim.system(spec.cmd(file), { text = true }, function(res)
+    vim.system(runner.wrap(spec.cmd(file, runner)), { text = true }, function(res)
       on_done(combine(res))
       cleanup()
     end)
@@ -294,32 +349,35 @@ function M.execute_src_block_at_cursor()
     return
   end
 
+  -- Resolve the runtime through the project's flake direnv (falls back to PATH).
+  local runner = make_runner(bufnr)
+
   local header = parse_header(block.header)
   if header.results == 'silent' then
     -- Run for side effects but do not touch the buffer.
-    if vim.fn.executable(spec.bin[1]) == 1 then
-      run_spec(spec, block, function() end)
+    if runner.has(spec.bin[1]) then
+      run_spec(spec, block, runner, function() end)
     end
     return
   end
 
-  -- Guard: required tool present?
+  -- Guard: is the runtime available in that environment?
   local have = false
   for _, bin in ipairs(spec.bin) do
-    if vim.fn.executable(bin) == 1 then
+    if runner.has(bin) then
       have = true
       break
     end
   end
   if not have then
-    set_results(bufnr, block.end_row, build_results(table.concat(spec.bin, '/') .. ' not found on PATH'))
+    set_results(bufnr, block.end_row, build_results(table.concat(spec.bin, '/') .. ' not found in ' .. runner.source))
     return
   end
 
   -- Immediate placeholder, replaced when the async job finishes.
   set_results(bufnr, block.end_row, { '#+RESULTS:', ': running…' })
 
-  run_spec(spec, block, function(output)
+  run_spec(spec, block, runner, function(output)
     vim.schedule(function()
       -- Results live below #+end_src, so the block's own rows don't shift; the
       -- placeholder we just wrote is found and replaced relative to end_row.
