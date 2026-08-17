@@ -145,6 +145,9 @@ local snips = {
   -- Auto-sized curly braces (type `lbrace`/`rbrace` to place each side).
   ms('lbrace', t('\\left\\{')),
   ms('rbrace', t('\\right\\}')),
+  -- Auto-sized parentheses / brackets: wrap the tabstop in \left( \right).
+  ms('lr(', fmta('\\left( <> \\right)', { i(1) }), false),
+  ms('lr[', fmta('\\left[ <> \\right]', { i(1) }), false),
 
   -- Relations / symbols
   ms('->', t('\\to'), false),
@@ -205,6 +208,20 @@ local snips = {
   <>
 \end{align*}]],
       { i(1) }
+    )
+  ),
+  -- Multi-line equation aligned on the `=` sign. `&` marks the alignment column
+  -- and `\\` ends a row, so the second line's `=` sits under the first. Add more
+  -- `&= <> \\` lines as needed.
+  ms(
+    'aeq',
+    fmta(
+      [[
+\begin{align*}
+  <> &= <> \\
+  &= <>
+\end{align*}]],
+      { i(1), i(2), i(3) }
     )
   ),
   ms(
