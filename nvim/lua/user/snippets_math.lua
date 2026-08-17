@@ -115,8 +115,8 @@ local snips = {
   ms('lim', fmta('\\lim_{<> \\to <>} <>', { i(1, 'n'), i(2, '\\infty'), i(3) })),
 
   -- Log-like functions (bare operators, so `\log_2`, `\exp(x)` compose freely)
-  ms('log', t('\\log ')),
-  ms('exp', t('\\exp ')),
+  ms('log', t('\\log')),
+  ms('exp', t('\\exp')),
 
   -- Derivatives
   ms('dd', fmta('\\frac{d<>}{d<>}', { i(1), i(2, 'x') })),
@@ -136,55 +136,55 @@ local snips = {
   ms('bb', fmta('\\mathbb{<>}', { i(1) })), -- e.g. \mathbb{P}, indicator \mathbb{1}
 
   -- Vector calculus (bare \partial; `part` stays the fraction form)
-  ms('pd', t('\\partial ')),
-  ms('grad', t('\\nabla ')),
+  ms('pd', t('\\partial')),
+  ms('grad', t('\\nabla')),
   ms('vnorm', fmta('\\lVert <> \\rVert', { i(1) })), -- `norm` is the Normal distribution
   ms('abs', fmta('\\lvert <> \\rvert', { i(1) })),
   ms('floor', fmta('\\lfloor <> \\rfloor', { i(1) })),
   ms('ceil', fmta('\\lceil <> \\rceil', { i(1) })),
   -- Auto-sized curly braces (type `lbrace`/`rbrace` to place each side).
-  ms('lbrace', t('\\left\\{ ')),
-  ms('rbrace', t('\\right\\} ')),
+  ms('lbrace', t('\\left\\{')),
+  ms('rbrace', t('\\right\\}')),
 
   -- Relations / symbols
-  ms('->', t('\\to '), false),
-  ms('!=', t('\\neq '), false),
-  ms('>=', t('\\geq '), false),
-  ms('<=', t('\\leq '), false),
-  ms('~=', t('\\approx '), false),
-  ms('equiv', t('\\equiv ')),
-  ms('+-', t('\\pm '), false),
-  ms('=>', t('\\implies '), false),
-  ms(':=', t('\\coloneqq '), false),
-  ms('iff', t('\\iff ')),
-  ms('prop', t('\\propto ')),
-  ms('deq', t('\\triangleq ')),
-  ms('comp', t('\\circ ')),
+  ms('->', t('\\to'), false),
+  ms('!=', t('\\neq'), false),
+  ms('>=', t('\\geq'), false),
+  ms('<=', t('\\leq'), false),
+  ms('~=', t('\\approx'), false),
+  ms('equiv', t('\\equiv')),
+  ms('+-', t('\\pm'), false),
+  ms('=>', t('\\implies'), false),
+  ms(':=', t('\\coloneqq'), false),
+  ms('iff', t('\\iff')),
+  ms('prop', t('\\propto')),
+  ms('deq', t('\\triangleq')),
+  ms('comp', t('\\circ')),
   ms('inf', t('\\infty')),
-  ms('cdot', t('\\cdot ')),
-  ms('xx', t('\\times '), false),
-  ms('...', t('\\ldots '), false),
+  ms('cdot', t('\\cdot')),
+  ms('xx', t('\\times'), false),
+  ms('...', t('\\ldots'), false),
 
   -- Sets / logic (uu = \cup, nn = \cap already; here the rest)
-  ms('nn', t('\\cap ')),
-  ms('uu', t('\\cup ')),
-  ms('bigcup', fmta('\\bigcup_{<>}^{<>} ', { i(1), i(2) })),
-  ms('bigcap', fmta('\\bigcap_{<>}^{<>} ', { i(1), i(2) })),
-  ms('smin', t('\\setminus ')),
-  ms('subs', t('\\subseteq ')),
-  ms('sups', t('\\supseteq ')),
-  ms('empty', t('\\emptyset ')),
+  ms('nn', t('\\cap')),
+  ms('uu', t('\\cup')),
+  ms('bigcup', fmta('\\bigcup_{<>}^{<>}', { i(1), i(2) })),
+  ms('bigcap', fmta('\\bigcap_{<>}^{<>}', { i(1), i(2) })),
+  ms('smin', t('\\setminus')),
+  ms('subs', t('\\subseteq')),
+  ms('sups', t('\\supseteq')),
+  ms('empty', t('\\emptyset')),
   ms('set', fmta('\\{ <> \\}', { i(1) })),
-  ms('oplus', t('\\oplus ')),
-  ms('otimes', t('\\otimes ')),
-  ms('odot', t('\\odot ')),
-  ms('land', t('\\land ')),
-  ms('lor', t('\\lor ')),
-  ms('neg', t('\\neg ')),
-  ms('in', t('\\in ')),
-  ms('notin', t('\\notin ')),
-  ms('AA', t('\\forall '), false),
-  ms('EE', t('\\exists '), false),
+  ms('oplus', t('\\oplus')),
+  ms('otimes', t('\\otimes')),
+  ms('odot', t('\\odot')),
+  ms('land', t('\\land')),
+  ms('lor', t('\\lor')),
+  ms('neg', t('\\neg')),
+  ms('in', t('\\in')),
+  ms('notin', t('\\notin')),
+  ms('AA', t('\\forall'), false),
+  ms('EE', t('\\exists'), false),
 
   -- Environments
   ms(
@@ -280,20 +280,20 @@ local snips = {
   -- symbol/subscript. Capitalised trigger (like Pr/Var) so it never fires
   -- inside words like "independent"/"individual" typed in \text{}.
   ms('Ind', fmta('\\begin{cases} 1 & <> \\\\ 0 & \\text{otherwise} \\end{cases}', { i(1) })),
-  ms('given', t('\\mid ')),
-  ms('mid', t('\\mid ')),
-  ms('sim', t('\\sim ')),
-  ms('iid', t('\\overset{\\text{iid}}{\\sim} ')),
-  ms('perp', t('\\perp ')),
-  ms('iperp', t('\\perp\\!\\!\\!\\perp ')),
+  ms('given', t('\\mid')),
+  ms('mid', t('\\mid')),
+  ms('sim', t('\\sim')),
+  ms('iid', t('\\overset{\\text{iid}}{\\sim}')),
+  ms('perp', t('\\perp')),
+  ms('iperp', t('\\perp\\!\\!\\!\\perp')),
 
   -- Statistics: sums, optimisation, convergence
-  ms('nsum', t('\\sum_{i=1}^{n} ')),
-  ms('nprod', t('\\prod_{i=1}^{n} ')),
-  ms('argmax', fmta('\\underset{<>}{\\arg\\max}\\; ', { i(1) })),
-  ms('argmin', fmta('\\underset{<>}{\\arg\\min}\\; ', { i(1) })),
-  ms('convp', t('\\xrightarrow{p} ')),
-  ms('convd', t('\\xrightarrow{d} ')),
+  ms('nsum', t('\\sum_{i=1}^{n}')),
+  ms('nprod', t('\\prod_{i=1}^{n}')),
+  ms('argmax', fmta('\\underset{<>}{\\arg\\max}\\;', { i(1) })),
+  ms('argmin', fmta('\\underset{<>}{\\arg\\min}\\;', { i(1) })),
+  ms('convp', t('\\xrightarrow{p}')),
+  ms('convd', t('\\xrightarrow{d}')),
   ms('binom', fmta('\\binom{<>}{<>}', { i(1), i(2) })),
 
   -- Blackboard sets (case-distinct from nn/uu/AA/EE)
@@ -302,6 +302,13 @@ local snips = {
   ms('NN', t('\\mathbb{N}')),
   ms('QQ', t('\\mathbb{Q}')),
   ms('CC', t('\\mathbb{C}')),
+
+  -- Named subscripts: `xn`/`xi`/`xj` -> `x_{n}`/`x_{i}`/`x_{j}` (letter subscripts
+  -- the digit auto-subscript below can't reach). wordTrig (the `ms` default) so
+  -- they never fire inside words like `\sin`, `\max`, or `\exists`.
+  ms('xn', t('x_{n}')),
+  ms('xi', t('x_{i}')),
+  ms('xj', t('x_{j}')),
 
   -- Auto-subscript: `x1` -> `x_{1}`, `b0` -> `b_{0}` (math only).
   s(
@@ -349,7 +356,7 @@ local greek = {
   o = 'omega',
 }
 for key, name in pairs(greek) do
-  table.insert(snips, ms(';' .. key, t('\\' .. name .. ' '), false))
+  table.insert(snips, ms(';' .. key, t('\\' .. name), false))
 end
 
 -- A few capital Greek letters.
@@ -366,7 +373,7 @@ local greek_upper = {
   O = 'Omega',
 }
 for key, name in pairs(greek_upper) do
-  table.insert(snips, ms(';' .. key, t('\\' .. name .. ' '), false))
+  table.insert(snips, ms(';' .. key, t('\\' .. name), false))
 end
 
 ls.add_snippets('tex', snips, { key = 'math' })

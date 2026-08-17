@@ -99,6 +99,7 @@ local tabs = {
           { 'sq', '\\sqrt{}', 'square root' },
           { 'nrt', '\\sqrt[]{}', 'nth root' },
           { 'x1', 'x_{1}', 'auto-subscript letter+digit' },
+          { 'xn xi xj', 'x_{n}', 'named subscripts: x with n / i / j' },
         },
       },
       {
@@ -505,8 +506,35 @@ local function all_rows()
   return out
 end
 
--- Insert a row's LaTeX at the origin window's cursor, in insert mode. Places the
--- cursor inside the first empty {} or () if present.
+-- Where should the cursor land inside a freshly-inserted `latex` string? Returns
+-- a byte offset into `latex` (how many bytes sit before the caret), or #latex when
+-- there is no interior slot. Priority, first match wins:
+--   1. first empty `{}` or `()`           -> just inside it (\frac{}{}, \binom{}{})
+--   2. first `( ` / `[ ` opening an arg    -> the first argument slot, so
+--      `P\left(  \right)`, `\mathcal{N}( , )`, `\mathbb{E}\left[  \right]` land
+--      the caret between the delimiters rather than at the very end
+--   3. first double space `  `             -> between them, for delimiters whose
+--      opener is a control word (`\lVert  \rVert`, `\{  \}`, `\lfloor  \rfloor`)
+local function caret_offset(latex)
+  local p = latex:find('{}', 1, true) or latex:find('()', 1, true)
+  if p then
+    return p -- just after the opening { or (
+  end
+  local q = latex:find('( ', 1, true)
+  local r = latex:find('[ ', 1, true)
+  local paren = q and (not r or q < r) and q or r
+  if paren then
+    return paren + 1 -- just past the opening delimiter and its space
+  end
+  local d = latex:find('  ', 1, true)
+  if d then
+    return d -- between the two spaces
+  end
+  return #latex
+end
+
+-- Insert a row's LaTeX at the origin window's cursor and drop into insert mode at
+-- the most useful spot (see `caret_offset`) -- e.g. inside `P\left( … \right)`.
 local function insert_output(latex)
   if not latex or latex == '' then
     return
@@ -521,11 +549,15 @@ local function insert_output(latex)
   local before, after = line:sub(1, col), line:sub(col + 1)
   local new = before .. latex .. after
   api.nvim_buf_set_lines(0, row - 1, row, false, { new })
-  -- Prefer landing the cursor inside the first empty {} or ().
-  local rel = latex:find('{}', 1, true) or latex:find('()', 1, true)
-  local target = col + (rel and rel or #latex)
-  api.nvim_win_set_cursor(0, { row, target })
-  api.nvim_feedkeys(api.nvim_replace_termcodes('<Esc>a', true, false, true), 'n', false)
+  local target = col + caret_offset(latex)
+  if target >= #new then
+    -- No interior slot (or slot is at end-of-line): append after the text.
+    api.nvim_win_set_cursor(0, { row, math.max(#new - 1, 0) })
+    vim.cmd('startinsert!')
+  else
+    api.nvim_win_set_cursor(0, { row, target })
+    vim.cmd('startinsert')
+  end
 end
 
 -- For `kind='snip'` rows, fire the *actual* LuaSnip snippet (with its tab-stops)
