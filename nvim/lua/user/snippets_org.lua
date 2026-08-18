@@ -44,6 +44,12 @@ ls.add_snippets('org', {
       }
     )
   ),
+  -- Single-language code blocks (skip the language choice) for the four
+  -- languages user.org_babel can actually execute (see M.languages there).
+  s('pysrc', fmt('#+begin_src python\n{}\n#+end_src', { i(1) })),
+  s('rsrc', fmt('#+begin_src R\n{}\n#+end_src', { i(1) })),
+  s('javasrc', fmt('#+begin_src java\n{}\n#+end_src', { i(1) })),
+  s('cppsrc', fmt('#+begin_src cpp\n{}\n#+end_src', { i(1) })),
   s(
     'ex',
     fmt(

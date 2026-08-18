@@ -1,0 +1,4 @@
+* Todo list
+** TODO The C++ is throwing a lot of errors. I believe there is a cmake compile command flag that needs to be flagged, but I dont remember the exact name of that, please investigate this issue.
+** TODO There is a general code block snippet that exists in the help-popup. This should exist for Python, R, Java, and C++, and add those to the help-popup too.
+
