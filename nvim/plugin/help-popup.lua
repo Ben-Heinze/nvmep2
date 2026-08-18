@@ -192,6 +192,16 @@ local tabs = {
           { 'refs', '* References  #+print_bibliography:', 'references section (drop at end of note)' },
         },
       },
+      {
+        title = 'Cross-references (org)',
+        kind = 'snip',
+        rows = {
+          { 'cid', ':PROPERTIES: :CUSTOM_ID: ⟨id⟩ :END:', 'stable anchor id on a heading (target of sref)' },
+          { 'oref', '[[file:⟨path⟩][⟨text⟩]]', 'link to another org page (whole file)' },
+          { 'sref', '[[file:⟨path⟩::#⟨id⟩][⟨text⟩]]', 'link to a CUSTOM_ID section in another page' },
+          { 'aref', '[[#⟨id⟩][⟨text⟩]]', 'link to a CUSTOM_ID anchor in this file' },
+        },
+      },
     },
   },
   {

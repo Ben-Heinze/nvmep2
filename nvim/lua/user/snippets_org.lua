@@ -100,6 +100,25 @@ ls.add_snippets('org', {
   -- Image / file link (text only -- no inline rendering).
   s('img', fmt('[[file:{}][{}]]', { i(1, 'path'), i(2, 'caption') })),
   s('link', fmt('[[{}][{}]]', { i(1, 'target'), i(2, 'description') })),
+  -- Cross-referencing other org pages/sections. `file:` links are rewritten
+  -- to point at the published .html on export (org-html-link-org-files-as-html).
+  -- Drop this on a heading to give it a stable anchor that survives rewording.
+  s(
+    'cid',
+    fmt(
+      [[
+:PROPERTIES:
+:CUSTOM_ID: {}
+:END:]],
+      { i(1, 'anchor-id') }
+    )
+  ),
+  -- Link to another org page as a whole (path relative to this file).
+  s('oref', fmt('[[file:{}][{}]]', { i(1, '../page/index.org'), i(2, 'description') })),
+  -- Link to a specific CUSTOM_ID section in another org page.
+  s('sref', fmt('[[file:{}::#{}][{}]]', { i(1, '../page/index.org'), i(2, 'anchor-id'), i(3, 'description') })),
+  -- Link to a CUSTOM_ID anchor within the current file.
+  s('aref', fmt('[[#{}][{}]]', { i(1, 'anchor-id'), i(2, 'description') })),
   -- Starter org table: header row, separator, one data row. Press TAB to realign
   -- and to add cells/rows.
   s(
