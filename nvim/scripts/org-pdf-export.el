@@ -7,13 +7,25 @@
 ;; PDF (they otherwise vanish, being HTML-only export snippets).
 
 (require 'ox-latex)
+(require 'oc)
+(require 'oc-natbib)
 
 ;; LuaLaTeX (not pdflatex) so the pgf `graphdrawing' engine can auto-position
 ;; `\graph' nodes -- this is global to every org export here. xcolor and the
 ;; `hl' palette below all work identically under LuaLaTeX.
+;;
+;; Citations use org-cite's `natbib' processor (not `biblatex') because
+;; `biblatex' needs the `biber' backend, which isn't installed here --
+;; `natbib' only needs plain `bibtex', which `latexmk' (picked automatically
+;; by `org-latex-pdf-process' since it's on PATH) already knows how to invoke
+;; as an extra pass when it sees `\bibliography{}' in the .aux file.
 (setq org-confirm-babel-evaluate nil
       org-export-with-broken-links t
-      org-latex-compiler "lualatex")
+      org-latex-compiler "lualatex"
+      org-cite-export-processors '((latex natbib))
+      ;; A single shared bibliography for every note, so `[cite:@key]' works
+      ;; without each org file needing its own `#+bibliography:' line.
+      org-cite-global-bibliography (list (expand-file-name "~/projects/yappopotamus/main.bib")))
 
 ;; Palette mirrors nvim/plugin/note-highlight.lua and
 ;; ~/projects/yappopotamus/static/style.css -- keep the three in sync.

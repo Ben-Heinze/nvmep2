@@ -184,6 +184,14 @@ local tabs = {
           { 'date', '(today)', 'insert today’s date' },
         },
       },
+      {
+        title = 'Citations (org)',
+        kind = 'snip',
+        rows = {
+          { 'cite', '[cite:@⟨key⟩]', 'citation (key from the shared bibliography)' },
+          { 'refs', '* References  #+print_bibliography:', 'references section (drop at end of note)' },
+        },
+      },
     },
   },
   {

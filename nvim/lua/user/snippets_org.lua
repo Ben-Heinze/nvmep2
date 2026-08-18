@@ -113,6 +113,12 @@ ls.add_snippets('org', {
     )
   ),
   s('date', f(today)),
+  -- Citations (org-cite syntax; resolved via the shared bibliography set in
+  -- scripts/org-pdf-export.el -- no per-file `#+bibliography:` needed).
+  s('cite', fmt('[cite:@{}]', { i(1, 'key') })),
+  -- References section + bibliography-printing keyword, dropped at the end
+  -- of a note once it has citations.
+  s('refs', t { '* References', '', '#+print_bibliography:' }),
   -- Headings.
   s('h1', fmt('* {}', { i(1) })),
   s('h2', fmt('** {}', { i(1) })),
