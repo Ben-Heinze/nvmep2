@@ -1,3 +1,15 @@
+-- R.nvim's own ftplugin (r_rnvim.lua, bundled with the plugin) unconditionally
+-- probes for the `R` binary on FileType=r via check_nvimcom_version, which
+-- throws a hard `jobstart` error instead of failing gracefully when `R` isn't
+-- on PATH. R only comes from a per-project direnv here (see
+-- lua/user/org_babel.lua), so it's routinely absent. `R_filetypes` is the
+-- plugin's own documented knob for which filetypes it should activate on; an
+-- empty table (not containing "r") makes its ftplugin bail out before ever
+-- reaching that probe.
+if vim.fn.executable('R') == 0 then
+  vim.g.R_filetypes = {}
+end
+
 -- -- Create a table with the options to be passed to setup()
 -- local opts = {
 --   hook = {

@@ -77,12 +77,14 @@ local root_markers = { '.git', 'mvnw', 'gradlew' }
 --   },
 -- }
 
-vim.lsp.start {
-  name = 'jdtls',
-  cmd = { 'jdtls' },
-  root_dir = vim.fs.root(0, root_markers),
-  root_markers = root_markers,
-}
+if vim.fn.executable('jdtls') == 1 then
+  vim.lsp.start {
+    name = 'jdtls',
+    cmd = { 'jdtls' },
+    root_dir = vim.fs.root(0, root_markers),
+    root_markers = root_markers,
+  }
+end
 
 -- local config = {
 --   cmd = 'jdtls',

@@ -34,6 +34,30 @@ require('otter').setup {
   verbose = { no_code_found = false },
 }
 
+-- Defensive patch: otter's `otter-ls` client closes over the org buffer's
+-- bufnr *at the moment `activate()` ran* (see `otterls.start` in
+-- otter/lsp/init.lua) and keeps a treesitter parser cached against that same
+-- bufnr in `keeper.rafts`. If that number is later reused by an unrelated
+-- buffer (Neovim recycles freed bufnrs), `get_current_language_context`'s
+-- `parser:parse()` throws "invalid buffer handle" instead of failing soft --
+-- and since nvim-cmp's signature-help source calls it on every `(`/`,`
+-- (otter-ls's own triggerCharacters), that fires the error on completely
+-- ordinary prose, nowhere near a code block. Wrap it so a stale raft just
+-- reports "no language context here" (nil), which the caller already treats
+-- as a normal no-op, instead of throwing through nvim-cmp's autocmd chain.
+do
+  local keeper = require('otter.keeper')
+  local orig_get_current_language_context = keeper.get_current_language_context
+  keeper.get_current_language_context = function(main_nr, position)
+    local ok, lang, start_row, start_col, end_row, end_col =
+      pcall(orig_get_current_language_context, main_nr, position)
+    if not ok then
+      return nil
+    end
+    return lang, start_row, start_col, end_row, end_col
+  end
+end
+
 ---Activate otter for an org buffer (idempotent; re-run to pick up blocks whose
 ---language was added after the first activation). `buf` must be the current
 ---buffer: otter targets `nvim_get_current_buf()`, and attaching servers to the

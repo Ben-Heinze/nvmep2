@@ -1,4 +1,7 @@
 vim.defer_fn(function()
+  if vim.fn.executable('R') == 0 then
+    return
+  end
   vim.lsp.start {
     name = 'r',
     root_dir = vim.fs.dirname(vim.fs.find({ '.git' }, { upward = true })[1]),

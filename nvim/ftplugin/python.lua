@@ -34,6 +34,9 @@ local root_files = {
 -- vim.print('Using Python executable: ' .. python_executable)
 
 vim.defer_fn(function()
+  if vim.fn.executable('pylsp') == 0 then
+    return
+  end
   print('Setting up Python LSP...')
   require('lspconfig').pylsp.setup {
     settings = {
