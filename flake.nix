@@ -61,7 +61,8 @@
 
             markdownlint-cli2
 
-            # jdk
+            jdk
+            R
 
             # TODO: maybe add these as a def
             # python312

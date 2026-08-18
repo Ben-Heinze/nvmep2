@@ -71,6 +71,7 @@ for i in range(7):
 : line 5
 : line 6
 
+
 ** C++
 
 #+begin_src cpp
@@ -78,23 +79,24 @@ for i in range(7):
 #include <vector>
 
 int main() {
-  std::vector<int> v = {9, 7};
+  std::vector<int> v = {6, 7};
   std::cout << "cpp works: " << v[0] * v[1] << "\n";
   return 0;
 }
 #+end_src
 #+RESULTS:
-: cpp works: 63
+: cpp works: 42
 
 ** R
 
 #+begin_src R
-x <- 1:10
+x <- 1+4
 cat("sum:", sum(x), "\n")
 cat("mean:", mean(x), "\n")
 #+end_src
 #+RESULTS:
-: Rscript not found in flake direnv (~/git_repos/nvmep2)
+: sum: 5 
+: mean: 5 
 
 ** Java
 
@@ -109,7 +111,7 @@ public class Main {
 }
 #+end_src
 #+RESULTS:
-: java not found in flake direnv (~/git_repos/nvmep2)
+: java: 9
 
 ** What the results look like
 
