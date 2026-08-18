@@ -308,7 +308,7 @@ local tabs = {
           { '--', '\\mp', '∓  minus-plus' },
           { 'cdot', '\\cdot', '⋅  dot product' },
           { 'xx', '\\times', '×  times / cross' },
-          { 'comp', '\\circ', '∘  composition' },
+          { '--', '\\circ', '∘  composition' },
           { 'prop', '\\propto', '∝  proportional' },
         },
       },
@@ -355,7 +355,7 @@ local tabs = {
           { '!=', '\\neq', 'not equal' },
           { '<=', '\\leq', 'less-or-equal' },
           { '>=', '\\geq', 'greater-or-equal' },
-          { 'comp', '\\circ', 'composition' },
+          { '--', '\\circ', 'composition' },
         },
       },
       {

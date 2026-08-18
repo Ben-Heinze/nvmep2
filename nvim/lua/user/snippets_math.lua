@@ -50,37 +50,49 @@ local function in_mathzone()
     return false
   end
   lines[#lines] = lines[#lines]:sub(1, col)
-  local text = table.concat(lines, '\n')
-  -- Drop escaped backslashes and escaped dollars so they don't toggle state.
-  text = text:gsub('\\\\', ''):gsub('\\%$', '')
 
   local inline, display, depth = false, false, 0
-  local idx, n = 1, #text
-  while idx <= n do
-    local two = text:sub(idx, idx + 1)
-    if two == '$$' then
-      display = not display
-      idx = idx + 2
-    elseif two == '\\(' or two == '\\[' then
-      display = true
-      idx = idx + 2
-    elseif two == '\\)' or two == '\\]' then
-      display = false
-      idx = idx + 2
-    elseif text:sub(idx, idx) == '$' then
-      inline = not inline
-      idx = idx + 1
-    else
-      local benv = text:match('^\\begin{(%a+)%*?}', idx)
-      local eenv = benv == nil and text:match('^\\end{(%a+)%*?}', idx) or nil
-      if benv and MATH_ENVS[benv] then
-        depth = depth + 1
-        idx = (text:find('}', idx, true) or idx) + 1
-      elseif eenv and MATH_ENVS[eenv] then
-        depth = math.max(0, depth - 1)
-        idx = (text:find('}', idx, true) or idx) + 1
-      else
+  for _, line in ipairs(lines) do
+    -- A blank line or an org heading ends any open inline/display span in
+    -- ordinary prose. Without this, one stray *unpaired* `$` earlier in the
+    -- buffer (e.g. prose mentioning the `$` character itself, like `~$~`)
+    -- flips `inline` on with no matching partner to flip it back off, so
+    -- every word for the rest of the buffer misreads as math. Resetting at
+    -- paragraph boundaries contains that damage to a single paragraph.
+    if line:match('^%s*$') or line:match('^%*+%s') then
+      inline, display = false, false
+    end
+
+    -- Drop escaped backslashes and escaped dollars so they don't toggle state.
+    local text = line:gsub('\\\\', ''):gsub('\\%$', '')
+
+    local idx, n = 1, #text
+    while idx <= n do
+      local two = text:sub(idx, idx + 1)
+      if two == '$$' then
+        display = not display
+        idx = idx + 2
+      elseif two == '\\(' or two == '\\[' then
+        display = true
+        idx = idx + 2
+      elseif two == '\\)' or two == '\\]' then
+        display = false
+        idx = idx + 2
+      elseif text:sub(idx, idx) == '$' then
+        inline = not inline
         idx = idx + 1
+      else
+        local benv = text:match('^\\begin{(%a+)%*?}', idx)
+        local eenv = benv == nil and text:match('^\\end{(%a+)%*?}', idx) or nil
+        if benv and MATH_ENVS[benv] then
+          depth = depth + 1
+          idx = (text:find('}', idx, true) or idx) + 1
+        elseif eenv and MATH_ENVS[eenv] then
+          depth = math.max(0, depth - 1)
+          idx = (text:find('}', idx, true) or idx) + 1
+        else
+          idx = idx + 1
+        end
       end
     end
   end
@@ -169,7 +181,6 @@ local snips = {
   ms('iff', t('\\iff')),
   ms('prop', t('\\propto')),
   ms('deq', t('\\triangleq')),
-  ms('comp', t('\\circ')),
   ms('inf', t('\\infty')),
   ms('cdot', t('\\cdot')),
   ms('xx', t('\\times'), false),

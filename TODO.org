@@ -1,4 +1,13 @@
 * Todo list
 ** TODO The C++ is throwing a lot of errors. I believe there is a cmake compile command flag that needs to be flagged, but I dont remember the exact name of that, please investigate this issue.
 ** TODO There is a general code block snippet that exists in the help-popup. This should exist for Python, R, Java, and C++, and add those to the help-popup too.
+** TODO remove automatically creating two quotes
 
+
+* Changes I made to stray from OG
+** DONE Added the help-popup that includes a lot of custom snippets "<space> ?"
+** DONE Added color highlighting that exports to html and pdfs from org mode "<space> n"
+** DONE Added keybinds to bold and italics highlighted in visual mode "<space> b or <space> i"
+** DONE Added Rendering pdf of org mode and opening it in zathura "<space> o e"
+** DONE Added auto-correct for misspelled words for visual and normal mode (theres different options) "<space> f"
+** DONE Added Org-babel for running code blocks in Python, R, C++, and Java.
