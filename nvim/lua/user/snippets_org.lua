@@ -99,6 +99,18 @@ ls.add_snippets('org', {
   ),
   -- Image / file link (text only -- no inline rendering).
   s('img', fmt('[[file:{}][{}]]', { i(1, 'path'), i(2, 'caption') })),
+  -- Embed a PDF that lives in the current directory. On HTML export the raw
+  -- block passes through verbatim, so the viewer shows the PDF inline.
+  s(
+    'pdf',
+    fmt(
+      [[
+#+begin_export html
+<embed src="{}" width="100%" height="{}px" type="application/pdf">
+#+end_export]],
+      { i(1, 'file.pdf'), i(2, '600') }
+    )
+  ),
   s('link', fmt('[[{}][{}]]', { i(1, 'target'), i(2, 'description') })),
   -- Cross-referencing other org pages/sections. `file:` links are rewritten
   -- to point at the published .html on export (org-html-link-org-files-as-html).

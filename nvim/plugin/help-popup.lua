@@ -180,6 +180,7 @@ local tabs = {
           { 'h1 h2 h3', '* / ** / ***', 'headings' },
           { 'link', '[[⟨target⟩][⟨link text⟩]]', 'hyperlink' },
           { 'img', '[[file:⟨path⟩][⟨caption⟩]]', 'file / image link' },
+          { 'pdf', '<embed src="⟨file.pdf⟩" …>', 'embed a PDF from the current dir (HTML export)' },
           { 'tbl', '| ⟨header⟩ | ⟨header⟩ |', 'starter table (TAB realigns)' },
           { 'date', '(today)', 'insert today’s date' },
         },
