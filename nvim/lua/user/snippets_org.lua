@@ -108,7 +108,7 @@ ls.add_snippets('org', {
 #+begin_export html
 <embed src="{}" width="100%" height="{}px" type="application/pdf">
 #+end_export]],
-      { i(1, 'file.pdf'), i(2, '600') }
+      { i(1, 'file.pdf'), i(2, '800') }
     )
   ),
   s('link', fmt('[[{}][{}]]', { i(1, 'target'), i(2, 'description') })),

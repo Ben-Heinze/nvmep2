@@ -143,6 +143,19 @@ require('nvim-tree').setup {
     end
     vim.keymap.set('n', '<C-o>', open_with_xdg, { buffer = bufnr, desc = 'Open with xdg-open' })
 
+    -- <CR> on a .pdf opens it in zathura (detached) instead of loading the
+    -- binary into a buffer as garbage; every other node keeps default <CR>.
+    local function edit_or_open_pdf()
+      local node = api.tree.get_node_under_cursor()
+      if node and node.type == 'file' and node.name:lower():match('%.pdf$') then
+        vim.fn.jobstart({ 'zathura', node.absolute_path }, { detach = true })
+        return
+      end
+      api.node.open.edit()
+    end
+    vim.keymap.set('n', '<CR>', edit_or_open_pdf, { buffer = bufnr, desc = 'Open (PDF → zathura)' })
+    vim.keymap.set('n', 'o', edit_or_open_pdf, { buffer = bufnr, desc = 'Open (PDF → zathura)' })
+
     -- local preview = require('nvim-tree-preview')
     -- vim.keymap.set('n', 'P', preview.watch, opts 'Preview (Watch)')
     -- vim.keymap.set('n', '<Esc>', preview.unwatch, opts 'Close Preview/Unwatch')
