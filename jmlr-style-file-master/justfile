@@ -1,0 +1,24 @@
+# JMLR sample paper — build/view with the repo's texlive + zathura
+
+doc := "sample"
+out := "output"
+
+# Compile the PDF into ./output (pdflatex + bibtex as needed)
+default: build
+
+build:
+  mkdir -p {{out}}
+  latexmk -pdf -outdir={{out}} -interaction=nonstopmode -halt-on-error {{doc}}.tex
+
+# Open the PDF in zathura
+view: build
+  zathura {{out}}/{{doc}}.pdf &
+
+# Continuous compile-on-save with live preview
+watch:
+  mkdir -p {{out}}
+  latexmk -pdf -pvc -outdir={{out}} -interaction=nonstopmode {{doc}}.tex
+
+# Remove the entire output folder, including the PDF
+clean:
+  rm -rf {{out}}
