@@ -13,6 +13,22 @@ vim.opt_local.tabstop = 2
 vim.opt_local.softtabstop = 2
 vim.opt_local.expandtab = true
 
+-- Disable orgmode's automatic list/line indentation. Org's `indentexpr` aligns
+-- continuation lines under the bullet ("overhang"), so <CR> after `- item`
+-- inserts leading spaces and every new `-` nests one level deeper, making quick
+-- flat lists tedious (this is separate from `org_adapt_indentation`). Org's
+-- indent/org.lua sets `indentexpr`/`autoindent` and loads *after* this file, so
+-- defer the reset to win the race. Manual indentation (tab/space) still works.
+local buf = vim.api.nvim_get_current_buf()
+vim.schedule(function()
+  if not vim.api.nvim_buf_is_valid(buf) then
+    return
+  end
+  vim.bo[buf].indentexpr = ''
+  vim.bo[buf].autoindent = false
+  vim.bo[buf].smartindent = false
+end)
+
 -- Export this buffer to PDF (Emacs ox-latex) and view it in zathura.
 vim.keymap.set('n', '<Space>oe', function()
   require('user.org_pdf').export_and_view()
