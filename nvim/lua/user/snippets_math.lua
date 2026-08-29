@@ -242,14 +242,19 @@ local snips = {
       { i(1, 'a'), i(2, 'b'), i(3, 'c') }
     )
   ),
+  -- Piecewise function: two `value & condition` branches (add more with `\\`).
+  -- `&` is the alignment column, `\\` ends a row. Mirrors the cases blocks in
+  -- the notes (h(x), Winnow promotion/demotion); `\text{otherwise}` default keeps
+  -- the last condition upright instead of a bare `else`.
   ms(
     'cases',
     fmta(
       [[
 \begin{cases}
-  <>
+  <> & <> \\
+  <> & <>
 \end{cases}]],
-      { i(1, 'value & condition') }
+      { i(1, 'a'), i(2, 'condition'), i(3, 'b'), i(4, '\\text{otherwise}') }
     )
   ),
   ms(
@@ -362,7 +367,16 @@ local snips = {
 
   -- Fast math-entry (NOT gated -- these OPEN a math zone).
   s({ trig = 'mk', snippetType = 'autosnippet' }, fmta('$<>$', { i(1) })),
-  s({ trig = 'dk', snippetType = 'autosnippet' }, fmta('\\[\n  <>\n\\]', { i(1) })),
+  -- Two multi-line math openers. In-editor rendering (snacks.image) draws any org
+  -- `latex_env`, which the org grammar forms whenever the opener is followed by a
+  -- newline -- so BOTH render as an inline image regardless of the delimiter. They
+  -- differ only on *export*:
+  --   dk  \(...\)  inline / NOT centered (PDF + MathJax HTML keep it in text flow)
+  --   ck  \[...\]  display / CENTERED
+  -- `ck` is prose-safe: wordTrig (the LuaSnip default) blocks it mid-word and no
+  -- English word starts with "ck".
+  s({ trig = 'dk', snippetType = 'autosnippet' }, fmta('\\(\n  <>\n\\)', { i(1) })),
+  s({ trig = 'ck', snippetType = 'autosnippet' }, fmta('\\[\n  <>\n\\]', { i(1) })),
 }
 
 -- Greek letters via a `;` prefix (e.g. `;a` -> `\alpha`), which avoids

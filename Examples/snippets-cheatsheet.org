@@ -10,8 +10,12 @@
   ~\( ... \)~, ~\[ ... \]~, or a math environment (~\begin{align}~, ~cases~,
   ~bmatrix~ ...). In ordinary prose the same words are left untouched, so
   writing "the sum is large" will not turn into "\sum".
-- *Enter math fast* with ~mk~ (inline ~$ $~) or ~dk~ (display ~\[ \]~). The org
-  snippets ~mm~ / ~dm~ do the same via the completion menu.
+- *Enter math fast* with ~mk~ (inline ~$ $~), ~dk~ (~\( \)~) or ~ck~ (~\[ \]~). The
+  org snippets ~mm~ / ~dm~ / ~cm~ do the same via the completion menu. Both ~dk~/~dm~
+  (~\( \)~) and ~ck~/~cm~ (~\[ \]~) render in the editor -- what makes math render
+  is the opener sitting on its own line, not the delimiter. They differ only on
+  *export*: ~\( \)~ stays inline (in text flow), ~\[ \]~ is centered display math
+  (both PDF and the website's MathJax).
 - *Auto-pairs*: typing ~(~ ~[~ ~{~ or ~$~ inserts the closing partner; type the
   closing char to skip over it instead of adding a new one.
 - Everything works in ~.org~ files (and ~.tex~) anywhere on disk.
@@ -21,7 +25,8 @@
 | Key            | Action                                                             |
 |----------------+--------------------------------------------------------------------|
 | ~mk~           | insert inline math ~$ $~ (cursor lands between)                     |
-| ~dk~           | insert display math ~\[ \]~ (cursor lands inside)                   |
+| ~dk~           | insert ~\( \)~ math -- renders in editor, NOT centered on export     |
+| ~ck~           | insert ~\[ \]~ math -- renders in editor, CENTERED on export         |
 | <Tab>          | expand snippet / jump to next placeholder / jump out of braces / accept menu |
 | <S-Tab>        | jump to the previous placeholder                                   |
 | <CR> (Enter)   | confirm the highlighted completion item (otherwise a normal newline) |
@@ -201,7 +206,9 @@ completion menu).
 | link    | [[target][description]] link                        |
 | date    | today's date (YYYY-MM-DD)                           |
 | mm      | inline math ~$ $~                                   |
-| dm      | display math ~\[ \]~                                |
+| dm      | ~\( \)~ math (renders in editor; inline on export)  |
+| cm      | ~\[ \]~ math (renders in editor; centered on export) |
+| callout | #+begin_quote with a bold label (Note/Tip/Warning…) |
 
 * TikZ graphs (nodes, values, weighted edges)
 

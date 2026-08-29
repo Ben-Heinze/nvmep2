@@ -83,10 +83,12 @@ local tabs = {
       {
         title = 'Math zones',
         rows = {
-          { 'mk', '$ $', 'inline math (opens a zone)' },
-          { 'dk', '\\[  \\]', 'display math (opens a zone)' },
-          { 'mm', '$ $', 'inline math (org snippet)' },
-          { 'dm', '\\[  \\]', 'display math (org snippet)' },
+          { 'mk', '$ $', 'inline $…$ (single line; not image-rendered)' },
+          { 'dk', '\\(  \\)', 'math zone — renders in editor, NOT centered on export' },
+          { 'ck', '\\[  \\]', 'math zone — renders in editor, CENTERED on export' },
+          { 'mm', '$ $', 'inline $…$ (org snippet)' },
+          { 'dm', '\\(  \\)', 'not-centered math zone (org snippet)' },
+          { 'cm', '\\[  \\]', 'centered math zone (org snippet)' },
         },
       },
       {
@@ -171,6 +173,7 @@ local tabs = {
           { 'cppsrc', '#+begin_src cpp ⟨code⟩ #+end_src', 'C++ code block' },
           { 'ex', '#+begin_example ⟨text⟩ #+end_example', 'example block' },
           { 'quote', '#+begin_quote ⟨text⟩ #+end_quote', 'quote block' },
+          { 'callout', '#+begin_quote *⟨Note⟩:* ⟨text⟩ #+end_quote', 'callout / admonition (labelled aside)' },
         },
       },
       {

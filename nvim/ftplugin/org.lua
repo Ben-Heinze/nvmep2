@@ -13,19 +13,24 @@ vim.opt_local.tabstop = 2
 vim.opt_local.softtabstop = 2
 vim.opt_local.expandtab = true
 
--- Disable orgmode's automatic list/line indentation. Org's `indentexpr` aligns
--- continuation lines under the bullet ("overhang"), so <CR> after `- item`
--- inserts leading spaces and every new `-` nests one level deeper, making quick
--- flat lists tedious (this is separate from `org_adapt_indentation`). Org's
--- indent/org.lua sets `indentexpr`/`autoindent` and loads *after* this file, so
--- defer the reset to win the race. Manual indentation (tab/space) still works.
+-- Tame orgmode's automatic list/line indentation without going fully flat. Org's
+-- `indentexpr` aligns continuation lines under the bullet ("overhang"), so <CR>
+-- after `- item` inserts leading spaces and every new `-` nests one level deeper --
+-- tedious for quick flat lists. We kill that (`indentexpr=''`, `smartindent=false`)
+-- but KEEP `autoindent` on, so <CR> merely copies the current line's indent
+-- forward: top-level bullets stay flush-left, and a bullet nested to some level
+-- stays at that level on the next <CR> instead of dropping to column 0 (which
+-- forced inconsistent manual re-spacing when taking notes). Change a bullet's level
+-- with `>>`/`<<` (org's 2-space list demote/promote; `>s`/`<s` include sub-items).
+-- Org's indent/org.lua sets these options and loads *after* this file, so defer to
+-- win the race. (Separate from `org_adapt_indentation`, set in plugin/orgmode.lua.)
 local buf = vim.api.nvim_get_current_buf()
 vim.schedule(function()
   if not vim.api.nvim_buf_is_valid(buf) then
     return
   end
   vim.bo[buf].indentexpr = ''
-  vim.bo[buf].autoindent = false
+  vim.bo[buf].autoindent = true
   vim.bo[buf].smartindent = false
 end)
 

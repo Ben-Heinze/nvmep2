@@ -70,6 +70,20 @@ ls.add_snippets('org', {
       { i(1) }
     )
   ),
+  -- Callout / admonition: a quote block with a bold label lead-in -- the "real"
+  -- mechanism for asides otherwise written as whole-line bold. Renders as a quote
+  -- block in-editor, <blockquote> on the site, a quote env in the PDF. <C-n>/Tab
+  -- cycles the label; delete it for a plain aside.
+  s(
+    'callout',
+    fmt(
+      [[
+#+begin_quote
+*{}:* {}
+#+end_quote]],
+      { c(1, { t('Note'), t('Tip'), t('Warning'), t('Definition'), t('Example') }), i(2) }
+    )
+  ),
   -- File header for a new note.
   s(
     'title',
@@ -154,14 +168,28 @@ ls.add_snippets('org', {
   s('h1', fmt('* {}', { i(1) })),
   s('h2', fmt('** {}', { i(1) })),
   s('h3', fmt('*** {}', { i(1) })),
-  -- Inline / display math delimiters, to open a math zone quickly.
+  -- Math openers. `mm` is single-line inline `$…$`. `dm` and `cm` put the opener
+  -- on its own line so the org grammar forms a `latex_env` and snacks.image renders
+  -- it in-editor; they differ only on export -- `dm` (\(…\)) stays inline/uncentered,
+  -- `cm` (\[…\]) is centered display (both PDF and MathJax HTML). Mirrors the
+  -- autosnippet pair dk/ck in snippets_math.lua.
   s('mm', fmt('${}$', { i(1) })),
   s(
     'dm',
     fmt(
       [==[
+\(
+  {}
+\)]==],
+      { i(1) }
+    )
+  ),
+  s(
+    'cm',
+    fmt(
+      [==[
 \[
-{}
+  {}
 \]]==],
       { i(1) }
     )
