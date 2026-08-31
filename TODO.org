@@ -8,4 +8,4 @@
 ** DONE Added Rendering pdf of org mode and opening it in zathura "<space> o e"
 ** DONE Added auto-correct for misspelled words for visual and normal mode (theres different options) "<space> f"
 ** DONE Added Org-babel for running code blocks in Python, R, C++, and Java.
-** DONE Added a RETURN workflow keyword for unfinished sections to come back to (cycle with "cit"/"ciT"); shows orange in-editor and exports via Emacs.
+** DONE Added a "cbl" org snippet inserting {{{hl(orange,COME BACK LATER)}}} -- an orange "COME BACK LATER" marker for unfinished sections; expands outside math mode only.

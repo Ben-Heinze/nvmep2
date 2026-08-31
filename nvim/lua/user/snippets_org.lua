@@ -13,6 +13,16 @@ local function today()
   return os.date('%Y-%m-%d')
 end
 
+-- "Outside math mode" gate. Reuse the buffer-scanning `in_mathzone` exported by
+-- snippets_math.lua -- NOT the tex-`synstack` version in plugin/luasnip.lua, which
+-- keys off `texMathZone*` syntax groups that org buffers (treesitter-highlighted,
+-- not tex-syntax) never set. snippets_math is required before this file in
+-- plugin/luasnip.lua, so the module is already loaded/cached by the time we get here.
+local in_mathzone = require('user.snippets_math').in_mathzone
+local function not_mathzone()
+  return not in_mathzone()
+end
+
 ls.add_snippets('org', {
   -- Code block with a language choice (Tab/<C-n> to cycle the language).
   s(
@@ -84,6 +94,16 @@ ls.add_snippets('org', {
       { c(1, { t('Note'), t('Tip'), t('Warning'), t('Definition'), t('Example') }), i(2) }
     )
   ),
+  -- "Come back later" marker: an orange highlight (via the `hl` macro seeded by
+  -- the `title` snippet) flagging an unfinished section to return to. Renders
+  -- orange in-editor (note-highlight.lua), as <span class="hl-orange"> on the
+  -- site, and \hl{orange}{...} in the PDF. Gated to prose only (`not_mathzone`),
+  -- per the request, so it never expands inside `$...$` / math environments.
+  s({
+    trig = 'cbl',
+    condition = not_mathzone,
+    show_condition = not_mathzone,
+  }, t('{{{hl(orange,COME BACK LATER)}}}')),
   -- File header for a new note.
   s(
     'title',
