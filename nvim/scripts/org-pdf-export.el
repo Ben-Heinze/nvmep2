@@ -19,6 +19,12 @@
 ;; `natbib' only needs plain `bibtex', which `latexmk' (picked automatically
 ;; by `org-latex-pdf-process' since it's on PATH) already knows how to invoke
 ;; as an extra pass when it sees `\bibliography{}' in the .aux file.
+;; Mirror nvim/plugin/orgmode.lua's `org_todo_keywords' so a `RETURN' heading (a
+;; section I left unfinished) is parsed by Emacs as a not-done TODO keyword on
+;; export -- otherwise vanilla org knows only TODO/DONE and would treat "RETURN"
+;; as ordinary heading text. Keep in sync with the editor keyword list.
+(setq org-todo-keywords '((sequence "TODO" "RETURN" "|" "DONE")))
+
 (setq org-confirm-babel-evaluate nil
       org-export-with-broken-links t
       org-latex-compiler "lualatex"
