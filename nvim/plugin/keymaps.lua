@@ -209,9 +209,24 @@ local function find_word_boundary(remaining, word)
   return remaining:find('%f[%a]' .. escape_lua_pattern(word) .. '%f[%A]')
 end
 
+-- Line range of the CURRENT visual selection.
+--
+-- Read the live endpoints via getpos('v') (the anchor end) and getpos('.')
+-- (the cursor) rather than the '< / '> marks. Those marks are only updated
+-- when visual mode is *left*, but a visual-mode mapping whose right-hand side
+-- is a Lua function fires while still in visual mode -- so '< / '> hold the
+-- PREVIOUS selection, and are unset on the very first use. Relying on them
+-- made these fixes silently operate on the wrong lines (nothing on the first
+-- try, then the prior selection each time after) instead of what you just
+-- highlighted. min/max so an upward selection still yields start <= end.
+local function visual_line_range()
+  local a, b = fn.getpos('v')[2], fn.getpos('.')[2]
+  return math.min(a, b), math.max(a, b)
+end
+
 local function fix_spelling_in_range()
-  local start_line = fn.getpos("'<")[2]
-  local end_line = fn.getpos("'>")[2]
+  local start_line, end_line = visual_line_range()
+  vim.cmd 'normal! \27' -- leave visual mode; range is already captured
 
   for lnum = start_line, end_line do
     local line = fn.getline(lnum)
@@ -262,8 +277,8 @@ keymap.set(
 )
 
 local function remove_duplicate_words_in_range()
-  local start_line = fn.getpos("'<")[2]
-  local end_line = fn.getpos("'>")[2]
+  local start_line, end_line = visual_line_range()
+  vim.cmd 'normal! \27' -- leave visual mode; range is already captured
   vim.cmd(([[%d,%ds/\v<(\w+)>\s+\1>/\1/gi]]):format(start_line, end_line))
 end
 
