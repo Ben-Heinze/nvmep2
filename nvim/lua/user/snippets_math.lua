@@ -200,6 +200,8 @@ local snips = {
   ms('odot', t('\\odot')),
   ms('land', t('\\land')),
   ms('lor', t('\\lor')),
+  ms('and', t('\\wedge')),
+  ms('or', t('\\vee')),
   ms('neg', t('\\neg')),
   ms('in', t('\\in')),
   ms('notin', t('\\notin')),

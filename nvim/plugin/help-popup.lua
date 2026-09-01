@@ -385,6 +385,8 @@ local tabs = {
         rows = {
           { 'land', '\\land', 'logical and' },
           { 'lor', '\\lor', 'logical or' },
+          { 'and', '\\wedge', '∧  and / meet' },
+          { 'or', '\\vee', '∨  or / join' },
           { 'neg', '\\neg', 'logical not' },
           { 'AA', '\\forall', 'for all' },
           { 'EE', '\\exists', 'there exists' },
