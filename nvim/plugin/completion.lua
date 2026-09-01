@@ -172,7 +172,19 @@ cmp.setup.filetype('lua', {
 cmp.setup.filetype({ 'org', 'tex', 'markdown' }, {
   sources = cmp.config.sources {
     { name = 'luasnip', keyword_length = 1 },
-    { name = 'latex_symbols', keyword_length = 2, option = { strategy = 2 } },
+    {
+      name = 'latex_symbols',
+      keyword_length = 2,
+      option = { strategy = 2 },
+      -- Suppress the symbol popup right after a `\\` line-break. cmp-latex-symbols
+      -- triggers on `\` with keyword pattern `\...`, so the second backslash of a
+      -- `\\` row-break (align/matrix/cases) reads as the start of a command and
+      -- lists every symbol. Drop all entries when the two chars before the cursor
+      -- are `\\`; a single `\` still completes (`\al` -> `\alpha`).
+      entry_filter = function(_, ctx)
+        return ctx.cursor_before_line:sub(-2) ~= '\\\\'
+      end,
+    },
     { name = 'nvim_lsp', keyword_length = 3 },
     { name = 'nvim_lsp_signature_help', keyword_length = 3 },
     { name = 'buffer' },

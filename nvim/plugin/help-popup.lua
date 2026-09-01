@@ -419,6 +419,7 @@ local tabs = {
           { 'cases', '\\begin{cases} ⟨rows⟩ \\end{cases}', 'piecewise cases' },
           { 'ali', '\\begin{align*} ⟨equations⟩ \\end{align*}', 'aligned equations' },
           { 'aeq', '\\begin{align*} a &= b \\\\ &= c \\end{align*}', 'multi-line eqn aligned on =' },
+          { 'flalign', '\\begin{flalign*} a &= b & \\end{flalign*}', 'full-width eqns you align yourself (& marks a column); opens its own zone' },
           { 'beg', '\\begin{⟨env⟩} ⟨body⟩ \\end{⟨env⟩}', 'generic environment' },
         },
       },

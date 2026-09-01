@@ -1,5 +1,7 @@
 * Todo list
-** DONE Add a "Come back later" tag for org mode similar to a /TODO.
+
+** DONE Make sure it doesnt auto-complete anything when I type "\\" -- entry_filter on the latex_symbols cmp source drops all entries after a "\\".
+** DONE remove \text snippet -- dropped the "text" -> \text{} math autosnippet (the "tt" shorthand still inserts \text{}).
 
 * Changes I made to stray from OG
 ** DONE Added the help-popup that includes a lot of custom snippets "<space> ?"
@@ -9,3 +11,4 @@
 ** DONE Added auto-correct for misspelled words for visual and normal mode (theres different options) "<space> f"
 ** DONE Added Org-babel for running code blocks in Python, R, C++, and Java.
 ** DONE Added a "cbl" org snippet inserting {{{hl(orange,COME BACK LATER)}}} -- an orange "COME BACK LATER" marker for unfinished sections; expands outside math mode only.
+** DONE Add a "Come back later" tag for org mode similar to a /TODO.

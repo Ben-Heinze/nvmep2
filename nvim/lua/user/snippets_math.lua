@@ -141,7 +141,6 @@ local snips = {
   ms('hat', fmta('\\hat{<>}', { i(1, 'x') })),
   ms('vec', fmta('\\vec{<>}', { i(1, 'v') })),
   ms('tt', fmta('\\text{<>}', { i(1, 'text') })),
-  ms('text', fmta('\\text{<>}', { i(1, 'text') })),
   -- Over-/under-set: place text above, below, or both around a base symbol.
   -- Order is {annotation}{base}, so tabstop 1 is the text, 2 the base.
   ms('over', fmta('\\overset{<>}{<>}', { i(1, 'above'), i(2, 'x') })),
@@ -377,6 +376,26 @@ local snips = {
   -- English word starts with "ck".
   s({ trig = 'dk', snippetType = 'autosnippet' }, fmta('\\(\n  <>\n\\)', { i(1) })),
   s({ trig = 'ck', snippetType = 'autosnippet' }, fmta('\\[\n  <>\n\\]', { i(1) })),
+  -- Full-width aligned equations you place the alignment points for. Like the
+  -- openers above it is NOT gated by in_mathzone (so it fires from prose too),
+  -- because a flalign block IS its own display-math zone -- and its interior
+  -- counts as math (flalign is in MATH_ENVS), so the usual autosnippets fire
+  -- inside it. `&` marks an alignment column, `\\` ends a row, and the trailing
+  -- `&` per row is the flalign idiom that flushes the block left to the margin
+  -- (the margin-fill flalign gives you over `align`). Opener on its own line +
+  -- trailing newline => org forms a latex_env, so it renders in the editor
+  -- (snacks.image) and exports as centered display (amsmath / MathJax).
+  s(
+    { trig = 'flalign', snippetType = 'autosnippet' },
+    fmta(
+      [[
+\begin{flalign*}
+  <> &= <> & \\
+  <> &= <> &
+\end{flalign*}]],
+      { i(1, 'a'), i(2, 'b'), i(3, 'c'), i(4, 'd') }
+    )
+  ),
 }
 
 -- Greek letters via a `;` prefix (e.g. `;a` -> `\alpha`), which avoids
