@@ -141,6 +141,7 @@ local snips = {
   ms('hat', fmta('\\hat{<>}', { i(1, 'x') })),
   ms('vec', fmta('\\vec{<>}', { i(1, 'v') })),
   ms('tt', fmta('\\text{<>}', { i(1, 'text') })),
+  ms('txt', fmta('\\text{<>}', { i(1, 'text') })), -- word-trigger alias of tt
   -- Over-/under-set: place text above, below, or both around a base symbol.
   -- Order is {annotation}{base}, so tabstop 1 is the text, 2 the base.
   ms('over', fmta('\\overset{<>}{<>}', { i(1, 'above'), i(2, 'x') })),
