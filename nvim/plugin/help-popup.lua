@@ -468,7 +468,9 @@ local tabs = {
           { 'Ind', '\\begin{cases} 1 & condition \\\\ 0 & \\text{otherwise} \\end{cases}', 'indicator body (piecewise 1/0)' },
           { 'sim', '\\sim', 'distributed as' },
           { 'iid', '\\overset{iid}{\\sim}', 'iid' },
-          { 'perp', '\\perp', 'independent' },
+          { 'perp', '\\perp', 'perpendicular' },
+          { 'indep', '\\perp\\!\\!\\!\\perp', 'independent (⫫)' },
+          { 'iperp', '\\perp\\!\\!\\!\\perp', 'independent (⫫), alias of indep' },
         },
       },
       {

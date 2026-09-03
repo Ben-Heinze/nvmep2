@@ -214,4 +214,27 @@ ls.add_snippets('org', {
       { i(1) }
     )
   ),
+  -- Numbered, labelled display equation. Unlike `align*`/`flalign*` (starred =>
+  -- unnumbered) this NUMBERS the line, and the `\label` lets you cite that number
+  -- elsewhere with `eqref`. Opener on its own line + trailing newline => org forms
+  -- a `latex_env`, so it renders in-editor (snacks.image) and exports as a centered
+  -- numbered equation (PDF via amsmath; HTML via MathJax once the site sets
+  -- `tags: ams` in publish.el). Keep the `eq:` label prefix so refs read clearly.
+  s(
+    'eqn',
+    fmt(
+      [==[
+\begin{{equation}}
+  \label{{eq:{}}}
+  {}
+\end{{equation}}]==],
+      { i(1, 'name'), i(2, 'E = mc^2') }
+    )
+  ),
+  -- Reference the number of an `eqn` block -> "(1)", linked. Wrapped in \(...\) so
+  -- MathJax processes it on the HTML site (a bare \eqref in prose sits OUTSIDE math
+  -- delimiters, so MathJax would print it literally); the same form resolves in the
+  -- PDF (amsmath \eqref). Org internal links [[eq:name]] do NOT work -- org can't
+  -- resolve a link to a raw \label -- so this LaTeX form is the mechanism.
+  s('eqref', fmt('\\(\\eqref{{eq:{}}}\\)', { i(1, 'name') })),
 }, { key = 'org' })

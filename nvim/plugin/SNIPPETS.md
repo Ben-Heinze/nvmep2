@@ -59,6 +59,27 @@ why the org exporter runs LuaLaTeX (see `scripts/org-pdf-export.el`).
 | `gedge` | snippet | Edge `a <dir> b;` — direction choice node (`--` / `->` / `<->`) |
 | `gwedge` | snippet | Weighted/labelled edge `a <dir>["w"] b;` (via the `quotes` library) |
 
+## org — math openers (`snippets_org.lua`)
+
+Regular snippets (Tab / `<C-n>`), org-only. Deliberately **not** autosnippets, so
+typing the words "equation"/"eqref" in prose never expands them.
+
+| Trigger | Type | Expansion |
+| --- | --- | --- |
+| `mm` | snippet | Inline `$…$` |
+| `dm` | snippet | `\(…\)` opener on its own line (renders in-editor; exports inline/uncentered) |
+| `cm` | snippet | `\[…\]` opener on its own line (renders in-editor; exports centered display) |
+| `eqn` | snippet | `\begin{equation}\label{eq:…} … \end{equation}` — a **numbered** display equation with a label to cite |
+| `eqref` | snippet | `\(\eqref{eq:…}\)` — reference an `eqn` label, renders as linked "(1)" |
+
+Cross-references resolve in the **PDF** out of the box (amsmath `\eqref`; `\label`
+numbers the line). On the **HTML site** they resolve only when
+`org-html-mathjax-options` sets `tags: ams` in `yappopotamus/publish.el` (default is
+`none` = unnumbered). `eqref` is wrapped in `\(…\)` on purpose: MathJax only
+processes math inside its delimiters, so a bare `\eqref` in prose would print
+literally. Org internal links `[[eq:name]]` do **not** work — org cannot resolve a
+link to a raw `\label`.
+
 ## cpp
 
 | Trigger | Type | Expansion |

@@ -111,6 +111,32 @@ local function ms(trig, nodes, wordy)
   }, nodes)
 end
 
+-- Autosnippet for a word that shares a prefix with a shorter symbol snippet
+-- (e.g. `int`/`indep` both start with `in`, which expands to `\in` first). By the
+-- time you finish typing, that prefix has already left a stray backslash in front
+-- (`\int`), and a plain wordTrig snippet would prepend a *second* one -> `\\int`.
+-- So trigger on an OPTIONAL leading backslash and swallow it, collapsing `\int`
+-- back to a single command. A manual word-boundary check (the char before the
+-- match must not be a letter/digit/backslash) replaces wordTrig, which regex
+-- triggers don't support, so it still never fires mid-word (e.g. "po\int").
+local function ms_absorb(word, nodes)
+  return s({
+    trig = '\\?' .. word,
+    regTrig = true,
+    wordTrig = false,
+    snippetType = 'autosnippet',
+    condition = function(line_to_cursor, matched_trigger)
+      if not in_mathzone() then
+        return false
+      end
+      local before = line_to_cursor:sub(1, #line_to_cursor - #matched_trigger)
+      local prev = before:sub(-1)
+      return prev == '' or not prev:match('[%w\\]')
+    end,
+    show_condition = in_mathzone,
+  }, nodes)
+end
+
 local snips = {
   -- Fractions, roots, scripts
   ms('//', fmta('\\frac{<>}{<>}', { i(1, 'num'), i(2, 'den') }), false),
@@ -123,7 +149,9 @@ local snips = {
   -- Big operators
   ms('sum', fmta('\\sum_{<>}^{<>} <>', { i(1, 'i=1'), i(2, 'n'), i(3, 'a_i') })),
   ms('prod', fmta('\\prod_{<>}^{<>} <>', { i(1, 'i=1'), i(2, 'n'), i(3, 'a_i') })),
-  ms('int', fmta('\\int_{<>}^{<>} <> \\, d<>', { i(1, 'a'), i(2, 'b'), i(3, 'f(x)'), i(4, 'x') })),
+  -- `int` shares the `in` prefix (-> `\in`), so it absorbs the leading backslash
+  -- to avoid `\\int`. See `ms_absorb`.
+  ms_absorb('int', fmta('\\int_{<>}^{<>} <> \\, d<>', { i(1, 'a'), i(2, 'b'), i(3, 'f(x)'), i(4, 'x') })),
   ms('lim', fmta('\\lim_{<> \\to <>} <>', { i(1, 'n'), i(2, '\\infty'), i(3, 'a_n') })),
 
   -- Log-like functions (bare operators, so `\log_2`, `\exp(x)` compose freely)
@@ -328,6 +356,11 @@ local snips = {
   ms('iid', t('\\overset{\\text{iid}}{\\sim}')),
   ms('perp', t('\\perp')),
   ms('iperp', t('\\perp\\!\\!\\!\\perp')),
+  -- Independence symbol ⫫. Emits the raw `\perp\!\!\!\perp` (like `iperp`) rather
+  -- than a `\indep` command, so it renders everywhere -- in-editor (snacks.image),
+  -- PDF, and MathJax HTML -- with no `\newcommand` needed. Shares the `in` prefix
+  -- (-> `\in`), so it absorbs the leading backslash to avoid `\\`. See `ms_absorb`.
+  ms_absorb('indep', t('\\perp\\!\\!\\!\\perp')),
 
   -- Statistics: sums, optimisation, convergence
   ms('nsum', t('\\sum_{i=1}^{n}')),
