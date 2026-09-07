@@ -64,7 +64,10 @@ vim.defer_fn(function()
   }
 end, 1000)
 
-require('dap-python').setup('python3')
+-- Neovim's provider python (g:python3_host_prog, set by the nix wrapper)
+-- bundles debugpy; the debuggee still runs under the project venv python
+-- (dap-python resolves VIRTUAL_ENV/.venv separately for launch configs).
+require('dap-python').setup(vim.g.python3_host_prog or 'python3')
 
 mymap('n', '<Space>du', '<CMD>lua require"dapui".toggle()<CR>')
 mymap('n', '<Space>db', '<CMD>DapToggleBreakpoint<CR>')

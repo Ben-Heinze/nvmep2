@@ -284,7 +284,6 @@ let
       neogit # https://github.com/TimUntersberger/neogit/
       nvim-cmp # https://github.com/hrsh7th/nvim-cmp
       nvim-jdtls # https://github.com/mfussenegger/nvim-jdtls
-      nvim-dap-view # https://github.com/igorlfs/nvim-dap-view/
       nvim-navic # https://github.com/SmiteshP/nvim-navic
       nvim-colorizer-lua # https://github.com/norcalli/nvim-colorizer.lua
       nvim-surround # https://github.com/kylechui/nvim-surround/
@@ -401,13 +400,18 @@ let
     # # rPackages.languageserver
     # # rPackages.languageserversetup
   ];
+
+  # Python packages for Neovim's bundled provider python3.
+  # debugpy lives here (not in extraPackages) so nvim-dap-python can launch the
+  # debug adapter without shadowing project venv pythons on PATH.
+  extraPython3Packages = p: [ p.debugpy ];
 in
 {
   # This is the neovim derivation
   # returned by the overlay
   nvim-pkg = mkNeovim {
     plugins = all-plugins;
-    inherit extraPackages;
+    inherit extraPackages extraPython3Packages;
   };
 
   # This is meant to be used within a devshell.
@@ -415,7 +419,7 @@ in
   # the Nix store, it is loaded from $XDG_CONFIG_HOME/nvim-dev
   nvim-dev = mkNeovim {
     plugins = all-plugins;
-    inherit extraPackages;
+    inherit extraPackages extraPython3Packages;
     appName = "nvim-dev";
     wrapRc = false;
   };

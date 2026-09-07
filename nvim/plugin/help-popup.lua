@@ -496,6 +496,46 @@ local tabs = {
       },
     },
   },
+  {
+    name = 'Debugger',
+    sections = {
+      {
+        title = 'Debug keys (<Space>d…, any supported filetype)',
+        kind = 'key',
+        rows = {
+          { '<Space>du', '', 'toggle debug UI (dapui panels)' },
+          { '<Space>db', '', 'toggle breakpoint on current line' },
+          { '<Space>dd', '', 'start / continue (DapContinue)' },
+          { '<Space>dc', '', 'continue (alias of dd)' },
+          { '<Space>di', '', 'step into' },
+          { '<Space>do', '', 'step over' },
+          { '<Space>dO', '', 'step out' },
+          { '<Space>dP', '', 'pause running program' },
+          { '<Space>dR', '', 'restart current frame' },
+          { '<Space>dC', '', 'clear all breakpoints' },
+        },
+      },
+      {
+        title = 'Language support',
+        kind = 'key',
+        rows = {
+          { 'python', '', 'works: debugpy bundled with nvim; program runs in project venv if active' },
+          { 'cpp', '', 'needs gdb on PATH (project devshell); launch/attach configs ready' },
+          { 'js/ts', '', 'broken: js-debug adapter binary not installed' },
+          { 'c / java', '', 'not configured (dap blocks commented out)' },
+        },
+      },
+      {
+        title = 'Workflow',
+        kind = 'key',
+        rows = {
+          { '1.', '', 'open file, set breakpoints with <Space>db' },
+          { '2.', '', '<Space>dd then pick a launch config (e.g. "Launch file")' },
+          { '3.', '', 'inspect state in dapui (<Space>du); step with di/do/dO' },
+        },
+      },
+    },
+  },
 }
 
 -- ---------------------------------------------------------------------------
