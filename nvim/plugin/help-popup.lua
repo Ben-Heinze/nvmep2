@@ -519,7 +519,7 @@ local tabs = {
         title = 'Language support',
         kind = 'key',
         rows = {
-          { 'python', '', 'works: debugpy bundled with nvim; program runs in project venv if active' },
+          { 'python', '', 'works: debugpy bundled with nvim; program runs on venv > local venv dir > PATH python3' },
           { 'cpp', '', 'needs gdb on PATH (project devshell); launch/attach configs ready' },
           { 'js/ts', '', 'broken: js-debug adapter binary not installed' },
           { 'c / java', '', 'not configured (dap blocks commented out)' },

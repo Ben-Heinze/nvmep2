@@ -65,9 +65,25 @@ vim.defer_fn(function()
 end, 1000)
 
 -- Neovim's provider python (g:python3_host_prog, set by the nix wrapper)
--- bundles debugpy; the debuggee still runs under the project venv python
--- (dap-python resolves VIRTUAL_ENV/.venv separately for launch configs).
-require('dap-python').setup(vim.g.python3_host_prog or 'python3')
+-- bundles debugpy and runs the debug ADAPTER. The debuggee runs under the
+-- project's python: dap-python checks VIRTUAL_ENV first, then falls back to
+-- resolve_python below — python3 from PATH (nix devshell etc.), so project
+-- deps import correctly. The debuggee python doesn't need debugpy installed
+-- (the launcher injects it via sys.path).
+local dap_python = require('dap-python')
+dap_python.setup(vim.g.python3_host_prog or 'python3')
+dap_python.resolve_python = function()
+  -- unactivated local venvs first (mirrors dap-python's built-in scan,
+  -- which our override would otherwise disable)
+  for _, dir in ipairs { 'venv', '.venv', 'env', '.env' } do
+    local candidate = vim.fn.getcwd() .. '/' .. dir .. '/bin/python'
+    if vim.fn.executable(candidate) == 1 then
+      return candidate
+    end
+  end
+  local p = vim.fn.exepath('python3')
+  return p ~= '' and p or vim.g.python3_host_prog
+end
 
 mymap('n', '<Space>du', '<CMD>lua require"dapui".toggle()<CR>')
 mymap('n', '<Space>db', '<CMD>DapToggleBreakpoint<CR>')
