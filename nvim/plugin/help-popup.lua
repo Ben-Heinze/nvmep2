@@ -174,6 +174,8 @@ local tabs = {
           { 'ex', '#+begin_example ⟨text⟩ #+end_example', 'example block' },
           { 'quote', '#+begin_quote ⟨text⟩ #+end_quote', 'quote block' },
           { 'callout', '#+begin_quote *⟨Note⟩:* ⟨text⟩ #+end_quote', 'callout / admonition (labelled aside)' },
+          { 'pcode', '#+begin_pseudocode ⟨lines⟩ #+end_pseudocode', 'pseudocode block (LaTeX lines; \\quad indents, \\textbf keywords)' },
+          { 'pcodex', '#+begin_pseudocode ⟨example algorithm⟩ …', 'ready-made example pseudocode block (renders as-is)' },
         },
       },
       {

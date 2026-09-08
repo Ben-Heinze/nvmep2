@@ -80,6 +80,33 @@ ls.add_snippets('org', {
       { i(1) }
     )
   ),
+  -- Pseudocode block: body is LaTeX math-mode pseudocode, one statement per
+  -- line; indent with \quad / \qquad, keywords via \textbf{...}.
+  s(
+    'pcode',
+    fmt(
+      [[
+#+begin_pseudocode
+{}
+#+end_pseudocode]],
+      { i(1) }
+    )
+  ),
+  -- Ready-made example pseudocode block (condensed nearest neighbour) showing
+  -- the idiom: \gets, \textbf keywords, \quad indentation, \text prose.
+  s(
+    'pcodex',
+    t({
+      '#+begin_pseudocode',
+      '\\mathcal{Z} \\gets \\emptyset',
+      '\\textbf{repeat}',
+      '\\quad \\textbf{for all } x \\in \\mathcal{X} \\text{ (in random order)}',
+      "\\qquad \\text{find } x' \\in \\mathcal{Z} \\text{ such that } \\lVert x-x' \\rVert = \\min_{x^{j} \\in \\mathcal{Z}} \\lVert x-x^{j} \\rVert",
+      "\\qquad \\textbf{if } \\operatorname{class}(x) \\neq \\operatorname{class}(x') \\text{ add } x \\text{ to } \\mathcal{Z}",
+      '\\textbf{until } \\mathcal{Z} \\text{ does not change}',
+      '#+end_pseudocode',
+    })
+  ),
   -- Callout / admonition: a quote block with a bold label lead-in -- the "real"
   -- mechanism for asides otherwise written as whole-line bold. Renders as a quote
   -- block in-editor, <blockquote> on the site, a quote env in the PDF. <C-n>/Tab
